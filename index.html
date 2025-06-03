@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ferox - Personal Page</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        /* Style for the body and dynamic background */
+        body {
+            font-family: 'Inter', sans-serif;
+            transition: background-image 0.5s ease-in-out;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed; /* Keeps background fixed during scroll */
+            background-color: #0f172a; /* bg-slate-900 as a fallback */
+        }
+        /* Dark semi-transparent overlay to improve text readability over the background */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.65); /* Slightly darker overlay */
+            z-index: -1; 
+        }
+        /* Styles to ensure content is above the overlay */
+        .content-container {
+            position: relative;
+            z-index: 1;
+        }
+        /* Style for the scroll arrow */
+        .scroll-arrow {
+            animation: bounce 2s infinite;
+        }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-20px);
+            }
+            60% {
+                transform: translateY(-10px);
+            }
+        }
+        /* Styles for gallery cards */
+        .gallery-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .gallery-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.25);
+        }
+         /* Modal styles */
+        .modal {
+            display: none; 
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.7); 
+        }
+        .modal-content {
+            background-color: #1e293b; /* bg-slate-800 */
+            color: #e2e8f0; /* text-slate-200 */
+            margin: 15% auto;
+            padding: 25px;
+            border: 1px solid #334155; /* border-slate-700 */
+            width: 90%;
+            max-width: 500px;
+            border-radius: 12px; 
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        }
+        .modal-close-button {
+            color: #94a3b8; /* text-slate-400 */
+            float: right;
+            font-size: 32px;
+            font-weight: bold;
+            line-height: 1;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+        .modal-close-button:hover,
+        .modal-close-button:focus {
+            color: #dc2626; /* text-red-600 for hover */
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body class="text-slate-100"> 
+    <div class="overlay"></div> 
+    <div class="content-container container mx-auto px-4 py-8">
+
+        <section id="hero" class="min-h-screen flex flex-col items-center justify-center">
+            <div class="flex flex-col md:flex-row items-center justify-center md:justify-start w-full max-w-4xl">
+                <img id="profileImage" src="img/profile.jpg" alt="Profile Picture" 
+                     class="w-40 h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 rounded-lg mb-6 md:mb-0 md:mr-10 border-4 border-red-600 shadow-xl object-cover">
+                
+                <div class="text-center md:text-left">
+                    <h1 id="welcomeMessage" class="text-5xl sm:text-6xl md:text-7xl font-bold mb-2 text-red-600">Ferox</h1>
+                    <div id="socialLinks" class="flex flex-wrap justify-center md:justify-start gap-x-5 gap-y-3 mb-10">
+                        </div>
+                </div>
+            </div>
+             <div class="scroll-arrow text-3xl text-red-500 absolute bottom-10">
+                <a href="#about" aria-label="Scroll to About section"><i class="fas fa-chevron-down"></i></a>
+            </div>
+        </section>
+
+        <section id="about" class="py-16 md:py-24 my-12">
+            <div class="max-w-3xl mx-auto px-6 text-center"> 
+                <h2 id="aboutTitle" class="text-3xl md:text-4xl font-bold mb-6 text-red-500"></h2>
+                <div id="aboutContent" class="text-lg text-slate-300 space-y-4"> 
+                    </div>
+            </div>
+        </section>
+
+        <section id="gallery" class="py-16 md:py-24">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-red-500">Gallery</h2>
+            <div id="galleryImages" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                </div>
+        </section>
+
+        <footer class="text-center py-10 mt-12 border-t border-slate-700">
+            <p id="footerText" class="text-slate-400">&copy; <span id="currentYear"></span> Ferox. All rights reserved.</p>
+            <p class="text-slate-500 text-sm mt-2">Last updated: <span id="lastUpdated"></span></p>
+        </footer>
+    </div>
+
+    <div id="messageModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close-button" onclick="closeModal()">&times;</span>
+            <p id="modalMessageText"></p>
+        </div>
+    </div>
+
+    <script>
+        // --- User Configuration ---
+        const userConfig = {
+            profileImageUrl: "img/profile.jpg", // Path to your local profile image
+            welcomeMessageText: "Ferox", 
+            taglineText: "", 
+            socialMediaLinks: [ 
+                { iconClass: "fab fa-twitter", url: "https://x.com/Ferox_Shark", name: "Twitter" },
+                { iconClass: "fab fa-instagram", url: "https://www.instagram.com/feroxshark/", name: "Instagram" },
+                { iconClass: "fab fa-steam", url: "https://steamcommunity.com/id/feroxshark/", name: "Steam" },
+                { iconClass: "fab fa-discord", url: "https://discord.com/invite/7uDqm4Khhm", name: "Discord" },
+                { iconClass: "fab fa-telegram", url: "https://t.me/feroxshark", name: "Telegram" },
+                { iconClass: "fas fa-vr-cardboard", url: "https://vrchat.com/home/user/usr_b51db741-9cef-4095-b436-4367176fc4bb", name: "VRChat" }, 
+                { iconClass: "fab fa-twitch", url: "https://www.twitch.tv/ferox_uwu", name: "Twitch" },
+                { iconClass: "fas fa-paw", url: "https://www.furaffinity.net/user/feroxshark", name: "Fur Affinity" },
+                { iconClass: "fab fa-tiktok", url: "https://www.tiktok.com/@feroxshark", name: "TikTok" },
+                { iconClass: "fab fa-github", url: "https://github.com/FeroxShark", name: "GitHub" }, 
+                { iconClass: "fab fa-linkedin", url: "https://www.linkedin.com/in/feroxshark/", name: "LinkedIn" },
+            ],
+            aboutSectionTitle: "Hewo! My name is Ferox!", 
+            aboutMeContent: [ 
+                "I'm a 19 years old furry from Argentina 🇦🇷",
+                "White monster addict",
+                "<br>", 
+                "<strong>About me:</strong>", 
+                "I'm currently studying Software Engineering at Siglo 21 and doing some investments as a hobby.",
+                "I also play VRChat from time to time, feel free to add me if you'd like."
+            ],
+            galleryItems: [ 
+                // Replace with your actual image paths and descriptions
+                { imageUrl: "img/gallery/artwork1.jpg", description: "" }, 
+                { imageUrl: "img/gallery/artwork2.jpg", description: "" }, 
+                { imageUrl: "img/gallery/artwork3.jpg", description: "" }, 
+                { imageUrl: "img/gallery/artwork4.jpg", description: "" }, 
+                { imageUrl: "img/gallery/artwork5.jpg", description: "" },  
+                { imageUrl: "img/gallery/artwork6.jpg", description: "" }, 
+            ],
+            backgroundImages: [ 
+                // Replace with your actual background image paths
+                'img/backgrounds/bg1.jpg', 
+                'img/backgrounds/bg2.jpg', 
+                'img/backgrounds/bg3.jpg', 
+                'img/backgrounds/bg4.jpg', 
+                'img/backgrounds/bg5.jpg'  
+            ],
+            footerInfo: {
+                text: "Ferox. All rights reserved.",
+                lastUpdateDate: "June 3, 2025" 
+            }
+        };
+
+        // --- Page Logic ---
+        document.addEventListener('DOMContentLoaded', function() {
+            loadDynamicContent(); 
+            initializeBackgroundSlideshow();
+            initializeFooterYear();
+            initializeSmoothScroll();
+        });
+
+        function loadDynamicContent() {
+            // Profile picture
+            const profileImgEl = document.getElementById('profileImage');
+            if (profileImgEl) {
+                profileImgEl.src = userConfig.profileImageUrl;
+                // Fallback for local images if they don't load (e.g., during development before uploading)
+                profileImgEl.onerror = function() {
+                    this.src = 'https://placehold.co/256x256/DC2626/FFFFFF?text=Ferox+Not+Found';
+                    this.alt = 'Profile picture not found';
+                };
+            }
+
+
+            // Welcome message (Hero Section)
+            const welcomeMsgEl = document.getElementById('welcomeMessage');
+            if (welcomeMsgEl) welcomeMsgEl.textContent = userConfig.welcomeMessageText;
+            
+            // Social media links
+            const socialLinksContainer = document.getElementById('socialLinks');
+            if (socialLinksContainer) {
+                socialLinksContainer.innerHTML = ''; 
+                userConfig.socialMediaLinks.forEach(link => {
+                    const a = document.createElement('a');
+                    a.href = link.url;
+                    a.target = '_blank';
+                    a.rel = 'noopener noreferrer'; 
+                    a.className = 'text-slate-300 hover:text-pink-400 transition-colors duration-300 text-3xl'; 
+                    a.innerHTML = `<i class="${link.iconClass}"></i>`;
+                    a.setAttribute('aria-label', link.name); 
+                    a.setAttribute('title', link.name); 
+                    socialLinksContainer.appendChild(a);
+                });
+            }
+
+            // "About Me" Section Title
+            const aboutTitleEl = document.getElementById('aboutTitle');
+            if(aboutTitleEl) aboutTitleEl.textContent = userConfig.aboutSectionTitle;
+
+            // "About Me" Section Content
+            const aboutContentEl = document.getElementById('aboutContent');
+            if (aboutContentEl) {
+                aboutContentEl.innerHTML = ''; 
+                userConfig.aboutMeContent.forEach(paragraphText => {
+                    const p = document.createElement('p');
+                    p.innerHTML = paragraphText; 
+                    aboutContentEl.appendChild(p);
+                });
+            }
+
+            // Gallery images
+            const galleryImagesContainer = document.getElementById('galleryImages');
+            if (galleryImagesContainer) {
+                galleryImagesContainer.innerHTML = ''; 
+                userConfig.galleryItems.forEach(item => {
+                    const galleryItemDiv = document.createElement('div');
+                    galleryItemDiv.className = 'gallery-card bg-slate-800 rounded-lg overflow-hidden shadow-lg flex flex-col';
+                    
+                    const img = document.createElement('img');
+                    img.src = item.imageUrl;
+                    img.alt = item.description || 'Gallery Image'; // Alt text remains for accessibility
+                    img.className = 'w-full h-auto'; // Ensures image width fills card, height adjusts to maintain aspect ratio
+                    // Fallback for gallery images
+                    img.onerror = function() {
+                        this.src = 'https://placehold.co/600x400/DC2626/FFFFFF?text=Image+Not+Found';
+                        this.alt = 'Gallery image not found';
+                    };
+                    galleryItemDiv.appendChild(img);
+                    
+                    if (item.description && item.description.trim() !== "") {
+                        const captionDiv = document.createElement('div');
+                        captionDiv.className = 'p-4 flex-grow'; 
+                        const p = document.createElement('p');
+                        p.className = 'text-slate-400 text-sm';
+                        p.textContent = item.description;
+                        captionDiv.appendChild(p);
+                        galleryItemDiv.appendChild(captionDiv);
+                    }
+                    
+                    galleryImagesContainer.appendChild(galleryItemDiv);
+                });
+            }
+            
+            // Footer
+            const footerTextEl = document.getElementById('footerText');
+            if (footerTextEl) footerTextEl.innerHTML = `&copy; <span id="currentYear">${new Date().getFullYear()}</span> ${userConfig.footerInfo.text}`;
+            const lastUpdatedEl = document.getElementById('lastUpdated');
+            if (lastUpdatedEl) lastUpdatedEl.textContent = userConfig.footerInfo.lastUpdateDate;
+        }
+
+        function initializeBackgroundSlideshow() {
+            let currentBgIndex = 0;
+            const backgroundImages = userConfig.backgroundImages;
+            const bodyElement = document.body;
+
+            function changeBackground() {
+                if (!backgroundImages || backgroundImages.length === 0) {
+                     // Set a default fallback background color if no images are available
+                    bodyElement.style.backgroundImage = '';
+                    bodyElement.style.backgroundColor = '#0f172a'; // Default dark blue
+                    return;
+                }
+                
+                const imageUrl = backgroundImages[currentBgIndex];
+                const tempImg = new Image();
+                tempImg.onload = () => {
+                    bodyElement.style.backgroundImage = `url('${imageUrl}')`;
+                };
+                tempImg.onerror = () => {
+                    console.warn(`Background image failed to load: ${imageUrl}. Using fallback or next image.`);
+                    // Optionally, remove the faulty image from the array or skip it
+                    // For now, just try the next one in the sequence or default color
+                    if (backgroundImages.length <= 1) { // If it's the only image or no other images
+                         bodyElement.style.backgroundImage = '';
+                         bodyElement.style.backgroundColor = '#0f172a';
+                    }
+                    // Move to next image even on error to avoid getting stuck
+                    currentBgIndex = (currentBgIndex + 1) % backgroundImages.length;
+                    if (backgroundImages.length > 1) { // If there are other images, try the next one immediately
+                        changeBackground();
+                    }
+                };
+                tempImg.src = imageUrl;
+                currentBgIndex = (currentBgIndex + 1) % backgroundImages.length;
+            }
+
+
+            if (backgroundImages && backgroundImages.length > 0) {
+                changeBackground(); 
+                setInterval(changeBackground, 7000); 
+            } else {
+                // Fallback if backgroundImages array is empty
+                bodyElement.style.backgroundImage = '';
+                bodyElement.style.backgroundColor = '#0f172a';
+            }
+        }
+
+        function initializeFooterYear() {
+            const currentYearEl = document.getElementById('currentYear');
+            if (currentYearEl) currentYearEl.textContent = new Date().getFullYear();
+        }
+
+        function initializeSmoothScroll() {
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetElement = document.querySelector(this.getAttribute('href'));
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+            });
+        }
+
+        // --- Modal Functions (kept for potential future use) ---
+        const modal = document.getElementById('messageModal');
+        const modalMessageText = document.getElementById('modalMessageText');
+
+        function showModal(message) { 
+            if (modal && modalMessageText) {
+                modalMessageText.innerHTML = message; 
+                modal.style.display = "block";
+            }
+        }
+
+        function closeModal() {
+            if (modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        // Close modal if clicked outside of content
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+    </script>
+</body>
+</html>
