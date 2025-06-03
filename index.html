@@ -10,12 +10,27 @@
         /* Style for body and dynamic background */
         body {
             font-family: 'Inter', sans-serif;
-            transition: background-image 0.5s ease-in-out;
+            background-color: #0f172a; /* bg-slate-900 as fallback color */
+        }
+
+        /* Fixed container for slideshow background */
+        #bgSlideshow {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            background-attachment: fixed; /* Keeps the background fixed during scroll */
-            background-color: #0f172a; /* bg-slate-900 as fallback color */
+            background-attachment: fixed;
+            z-index: -2;
+            opacity: 1;
+            transition: opacity 1s ease-in-out;
+        }
+
+        .fade-out {
+            opacity: 0;
         }
         /* Semi-transparent dark overlay to improve text legibility over the background */
         .overlay {
@@ -140,6 +155,7 @@
     </style>
 </head>
 <body class="text-slate-100">
+    <div id="bgSlideshow"></div>
     <div class="overlay"></div>
     <div class="content-container container mx-auto px-4 py-8">
         <section id="hero" class="min-h-screen flex flex-col items-center justify-center relative"> <div class="flex flex-col md:flex-row items-center justify-center md:justify-start w-full max-w-6xl">
@@ -203,7 +219,6 @@
                 { iconClass: "fas fa-paw", url: "https://www.furaffinity.net/user/feroxshark", name: "Fur Affinity" },
                 { iconClass: "fab fa-tiktok", url: "https://www.tiktok.com/@feroxshark", name: "TikTok" },
                 { iconClass: "fab fa-github", url: "https://github.com/FeroxShark", name: "GitHub" },
-                { iconClass: "fab fa-linkedin", url: "https://www.linkedin.com/in/feroxshark/", name: "LinkedIn" },
             ],
             aboutSectionTitle: "Hewo! My name is Ferox", 
             aboutMeContent: [ 
@@ -322,41 +337,38 @@
         function initializeBackgroundSlideshow() {
             let currentBgIndex = 0;
             const backgroundImages = userConfig.backgroundImages;
-            const bodyElement = document.body;
+            const slideshowEl = document.getElementById('bgSlideshow');
+
+            function applyBackground(url) {
+                slideshowEl.classList.add('fade-out');
+                setTimeout(() => {
+                    slideshowEl.style.backgroundImage = `url('${url}')`;
+                    slideshowEl.classList.remove('fade-out');
+                }, 1000); // duration matches CSS transition
+            }
 
             function changeBackground() {
                 if (!backgroundImages || backgroundImages.length === 0) {
-                    bodyElement.style.backgroundImage = '';
-                    bodyElement.style.backgroundColor = '#0f172a'; 
+                    slideshowEl.style.backgroundImage = '';
                     return;
                 }
-                
+
                 const imageUrl = backgroundImages[currentBgIndex];
                 const tempImg = new Image();
                 tempImg.onload = () => {
-                    bodyElement.style.backgroundImage = `url('${imageUrl}')`;
+                    applyBackground(imageUrl);
                 };
                 tempImg.onerror = () => {
-                    console.warn(`Background image could not be loaded: ${imageUrl}. Using next or fallback color.`);
-                    if (backgroundImages.length <= 1) {
-                        bodyElement.style.backgroundImage = '';
-                        bodyElement.style.backgroundColor = '#0f172a';
-                    }
-                    currentBgIndex = (currentBgIndex + 1) % backgroundImages.length; 
-                    if (backgroundImages.length > 1) { 
-                         setTimeout(changeBackground, 100); 
-                    }
+                    console.warn(`Background image could not be loaded: ${imageUrl}.`);
                 };
                 tempImg.src = imageUrl;
                 currentBgIndex = (currentBgIndex + 1) % backgroundImages.length;
             }
 
             if (backgroundImages && backgroundImages.length > 0) {
-                changeBackground(); 
-                setInterval(changeBackground, 7000); 
-            } else {
-                bodyElement.style.backgroundImage = '';
-                bodyElement.style.backgroundColor = '#0f172a';
+                slideshowEl.style.backgroundImage = `url('${backgroundImages[0]}')`;
+                currentBgIndex = backgroundImages.length > 1 ? 1 : 0;
+                setInterval(changeBackground, 7000);
             }
         }
 
