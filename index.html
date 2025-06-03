@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="en"> <head>
+<html lang="en">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ferox - Personal Page</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         /* Style for body and dynamic background */
         body {
-            font-family: 'Inter', Arial, Helvetica, sans-serif;
+            font-family: 'Inter', sans-serif;
             transition: background-image 0.5s ease-in-out;
             background-size: cover;
             background-position: center;
@@ -27,26 +27,15 @@
             background-color: rgba(0, 0, 0, 0.65); /* Slightly darker overlay */
             z-index: -1;
         }
-        /* Social links horizontal and right-aligned in desktop */
-        #socialLinks {
-            display: flex;
-            flex-wrap: nowrap;
-            justify-content: flex-end;
-            gap: 2rem;
-            overflow-x: auto;
-            width: 100%;
-        }
-        #socialLinks > * {
-            white-space: nowrap;
-        }
         /* Styles to ensure content is above the overlay */
         .content-container {
             position: relative;
             z-index: 1;
         }
-        /* Style for the scroll arrow */
+        /* Style for the scroll arrows */
         .scroll-arrow {
             animation: bounce 2s infinite;
+            cursor: pointer; /* Add cursor pointer to indicate interactivity */
         }
         @keyframes bounce {
             0%, 20%, 50%, 80%, 100% {
@@ -126,35 +115,70 @@
             color: #dc2626; /* text-red-600 for hover */
             text-decoration: none;
         }
+
+        /* Scroll to top button style */
+        #scrollToTopBtn {
+            display: none; /* Hidden by default */
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 99;
+            border: none;
+            outline: none;
+            background-color: #ef4444; /* red-500 */
+            color: white;
+            cursor: pointer;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 18px;
+            transition: background-color 0.3s, opacity 0.3s;
+        }
+
+        #scrollToTopBtn:hover {
+            background-color: #dc2626; /* red-600 */
+        }
     </style>
 </head>
 <body class="text-slate-100">
     <div class="overlay"></div>
     <div class="content-container container mx-auto px-4 py-8">
-        <section id="hero" class="min-h-screen flex flex-col items-center justify-center">
-            <div class="flex flex-col md:flex-row items-center justify-center md:justify-start w-full max-w-6xl"> <img id="profileImage" src="img/profile.jpg" alt="Profile Picture" class="w-56 h-56 md:w-64 md:h-64 lg:w-72 lg:h-72 rounded-lg mb-10 md:mb-0 md:mr-14 border-4 border-red-600 shadow-xl object-cover"> <div class="text-center md:text-left">
-                    <h1 id="welcomeMessage" class="text-7xl sm:text-8xl md:text-9xl font-bold mb-5 text-red-600">Ferox</h1> <div id="socialLinks" class="flex flex-wrap justify-center md:justify-start gap-x-8 gap-y-5 mb-14"> </div>
+        <section id="hero" class="min-h-screen flex flex-col items-center justify-center relative"> <div class="flex flex-col md:flex-row items-center justify-center md:justify-start w-full max-w-6xl">
+                <img id="profileImage" src="img/profile.jpg" alt="Profile Picture"
+                     class="w-56 h-56 md:w-64 md:h-64 lg:w-72 lg:h-72 rounded-lg mb-10 md:mb-0 md:mr-14 border-4 border-red-600 shadow-xl object-cover">
+                
+                <div class="text-center md:text-left">
+                    <h1 id="welcomeMessage" class="text-7xl sm:text-8xl md:text-9xl font-bold mb-5 text-red-600">Ferox</h1>
+                    <div id="socialLinks" class="flex flex-wrap justify-center md:justify-start gap-x-8 gap-y-5 mb-14">
+                        </div>
                 </div>
             </div>
-             <div class="scroll-arrow text-3xl text-red-500 absolute bottom-10">
-                <a href="#about" aria-label="Scroll to About Me section"><i class="fas fa-chevron-down"></i></a> </div>
-        </section>
-
-        <section id="about" class="py-16 md:py-24 my-12">
-            <div class="max-w-3xl mx-auto px-6 text-center">
-                <h2 id="aboutTitle" class="text-3xl md:text-4xl font-bold mb-6 text-red-500"></h2> <div id="aboutContent" class="text-lg text-slate-300 space-y-4">
-                    </div>
+             <div id="scrollHeroToAbout" class="scroll-arrow text-3xl text-red-500 absolute bottom-10 left-1/2 transform -translate-x-1/2"> <a href="#about" aria-label="Scroll to About Me section"><i class="fas fa-chevron-down"></i></a>
             </div>
         </section>
 
-        <section id="gallery" class="py-16 md:py-24">
-            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-red-500">Gallery</h2> <div id="galleryImages" class="mx-auto">
+        <section id="about" class="py-16 md:py-24 my-12 relative"> <div class="max-w-4xl mx-auto px-6 text-center">
+                <h2 id="aboutTitle" class="text-4xl md:text-5xl font-bold mb-8 text-red-500"></h2>
+                <div id="aboutContent" class="text-xl md:text-2xl text-slate-300 space-y-5">
+                    </div>
+            </div>
+            <div id="scrollAboutToGallery" class="scroll-arrow text-3xl text-red-500 absolute bottom-[-2rem] sm:bottom-[-3rem] left-1/2 transform -translate-x-1/2 mt-8"> <a href="#gallery" aria-label="Scroll to Gallery section"><i class="fas fa-chevron-down"></i></a>
+            </div>
+        </section>
+
+        <section id="gallery" class="py-16 md:py-24 mt-20"> <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-red-500">Gallery</h2>
+            <div id="galleryImages" class="mx-auto">
                 </div>
         </section>
 
         <footer class="text-center py-10 mt-12 border-t border-slate-700">
-            <p id="footerText" class="text-slate-400">&copy; <span id="currentYear"></span> Ferox. All rights reserved.</p> <p class="text-slate-500 text-sm mt-2">Last updated: <span id="lastUpdated"></span></p> </footer>
+            <p id="footerText" class="text-slate-400">&copy; <span id="currentYear"></span> Ferox. All rights reserved.</p>
+            <p class="text-slate-500 text-sm mt-2">Last updated: <span id="lastUpdated"></span></p>
+        </footer>
     </div>
+
+    <button onclick="scrollToTop()" id="scrollToTopBtn" title="Go to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
 
     <div id="messageModal" class="modal">
         <div class="modal-content">
@@ -167,8 +191,8 @@
         // --- User Configuration ---
         const userConfig = {
             profileImageUrl: "img/profile.jpg", 
-            welcomeMessageText: "Ferox", // Name, no translation needed
-            socialMediaLinks: [ // Names are for tooltips/aria-labels, should be English
+            welcomeMessageText: "Ferox",
+            socialMediaLinks: [ 
                 { iconClass: "fab fa-twitter", url: "https://x.com/Ferox_Shark", name: "Twitter" },
                 { iconClass: "fab fa-instagram", url: "https://www.instagram.com/feroxshark/", name: "Instagram" },
                 { iconClass: "fab fa-steam", url: "https://steamcommunity.com/id/feroxshark/", name: "Steam" },
@@ -181,8 +205,8 @@
                 { iconClass: "fab fa-github", url: "https://github.com/FeroxShark", name: "GitHub" },
                 { iconClass: "fab fa-linkedin", url: "https://www.linkedin.com/in/feroxshark/", name: "LinkedIn" },
             ],
-            aboutSectionTitle: "Hewo! My name is Ferox", // Translated
-            aboutMeContent: [ // Translated
+            aboutSectionTitle: "Hewo! My name is Ferox", 
+            aboutMeContent: [ 
                 "I'm a 19-year-old furry from Argentina 🇦🇷",
                 "Addicted to White Monster",
                 "<br>",
@@ -190,7 +214,7 @@
                 "I am currently studying Software Engineering at Siglo 21 University and making some investments as a hobby.",
                 "I also play VRChat from time to time, feel free to add me if you want."
             ],
-            galleryItems: [ // Descriptions are for alt text, translated
+            galleryItems: [ 
                 { imageUrl: "img/gallery/artwork1.jpg", description: "Artwork 1 description (optional)" },
                 { imageUrl: "img/gallery/artwork2.jpg", description: "Artwork 2 description" },
                 { imageUrl: "img/gallery/artwork3.jpg", description: "Artwork 3" }, 
@@ -205,7 +229,7 @@
                 'img/backgrounds/bg4.jpg',
                 'img/backgrounds/bg5.jpg'  
             ],
-            footerInfo: { // Translated
+            footerInfo: { 
                 text: "Ferox. All rights reserved.",
                 lastUpdateDate: "June 3, 2025" 
             }
@@ -215,8 +239,9 @@
         document.addEventListener('DOMContentLoaded', function() {
             loadDynamicContent();
             initializeBackgroundSlideshow();
-            initializeFooterYear();
+            initializeFooterYear(); // Though year is set in loadDynamicContent, keep for potential future use
             initializeSmoothScroll();
+            initializeScrollToTopButton();
         });
 
         function loadDynamicContent() {
@@ -225,8 +250,8 @@
             if (profileImgEl) {
                 profileImgEl.src = userConfig.profileImageUrl;
                 profileImgEl.onerror = function() {
-                    this.src = 'https://placehold.co/288x288/DC2626/FFFFFF?text=Ferox+Not+Found'; // Adjusted placeholder size
-                    this.alt = 'Profile picture not found'; // Translated
+                    this.src = 'https://placehold.co/288x288/DC2626/FFFFFF?text=Ferox+Not+Found'; 
+                    this.alt = 'Profile picture not found'; 
                 };
             }
             // Welcome Message (Hero Section)
@@ -236,16 +261,15 @@
             // Social Media Links
             const socialLinksContainer = document.getElementById('socialLinks');
             if (socialLinksContainer) {
-                socialLinksContainer.innerHTML = ''; // Clear before adding
+                socialLinksContainer.innerHTML = ''; 
                 userConfig.socialMediaLinks.forEach(link => {
                     const a = document.createElement('a');
                     a.href = link.url;
                     a.target = '_blank';
                     a.rel = 'noopener noreferrer';
-                    // Further increased icon size
-                    a.className = 'text-slate-300 hover:text-pink-400 transition-colors duration-300 text-5xl'; // text-4xl to text-5xl
+                    a.className = 'text-slate-300 hover:text-pink-400 transition-colors duration-300 text-5xl'; 
                     a.innerHTML = `<i class="${link.iconClass}"></i>`;
-                    a.setAttribute('aria-label', link.name); // Name is already English in userConfig
+                    a.setAttribute('aria-label', link.name); 
                     a.setAttribute('title', link.name);
                     socialLinksContainer.appendChild(a);
                 });
@@ -256,28 +280,28 @@
             // "About Me" Section Content
             const aboutContentEl = document.getElementById('aboutContent');
             if (aboutContentEl) {
-                aboutContentEl.innerHTML = ''; // Clear before adding
+                aboutContentEl.innerHTML = ''; 
                 userConfig.aboutMeContent.forEach(paragraphText => {
                     const p = document.createElement('p');
-                    p.innerHTML = paragraphText; // Use innerHTML to allow tags like <br> and <strong>
+                    p.innerHTML = paragraphText; 
                     aboutContentEl.appendChild(p);
                 });
             }
             // Gallery Images
             const galleryImagesContainer = document.getElementById('galleryImages');
             if (galleryImagesContainer) {
-                galleryImagesContainer.innerHTML = ''; // Clear before adding
+                galleryImagesContainer.innerHTML = ''; 
                 userConfig.galleryItems.forEach(item => {
                     const galleryItemDiv = document.createElement('div');
                     galleryItemDiv.className = 'gallery-card bg-slate-800 rounded-lg overflow-hidden shadow-lg'; 
                     
                     const img = document.createElement('img');
                     img.src = item.imageUrl;
-                    img.alt = item.description || 'Gallery Image'; // Use translated description for alt text
+                    img.alt = item.description || 'Gallery Image'; 
                     img.className = 'w-full h-auto block'; 
                     img.onerror = function() {
                         this.src = 'https://placehold.co/600x400/DC2626/FFFFFF?text=Image+Not+Found';
-                        this.alt = 'Gallery image not found'; // Translated
+                        this.alt = 'Gallery image not found'; 
                     };
                     galleryItemDiv.appendChild(img);
                     
@@ -303,7 +327,7 @@
             function changeBackground() {
                 if (!backgroundImages || backgroundImages.length === 0) {
                     bodyElement.style.backgroundImage = '';
-                    bodyElement.style.backgroundColor = '#0f172a'; // Default dark color
+                    bodyElement.style.backgroundColor = '#0f172a'; 
                     return;
                 }
                 
@@ -320,7 +344,7 @@
                     }
                     currentBgIndex = (currentBgIndex + 1) % backgroundImages.length; 
                     if (backgroundImages.length > 1) { 
-                         setTimeout(changeBackground, 100); // Small delay before retrying to avoid overwhelming if many errors occur
+                         setTimeout(changeBackground, 100); 
                     }
                 };
                 tempImg.src = imageUrl;
@@ -328,8 +352,8 @@
             }
 
             if (backgroundImages && backgroundImages.length > 0) {
-                changeBackground(); // Load the first image immediately
-                setInterval(changeBackground, 7000); // Change every 7 seconds
+                changeBackground(); 
+                setInterval(changeBackground, 7000); 
             } else {
                 bodyElement.style.backgroundImage = '';
                 bodyElement.style.backgroundColor = '#0f172a';
@@ -337,9 +361,7 @@
         }
 
         function initializeFooterYear() {
-            // This is now handled within loadDynamicContent to ensure text is also set.
-            // const currentYearEl = document.getElementById('currentYear');
-            // if (currentYearEl) currentYearEl.textContent = new Date().getFullYear();
+            // This is now handled within loadDynamicContent
         }
 
         function initializeSmoothScroll() {
@@ -354,13 +376,36 @@
             });
         }
 
+        // --- Scroll to Top Button Logic ---
+        const scrollToTopBtn = document.getElementById("scrollToTopBtn");
+
+        function initializeScrollToTopButton() {
+            window.onscroll = function() {scrollFunction()};
+        }
+
+        function scrollFunction() {
+          if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+            scrollToTopBtn.style.display = "block";
+          } else {
+            scrollToTopBtn.style.display = "none";
+          }
+        }
+        
+        function scrollToTop() {
+          // For Safari
+          document.body.scrollTop = 0; 
+          // For Chrome, Firefox, IE and Opera
+          document.documentElement.scrollTop = 0; 
+        }
+
+
         // --- Modal Functions ---
         const modal = document.getElementById('messageModal');
         const modalMessageText = document.getElementById('modalMessageText');
 
         function showModal(message) {
             if (modal && modalMessageText) {
-                modalMessageText.innerHTML = message; // Use innerHTML in case the message contains HTML
+                modalMessageText.innerHTML = message; 
                 modal.style.display = "block";
             }
         }
@@ -371,7 +416,6 @@
             }
         }
 
-        // Close modal if clicked outside of content
         window.onclick = function(event) {
             if (event.target == modal) {
                 closeModal();
