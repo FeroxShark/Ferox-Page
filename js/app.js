@@ -45,6 +45,44 @@ const userConfig = {
     }
 };
 
+const navLinks = [
+    { id: 'hero', label: 'Home' },
+    { id: 'about', label: 'About' },
+    { id: 'gallery', label: 'Gallery' }
+];
+
+function NavBar() {
+    const [open, setOpen] = useState(false);
+    const toggle = () => setOpen(!open);
+    const close = () => setOpen(false);
+
+    return (
+        React.createElement(React.Fragment, null,
+            React.createElement('nav', { className: 'navbar flex items-center justify-between p-4 md:sticky md:top-0 md:bg-slate-900 md:bg-opacity-70 md:backdrop-blur-md' },
+                React.createElement('span', { className: 'font-bold text-xl' }, userConfig.welcomeMessageText),
+                React.createElement('button', { className: 'md:hidden text-2xl', onClick: toggle, 'aria-label': 'Toggle menu' },
+                    React.createElement('i', { className: 'fas fa-bars' })
+                ),
+                React.createElement('div', { className: 'hidden md:flex gap-6' },
+                    navLinks.map(link =>
+                        React.createElement('a', { key: link.id, href: `#${link.id}`, className: 'hover:text-red-500' }, link.label)
+                    )
+                )
+            ),
+            React.createElement('div', { className: `drawer ${open ? 'open' : ''} md:hidden` },
+                React.createElement('button', { className: 'drawer-close', onClick: close, 'aria-label': 'Close menu' },
+                    React.createElement('i', { className: 'fas fa-times' })
+                ),
+                React.createElement('div', { className: 'mt-10 flex flex-col gap-6' },
+                    navLinks.map(link =>
+                        React.createElement('a', { key: link.id, href: `#${link.id}`, onClick: close, className: 'text-xl' }, link.label)
+                    )
+                )
+            )
+        )
+    );
+}
+
 function App() {
     const [showToTop, setShowToTop] = useState(false);
     const [modalMessage, setModalMessage] = useState("");
@@ -97,6 +135,7 @@ function App() {
 
     return (
         React.createElement(React.Fragment, null,
+            React.createElement(NavBar, null),
             React.createElement("section", { id: "hero", className: "min-h-screen flex flex-col items-center justify-center relative" },
                 React.createElement("div", { className: "flex flex-col md:flex-row items-center justify-center md:justify-start w-full max-w-6xl" },
                     React.createElement("img", { id: "profileImage", src: userConfig.profileImageUrl, alt: "Profile Picture", className: "w-56 h-56 md:w-64 md:h-64 lg:w-72 lg:h-72 rounded-lg mb-10 md:mb-0 md:mr-14 border-4 border-red-600 shadow-xl object-cover" }),
