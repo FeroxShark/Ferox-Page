@@ -1,6 +1,4 @@
-const { useState, useEffect, useRef, createContext } = React;
-
-const ThemeContext = createContext();
+const { useState, useEffect, useRef } = React;
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -144,12 +142,9 @@ const userConfig = {
 };
 
 function App() {
-  const [theme, setTheme] = useState(() =>
-    window.matchMedia('(prefers-color-scheme: dark)').matches
-      ? 'dark'
-      : 'light',
-  );
-  const toggleTheme = () => setTheme((t) => (t === 'dark' ? 'light' : 'dark'));
+  useEffect(() => {
+    document.body.classList.add('dark');
+  }, []);
 
   const [showToTop, setShowToTop] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
@@ -160,23 +155,25 @@ function App() {
   const previousFocus = useRef(null);
 
   useEffect(() => {
-    document.body.classList.remove('light', 'dark');
-    document.body.classList.add(theme);
-  }, [theme]);
-
-  useEffect(() => {
-    const mq = window.matchMedia('(prefers-color-scheme: dark)');
-    const handler = (e) => setTheme(e.matches ? 'dark' : 'light');
-    mq.addEventListener('change', handler);
-    return () => mq.removeEventListener('change', handler);
-  }, []);
-
-  useEffect(() => {
-    const slideshowEl = document.getElementById('bgSlideshow');
+    const el = document.getElementById('bgSlideshow');
     const images = userConfig.backgroundImages || [];
-    if (images.length > 0) {
-      slideshowEl.style.backgroundImage = `url('${images[0]}')`;
-    }
+    if (images.length === 0) return;
+
+    let idx = 0;
+    el.style.backgroundImage = `url('${images[idx]}')`;
+    el.style.opacity = '1';
+    el.style.transition = 'opacity 1s ease-in-out';
+
+    const interval = setInterval(() => {
+      idx = (idx + 1) % images.length;
+      el.style.opacity = '0';
+      setTimeout(() => {
+        el.style.backgroundImage = `url('${images[idx]}')`;
+        el.style.opacity = '1';
+      }, 1000);
+    }, 8000);
+
+    return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
@@ -283,309 +280,309 @@ function App() {
   window.showModal = openModal;
 
   return React.createElement(
-    ThemeContext.Provider,
-    { value: { theme, toggleTheme } },
+    React.Fragment,
+    null,
     React.createElement(
-      React.Fragment,
-      null,
+      'section',
+      {
+        id: 'hero',
+        className:
+          'snap-section min-h-screen flex flex-col items-center justify-center relative',
+      },
       React.createElement(
-        'section',
+        'div',
         {
-          id: 'hero',
           className:
-            'snap-section min-h-screen flex flex-col items-center justify-center relative',
+            'flex flex-col md:flex-row items-center justify-center md:justify-start w-full max-w-6xl',
         },
+        React.createElement(ImageWithLoader, {
+          id: 'profileImage',
+          src: userConfig.profileImageUrl,
+          alt: 'Profile Picture',
+          className:
+            'w-56 h-56 md:w-64 md:h-64 lg:w-72 lg:h-72 rounded-lg mb-10 md:mb-0 md:mr-14 border-4 border-red-600 shadow-xl object-cover',
+          onError: (e) => {
+            e.target.src = FALLBACK_IMAGE;
+            openModal('Image failed to load.');
+          },
+        }),
         React.createElement(
           'div',
-          {
-            className:
-              'flex flex-col md:flex-row items-center justify-center md:justify-start w-full max-w-6xl',
-          },
-          React.createElement(ImageWithLoader, {
-            id: 'profileImage',
-            src: userConfig.profileImageUrl,
-            alt: 'Profile Picture',
-            className:
-              'w-56 h-56 md:w-64 md:h-64 lg:w-72 lg:h-72 rounded-lg mb-10 md:mb-0 md:mr-14 border-4 border-red-600 shadow-xl object-cover',
-            onError: (e) => {
-              e.target.src = FALLBACK_IMAGE;
-              openModal('Image failed to load.');
+          { className: 'text-center md:text-left' },
+          React.createElement(
+            'h1',
+            {
+              id: 'welcomeMessage',
+              className:
+                'text-7xl sm:text-8xl md:text-9xl font-bold mb-5 text-red-600',
             },
-          }),
+            userConfig.welcomeMessageText,
+          ),
           React.createElement(
             'div',
-            { className: 'text-center md:text-left' },
-            React.createElement(
-              'h1',
-              {
-                id: 'welcomeMessage',
-                className:
-                  'text-7xl sm:text-8xl md:text-9xl font-bold mb-5 text-red-600',
-              },
-              userConfig.welcomeMessageText,
-            ),
-            React.createElement(
-              'div',
-              {
-                id: 'socialLinks',
-                className:
-                  'flex flex-wrap justify-center md:justify-start gap-x-8 gap-y-5 mb-14',
-              },
-              userConfig.socialMediaLinks.map((link) =>
-                React.createElement(
-                  'a',
-                  {
-                    key: link.url,
-                    href: link.url,
-                    target: '_blank',
-                    rel: 'noopener noreferrer',
-                    className:
-                      'transition-transform duration-300 hover:scale-110',
-                    'aria-label': link.name,
-                    title: link.name,
-                  },
-                  React.createElement('img', {
-                    src: link.icon,
-                    alt: '',
-                    className: 'w-8 h-8',
-                    loading: 'lazy',
-                  }),
-                ),
-              ),
+            {
+              id: 'socialLinks',
+              className:
+                'flex flex-wrap justify-center md:justify-start gap-x-8 gap-y-5 mb-14',
+            },
+            userConfig.socialMediaLinks.map((link) =>
               React.createElement(
-                'button',
+                'a',
                 {
-                  onClick: toggleTheme,
-                  className: 'mt-4 px-4 py-2 bg-slate-700 text-white rounded',
+                  key: link.url,
+                  href: link.url,
+                  target: '_blank',
+                  rel: 'noopener noreferrer',
+                  className:
+                    'transition-transform duration-300 hover:scale-110',
+                  'aria-label': link.name,
+                  title: link.name,
                 },
-                theme === 'dark' ? 'Light Mode' : 'Dark Mode',
+                React.createElement('img', {
+                  src: link.icon,
+                  alt: '',
+                  className: 'w-8 h-8',
+                  loading: 'lazy',
+                }),
               ),
             ),
           ),
         ),
-        React.createElement(
-          'div',
-          {
-            id: 'scrollHeroToAbout',
-            className:
-              'scroll-arrow text-3xl text-red-500 absolute bottom-10 left-1/2 transform -translate-x-1/2',
-          },
-          React.createElement(
-            'a',
-            { href: '#about', 'aria-label': 'Scroll to About Me section' },
-            React.createElement('i', { className: 'fas fa-chevron-down' }),
-          ),
-        ),
       ),
       React.createElement(
-        'section',
+        'div',
         {
-          id: 'about',
-          className: 'snap-section py-16 md:py-24 my-12 relative',
+          id: 'scrollHeroToAbout',
+          className:
+            'scroll-arrow text-3xl text-red-500 absolute bottom-10 left-1/2 transform -translate-x-1/2',
         },
         React.createElement(
-          'div',
-          { className: 'max-w-4xl mx-auto px-6 text-center' },
-          React.createElement(
-            'h2',
-            {
-              id: 'aboutTitle',
-              className: 'text-4xl md:text-5xl font-bold mb-8 text-red-500',
-            },
-            userConfig.aboutSectionTitle,
-          ),
-          React.createElement(
-            'div',
-            {
-              id: 'aboutContent',
-              className: 'text-xl md:text-2xl text-slate-300 space-y-5',
-            },
-            userConfig.aboutMeContent.map((p, idx) =>
-              React.createElement('p', {
-                key: idx,
-                dangerouslySetInnerHTML: { __html: DOMPurify.sanitize(p) },
-              }),
-            ),
-          ),
-        ),
-        React.createElement(
-          'div',
-          {
-            id: 'scrollAboutToGallery',
-            className:
-              'scroll-arrow text-3xl text-red-500 absolute bottom-[-2rem] sm:bottom-[-3rem] left-1/2 transform -translate-x-1/2 mt-8',
-          },
-          React.createElement(
-            'a',
-            { href: '#gallery', 'aria-label': 'Scroll to Gallery section' },
-            React.createElement('i', { className: 'fas fa-chevron-down' }),
-          ),
+          'a',
+          { href: '#about', 'aria-label': 'Scroll to About Me section' },
+          React.createElement('i', { className: 'fas fa-chevron-down' }),
         ),
       ),
+    ),
+    React.createElement(
+      'section',
+      {
+        id: 'about',
+        className: 'snap-section py-16 md:py-24 my-12 relative',
+      },
       React.createElement(
-        'section',
-        { id: 'gallery', className: 'snap-section py-16 md:py-24 mt-20' },
+        'div',
+        { className: 'max-w-4xl mx-auto px-6 text-center' },
         React.createElement(
           'h2',
           {
-            className:
-              'text-3xl md:text-4xl font-bold text-center mb-12 text-red-500',
+            id: 'aboutTitle',
+            className: 'text-4xl md:text-5xl font-bold mb-8 text-red-500',
           },
-          'Gallery',
+          userConfig.aboutSectionTitle,
         ),
         React.createElement(
           'div',
-          { id: 'galleryImages', className: 'mx-auto' },
-          userConfig.galleryItems.map((item, idx) =>
-            React.createElement(
-              'div',
-              {
-                key: idx,
-                className:
-                  'gallery-card bg-slate-800 rounded-lg overflow-hidden shadow-lg',
-                role: 'button',
-                tabIndex: 0,
-                onClick: () => openLightbox(idx),
-                onKeyDown: (e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    openLightbox(idx);
-                  }
-                },
-              },
-              React.createElement(ImageWithLoader, {
-                src: item.imageUrl,
-                alt: item.description || 'Gallery Image',
-                className: 'w-full h-auto block',
-                loading: 'lazy',
-                onError: (e) => {
-                  e.target.src = FALLBACK_IMAGE;
-                  openModal('Image failed to load.');
-                },
-              }),
-            ),
+          {
+            id: 'aboutContent',
+            className: 'text-xl md:text-2xl text-slate-300 space-y-5',
+          },
+          userConfig.aboutMeContent.map((p, idx) =>
+            React.createElement('p', {
+              key: idx,
+              dangerouslySetInnerHTML: { __html: DOMPurify.sanitize(p) },
+            }),
           ),
         ),
       ),
       React.createElement(
-        'footer',
-        { className: 'text-center py-10 mt-12 border-t border-slate-700' },
+        'div',
+        {
+          id: 'scrollAboutToGallery',
+          className:
+            'scroll-arrow text-3xl text-red-500 absolute bottom-[-2rem] sm:bottom-[-3rem] left-1/2 transform -translate-x-1/2 mt-8',
+        },
         React.createElement(
-          'p',
-          { id: 'footerText', className: 'text-slate-400' },
-          '\u00A9 ',
-          React.createElement(
-            'span',
-            { id: 'currentYear' },
-            new Date().getFullYear(),
-          ),
-          ' ',
-          userConfig.footerInfo.text,
+          'a',
+          { href: '#gallery', 'aria-label': 'Scroll to Gallery section' },
+          React.createElement('i', { className: 'fas fa-chevron-down' }),
         ),
-        React.createElement(
-          'p',
-          { className: 'text-slate-500 text-sm mt-2' },
-          'Last updated: ',
+      ),
+    ),
+    React.createElement(
+      'section',
+      { id: 'gallery', className: 'snap-section py-16 md:py-24 mt-20' },
+      React.createElement(
+        'h2',
+        {
+          className:
+            'text-3xl md:text-4xl font-bold text-center mb-12 text-red-500',
+        },
+        'Gallery',
+      ),
+      React.createElement(
+        'div',
+        { id: 'galleryImages', className: 'mx-auto' },
+        userConfig.galleryItems.map((item, idx) =>
           React.createElement(
-            'span',
-            { id: 'lastUpdated' },
-            userConfig.footerInfo.lastUpdateDate,
+            'div',
+            {
+              key: idx,
+              className:
+                'gallery-card bg-slate-800 rounded-lg overflow-hidden shadow-lg',
+              role: 'button',
+              tabIndex: 0,
+              onClick: () => openLightbox(idx),
+              onKeyDown: (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  openLightbox(idx);
+                }
+              },
+            },
+            React.createElement(ImageWithLoader, {
+              src: item.imageUrl,
+              alt: item.description || 'Gallery Image',
+              className: 'max-w-full h-auto block',
+              loading: 'lazy',
+              onError: (e) => {
+                e.target.src = FALLBACK_IMAGE;
+                openModal('Image failed to load.');
+              },
+            }),
           ),
         ),
       ),
-      showToTop &&
-        React.createElement(
-          'button',
-          { onClick: scrollToTop, id: 'scrollToTopBtn', title: 'Go to top' },
-          React.createElement('i', { className: 'fas fa-arrow-up' }),
-        ),
-      lightboxIndex !== null &&
-        React.createElement(
-          'div',
-          {
-            id: 'lightbox',
-            ref: lightboxRef,
-            className: 'modal',
-            role: 'dialog',
-            'aria-modal': 'true',
-            onClick: (e) => {
-              if (e.target.id === 'lightbox') closeLightbox();
-            },
-          },
-          React.createElement(
-            'div',
-            { className: 'modal-content flex flex-col items-center space-y-4' },
-            React.createElement(
-              'span',
-              {
-                className: 'modal-close-button',
-                onClick: closeLightbox,
-              },
-              '\u00D7',
-            ),
-            React.createElement('img', {
-              src: userConfig.galleryItems[lightboxIndex].imageUrl,
-              alt:
-                userConfig.galleryItems[lightboxIndex].description ||
-                'Gallery image',
-              className: 'max-h-[70vh] w-auto',
-            }),
-            userConfig.galleryItems[lightboxIndex].description &&
-              React.createElement(
-                'p',
-                null,
-                userConfig.galleryItems[lightboxIndex].description,
-              ),
-            React.createElement(
-              'div',
-              { className: 'flex gap-4' },
-              React.createElement(
-                'button',
-                {
-                  onClick: showPrev,
-                  className: 'px-4 py-2 bg-slate-700 rounded',
-                },
-                'Prev',
-              ),
-              React.createElement(
-                'button',
-                {
-                  onClick: showNext,
-                  className: 'px-4 py-2 bg-slate-700 rounded',
-                },
-                'Next',
-              ),
-            ),
-          ),
-        ),
-      modalOpen &&
-        React.createElement(
-          'div',
-          {
-            id: 'messageModal',
-            ref: modalRef,
-            className: 'modal',
-            role: 'dialog',
-            'aria-modal': 'true',
-            onClick: (e) => {
-              if (e.target.id === 'messageModal') closeModal();
-            },
-          },
-          React.createElement(
-            'div',
-            { className: 'modal-content' },
-            React.createElement(
-              'span',
-              { className: 'modal-close-button', onClick: closeModal },
-              '\u00D7',
-            ),
-            React.createElement('p', {
-              id: 'modalMessageText',
-              dangerouslySetInnerHTML: { __html: modalMessage },
-            }),
-          ),
-        ),
     ),
+    React.createElement(
+      'footer',
+      { className: 'text-center py-10 mt-12 border-t border-slate-700' },
+      React.createElement(
+        'p',
+        { id: 'footerText', className: 'text-slate-400' },
+        '\u00A9 ',
+        React.createElement(
+          'span',
+          { id: 'currentYear' },
+          new Date().getFullYear(),
+        ),
+        ' ',
+        userConfig.footerInfo.text,
+      ),
+      React.createElement(
+        'p',
+        { className: 'text-slate-500 text-sm mt-2' },
+        'Last updated: ',
+        React.createElement(
+          'span',
+          { id: 'lastUpdated' },
+          userConfig.footerInfo.lastUpdateDate,
+        ),
+      ),
+    ),
+    React.createElement(
+      'div',
+      {
+        id: 'scrollGalleryToTop',
+        className: 'scroll-arrow text-3xl text-red-500 mt-8 text-center',
+      },
+      React.createElement(
+        'a',
+        { href: '#hero', 'aria-label': 'Back to top' },
+        React.createElement('i', { className: 'fas fa-chevron-up' }),
+      ),
+    ),
+    showToTop &&
+      React.createElement(
+        'button',
+        { onClick: scrollToTop, id: 'scrollToTopBtn', title: 'Go to top' },
+        React.createElement('i', { className: 'fas fa-arrow-up' }),
+      ),
+    lightboxIndex !== null &&
+      React.createElement(
+        'div',
+        {
+          id: 'lightbox',
+          ref: lightboxRef,
+          className: 'modal',
+          role: 'dialog',
+          'aria-modal': 'true',
+          onClick: (e) => {
+            if (e.target.id === 'lightbox') closeLightbox();
+          },
+        },
+        React.createElement(
+          'div',
+          { className: 'modal-content flex flex-col items-center space-y-4' },
+          React.createElement(
+            'span',
+            {
+              className: 'modal-close-button',
+              onClick: closeLightbox,
+            },
+            '\u00D7',
+          ),
+          React.createElement('img', {
+            src: userConfig.galleryItems[lightboxIndex].imageUrl,
+            alt:
+              userConfig.galleryItems[lightboxIndex].description ||
+              'Gallery image',
+            className: 'max-h-[70vh] w-auto',
+          }),
+          userConfig.galleryItems[lightboxIndex].description &&
+            React.createElement(
+              'p',
+              null,
+              userConfig.galleryItems[lightboxIndex].description,
+            ),
+          React.createElement(
+            'div',
+            { className: 'flex gap-4' },
+            React.createElement(
+              'button',
+              {
+                onClick: showPrev,
+                className: 'px-4 py-2 bg-slate-700 rounded',
+              },
+              'Prev',
+            ),
+            React.createElement(
+              'button',
+              {
+                onClick: showNext,
+                className: 'px-4 py-2 bg-slate-700 rounded',
+              },
+              'Next',
+            ),
+          ),
+        ),
+      ),
+    modalOpen &&
+      React.createElement(
+        'div',
+        {
+          id: 'messageModal',
+          ref: modalRef,
+          className: 'modal',
+          role: 'dialog',
+          'aria-modal': 'true',
+          onClick: (e) => {
+            if (e.target.id === 'messageModal') closeModal();
+          },
+        },
+        React.createElement(
+          'div',
+          { className: 'modal-content' },
+          React.createElement(
+            'span',
+            { className: 'modal-close-button', onClick: closeModal },
+            '\u00D7',
+          ),
+          React.createElement('p', {
+            id: 'modalMessageText',
+            dangerouslySetInnerHTML: { __html: modalMessage },
+          }),
+        ),
+      ),
   );
 }
 
