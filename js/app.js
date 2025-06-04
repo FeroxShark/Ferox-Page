@@ -526,14 +526,8 @@ function App() {
             alt:
               userConfig.galleryItems[lightboxIndex].description ||
               'Gallery image',
-            className: 'max-h-[70vh] w-auto',
+            className: 'max-h-[90vh] w-auto',
           }),
-          userConfig.galleryItems[lightboxIndex].description &&
-            React.createElement(
-              'p',
-              null,
-              userConfig.galleryItems[lightboxIndex].description,
-            ),
           React.createElement(
             'div',
             { className: 'flex gap-4' },

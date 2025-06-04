@@ -128,7 +128,7 @@ body.light {
 }
 
 .gallery-card:hover img {
-  filter: blur(4px);
+  filter: none;
 }
 
 .loading-skeleton {
@@ -199,6 +199,16 @@ body.light {
   border-radius: 12px;
   text-align: center;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+/* Larger content area for gallery lightbox */
+#lightbox .modal-content {
+  margin: 5vh auto;
+  width: 95%;
+  max-width: 90vw;
+}
+#lightbox img {
+  max-height: 90vh;
 }
 .modal-close-button {
   color: #f1f5f9; /* lighter for contrast */
