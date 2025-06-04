@@ -3,7 +3,9 @@ const ASSETS = [
   '/',
   'index.html',
   'css/style.css',
+  'css/tailwind.css',
   'js/app.js',
+  'js/main.js',
   'data/config.json'
 ];
 self.addEventListener('install', event => {

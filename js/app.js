@@ -46,7 +46,7 @@ function ImageWithLoader(props) {
   );
 }
 
-const userConfig = {
+const DEFAULT_CONFIG = {
   profileImageUrl: 'img/profile.jpg',
   welcomeMessageText: 'Ferox',
   socialMediaLinks: [
@@ -143,8 +143,14 @@ const userConfig = {
 };
 
 function App() {
+  const [userConfig, setUserConfig] = useState(DEFAULT_CONFIG);
+
   useEffect(() => {
     document.body.classList.add('dark');
+    fetch('data/config.json')
+      .then((res) => (res.ok ? res.json() : Promise.reject(res.status)))
+      .then(setUserConfig)
+      .catch((err) => console.error('Failed to load config.json', err));
   }, []);
 
   const [showToTop, setShowToTop] = useState(false);
