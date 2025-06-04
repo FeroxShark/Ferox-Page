@@ -2,16 +2,16 @@
   "profileImageUrl": "img/profile.jpg",
   "welcomeMessageText": "Ferox",
   "socialMediaLinks": [
-    { "iconClass": "fab fa-twitter", "url": "https://x.com/Ferox_Shark", "name": "Twitter" },
-    { "iconClass": "fab fa-instagram", "url": "https://www.instagram.com/feroxshark/", "name": "Instagram" },
-    { "iconClass": "fab fa-steam", "url": "https://steamcommunity.com/id/feroxshark/", "name": "Steam" },
-    { "iconClass": "fab fa-discord", "url": "https://discord.com/invite/7uDqm4Khhm", "name": "Discord" },
-    { "iconClass": "fab fa-telegram", "url": "https://t.me/feroxshark", "name": "Telegram" },
-    { "iconClass": "fas fa-vr-cardboard", "url": "https://vrchat.com/home/user/usr_b51db741-9cef-4095-b436-4367176fc4bb", "name": "VRChat" },
-    { "iconClass": "fab fa-twitch", "url": "https://www.twitch.tv/ferox_uwu", "name": "Twitch" },
-    { "iconClass": "fas fa-paw", "url": "https://www.furaffinity.net/user/feroxshark", "name": "Fur Affinity" },
-    { "iconClass": "fab fa-tiktok", "url": "https://www.tiktok.com/@feroxshark", "name": "TikTok" },
-    { "iconClass": "fab fa-github", "url": "https://github.com/FeroxShark", "name": "GitHub" }
+    { "icon": "icons/twitter.svg", "url": "https://x.com/Ferox_Shark", "name": "Twitter" },
+    { "icon": "icons/instagram.svg", "url": "https://www.instagram.com/feroxshark/", "name": "Instagram" },
+    { "icon": "icons/steam.svg", "url": "https://steamcommunity.com/id/feroxshark/", "name": "Steam" },
+    { "icon": "icons/discord.svg", "url": "https://discord.com/invite/7uDqm4Khhm", "name": "Discord" },
+    { "icon": "icons/telegram.svg", "url": "https://t.me/feroxshark", "name": "Telegram" },
+    { "icon": "icons/vr-cardboard.svg", "url": "https://vrchat.com/home/user/usr_b51db741-9cef-4095-b436-4367176fc4bb", "name": "VRChat" },
+    { "icon": "icons/twitch.svg", "url": "https://www.twitch.tv/ferox_uwu", "name": "Twitch" },
+    { "icon": "icons/paw.svg", "url": "https://www.furaffinity.net/user/feroxshark", "name": "Fur Affinity" },
+    { "icon": "icons/tiktok.svg", "url": "https://www.tiktok.com/@feroxshark", "name": "TikTok" },
+    { "icon": "icons/github.svg", "url": "https://github.com/FeroxShark", "name": "GitHub" }
   ],
   "aboutSectionTitle": "Hewo! My name is Ferox",
   "aboutMeContent": [
