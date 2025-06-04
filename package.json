@@ -1,29 +1,26 @@
 {
   "name": "ferox-page",
   "version": "1.0.0",
-  "description": "This repository contains a small personal page built with React. The content configuration lives in `js/app.js` and is rendered at runtime. Static assets reside under `img/` and styling is provided via Tailwind CSS.",
+  "description": "This repository contains a small personal page built with React. The content configuration lives in js/app.js and is rendered at runtime. Static assets reside under img/ and styling is provided via Tailwind CSS.",
   "main": "index.js",
+  "type": "commonjs",
   "directories": {
     "test": "tests"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-    "start": "node server.js"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
-  "dependencies": {
-    "tailwindcss": "^4.1.8",
-    "tailwindcss-cli": "^0.1.2"
-    "cors": "^2.8.5",
-    "express": "^5.1.0",
-    "helmet": "^8.1.0"
-  "scripts": {
+    "start": "node server.js",
+    "build:css": "npx tailwindcss-cli build css/tailwind.input.css -o css/tailwind.css --minify --content index.html js/app.js",
     "lint": "eslint .",
     "format": "prettier --write .",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "test": "pytest -q"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "helmet": "^8.1.0",
+    "tailwindcss": "^4.1.8",
+    "tailwindcss-cli": "^0.1.2"
   },
   "lint-staged": {
     "*.{js,css,html}": [

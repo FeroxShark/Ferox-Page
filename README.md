@@ -47,4 +47,4 @@ The footer displays the current year dynamically using `new Date().getFullYear()
 
 ## Building CSS
 
-Run `npx tailwindcss-cli build css/tailwind.input.css -o css/tailwind.css --minify --content index.html js/app.js` to generate a purged Tailwind CSS file before deployment.
+Run `npm run build:css` to generate a purged Tailwind CSS file before deployment.

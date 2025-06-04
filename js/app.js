@@ -21,8 +21,6 @@ class ErrorBoundary extends React.Component {
   }
 }
 
-const BACKGROUND_FADE_DURATION = 1000;
-const BACKGROUND_INTERVAL = 7000;
 const SCROLL_OFFSET_SHOW_TO_TOP = 100;
 const FALLBACK_IMAGE = 'img/profile.jpg';
 
@@ -31,52 +29,52 @@ const userConfig = {
   welcomeMessageText: 'Ferox',
   socialMediaLinks: [
     {
-      iconClass: 'fab fa-twitter',
+      icon: 'icons/twitter.svg',
       url: 'https://x.com/Ferox_Shark',
       name: 'Twitter',
     },
     {
-      iconClass: 'fab fa-instagram',
+      icon: 'icons/instagram.svg',
       url: 'https://www.instagram.com/feroxshark/',
       name: 'Instagram',
     },
     {
-      iconClass: 'fab fa-steam',
+      icon: 'icons/steam.svg',
       url: 'https://steamcommunity.com/id/feroxshark/',
       name: 'Steam',
     },
     {
-      iconClass: 'fab fa-discord',
+      icon: 'icons/discord.svg',
       url: 'https://discord.com/invite/7uDqm4Khhm',
       name: 'Discord',
     },
     {
-      iconClass: 'fab fa-telegram',
+      icon: 'icons/telegram.svg',
       url: 'https://t.me/feroxshark',
       name: 'Telegram',
     },
     {
-      iconClass: 'fas fa-vr-cardboard',
+      icon: 'icons/vr-cardboard.svg',
       url: 'https://vrchat.com/home/user/usr_b51db741-9cef-4095-b436-4367176fc4bb',
       name: 'VRChat',
     },
     {
-      iconClass: 'fab fa-twitch',
+      icon: 'icons/twitch.svg',
       url: 'https://www.twitch.tv/ferox_uwu',
       name: 'Twitch',
     },
     {
-      iconClass: 'fas fa-paw',
+      icon: 'icons/paw.svg',
       url: 'https://www.furaffinity.net/user/feroxshark',
       name: 'Fur Affinity',
     },
     {
-      iconClass: 'fab fa-tiktok',
+      icon: 'icons/tiktok.svg',
       url: 'https://www.tiktok.com/@feroxshark',
       name: 'TikTok',
     },
     {
-      iconClass: 'fab fa-github',
+      icon: 'icons/github.svg',
       url: 'https://github.com/FeroxShark',
       name: 'GitHub',
     },
@@ -135,32 +133,10 @@ function App() {
   }, [theme]);
 
   useEffect(() => {
-    let currentBgIndex = 0;
-    const backgroundImages = userConfig.backgroundImages;
     const slideshowEl = document.getElementById('bgSlideshow');
-
-    function applyBackground(url) {
-      slideshowEl.classList.add('fade-out');
-      setTimeout(() => {
-        slideshowEl.style.backgroundImage = `url('${url}')`;
-        slideshowEl.classList.remove('fade-out');
-      }, BACKGROUND_FADE_DURATION);
-    }
-
-    function changeBackground() {
-      if (!backgroundImages || backgroundImages.length === 0) return;
-      const imageUrl = backgroundImages[currentBgIndex];
-      const tempImg = new Image();
-      tempImg.onload = () => applyBackground(imageUrl);
-      tempImg.src = imageUrl;
-      currentBgIndex = (currentBgIndex + 1) % backgroundImages.length;
-    }
-
-    if (backgroundImages && backgroundImages.length > 0) {
-      slideshowEl.style.backgroundImage = `url('${backgroundImages[0]}')`;
-      currentBgIndex = backgroundImages.length > 1 ? 1 : 0;
-      const interval = setInterval(changeBackground, BACKGROUND_INTERVAL);
-      return () => clearInterval(interval);
+    const images = userConfig.backgroundImages || [];
+    if (images.length > 0) {
+      slideshowEl.style.backgroundImage = `url('${images[0]}')`;
     }
   }, []);
 
@@ -248,11 +224,16 @@ function App() {
                     target: '_blank',
                     rel: 'noopener noreferrer',
                     className:
-                      'text-slate-300 hover:text-pink-400 transition-colors duration-300 text-5xl',
+                      'transition-transform duration-300 hover:scale-110',
                     'aria-label': link.name,
                     title: link.name,
                   },
-                  React.createElement('i', { className: link.iconClass }),
+                  React.createElement('img', {
+                    src: link.icon,
+                    alt: '',
+                    className: 'w-8 h-8',
+                    loading: 'lazy',
+                  }),
                 ),
               ),
               React.createElement(
