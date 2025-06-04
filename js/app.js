@@ -436,14 +436,13 @@ function App() {
       ),
       React.createElement(
         'div',
-        { id: 'galleryImages', className: 'mx-auto' },
+        { id: 'gallery-grid', className: 'mx-auto' },
         userConfig.galleryItems.map((item, idx) =>
           React.createElement(
-            'div',
+            'figure',
             {
               key: idx,
-              className:
-                'gallery-card bg-slate-800 rounded-lg overflow-hidden shadow-lg',
+              className: 'gallery-card bg-slate-800 rounded-lg shadow-lg',
               role: 'button',
               tabIndex: 0,
               onClick: () => openLightbox(idx),
@@ -537,18 +536,22 @@ function App() {
             },
             '\u00D7',
           ),
-          React.createElement('button',
+          React.createElement(
+            'button',
             { className: 'lightbox-nav lightbox-prev', onClick: showPrev },
-            '\u2039'),
+            '\u2039',
+          ),
           React.createElement('img', {
             src: userConfig.galleryItems[lightboxIndex].imageUrl,
             alt:
               userConfig.galleryItems[lightboxIndex].description ||
               'Gallery image',
           }),
-          React.createElement('button',
+          React.createElement(
+            'button',
             { className: 'lightbox-nav lightbox-next', onClick: showNext },
-            '\u203A'),
+            '\u203A',
+          ),
         ),
       ),
     modalOpen &&
