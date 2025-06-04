@@ -121,6 +121,108 @@ const userConfig = {
   },
 };
 
+function Navbar() {
+  const [open, setOpen] = useState(false);
+  const toggleMenu = () => setOpen((o) => !o);
+  const closeMenu = () => setOpen(false);
+
+  const linkClass = 'block px-3 py-2 hover:text-red-400';
+
+  return React.createElement(
+    'nav',
+    { className: 'fixed top-0 inset-x-0 bg-slate-900/80 backdrop-blur z-50' },
+    React.createElement(
+      'div',
+      {
+        className:
+          'max-w-6xl mx-auto px-4 h-16 flex items-center justify-between',
+      },
+      React.createElement(
+        'a',
+        { href: '#hero', className: 'text-2xl font-bold text-red-500' },
+        'Ferox',
+      ),
+      React.createElement(
+        'ul',
+        {
+          className: 'hidden md:flex space-x-8 text-slate-100 font-medium',
+        },
+        React.createElement(
+          'li',
+          null,
+          React.createElement(
+            'a',
+            { href: '#hero', className: linkClass },
+            'Home',
+          ),
+        ),
+        React.createElement(
+          'li',
+          null,
+          React.createElement(
+            'a',
+            { href: '#about', className: linkClass },
+            'About',
+          ),
+        ),
+        React.createElement(
+          'li',
+          null,
+          React.createElement(
+            'a',
+            { href: '#gallery', className: linkClass },
+            'Gallery',
+          ),
+        ),
+      ),
+      React.createElement(
+        'button',
+        {
+          className: 'text-slate-100 md:hidden text-2xl',
+          onClick: toggleMenu,
+          'aria-label': 'Toggle navigation menu',
+        },
+        React.createElement('i', { className: 'fas fa-bars' }),
+      ),
+    ),
+    React.createElement(
+      'ul',
+      {
+        className:
+          (open ? 'flex' : 'hidden') +
+          ' flex-col md:hidden bg-slate-900 text-slate-100 font-medium px-4 pb-4 space-y-2',
+      },
+      React.createElement(
+        'li',
+        null,
+        React.createElement(
+          'a',
+          { href: '#hero', onClick: closeMenu, className: linkClass },
+          'Home',
+        ),
+      ),
+      React.createElement(
+        'li',
+        null,
+        React.createElement(
+          'a',
+          { href: '#about', onClick: closeMenu, className: linkClass },
+          'About',
+        ),
+      ),
+      React.createElement(
+        'li',
+        null,
+        React.createElement(
+          'a',
+          { href: '#gallery', onClick: closeMenu, className: linkClass },
+          'Gallery',
+        ),
+      ),
+    ),
+  );
+}
+
 function App() {
   const [theme, setTheme] = useState('dark');
   const toggleTheme = () => setTheme((t) => (t === 'dark' ? 'light' : 'dark'));
@@ -196,12 +298,13 @@ function App() {
     React.createElement(
       React.Fragment,
       null,
+      React.createElement(Navbar, null),
       React.createElement(
         'section',
         {
           id: 'hero',
           className:
-            'min-h-screen flex flex-col items-center justify-center relative',
+            'pt-20 min-h-screen flex flex-col items-center justify-center relative',
         },
         React.createElement(
           'div',
