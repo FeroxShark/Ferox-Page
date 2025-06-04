@@ -167,3 +167,11 @@ function App() {
 }
 
 ReactDOM.render(React.createElement(App), document.getElementById('root'));
+
+function initializeFooterYear() {
+    // Placeholder: the footer year is set in loadDynamicContent(),
+    // so this function currently does nothing.
+}
+
+initializeFooterYear(); // Placeholder call pending future year logic
+
