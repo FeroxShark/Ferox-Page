@@ -16,11 +16,12 @@
   "aboutSectionTitle": "Hewo! My name is Ferox",
   "aboutMeContent": [
     "I'm a 19-year-old furry from Argentina 🇦🇷",
-    "Addicted to White Monster",
+    "Addicted to White Monster and black coffee",
     "<br>",
-    "<strong>About me:</strong>",
     "I am currently studying Software Engineering at Siglo 21 University and making some investments as a hobby.",
-    "I also play VRChat from time to time, feel free to add me if you want."
+    "<br>",
+    "I also play VRChat from time to time, feel free to add me if you want.",
+    "Cya! :3"
   ],
   "galleryItems": [
     { "imageUrl": "img/gallery/artwork1.jpg", "description": "Artwork 1 description (optional)" },
