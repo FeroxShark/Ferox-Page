@@ -42,7 +42,8 @@ body.light {
   background-repeat: no-repeat;
   background-attachment: fixed;
   z-index: -2;
-  animation: bg-cycle 40s linear infinite;
+  opacity: 1;
+  transition: opacity 1s ease-in-out;
 }
 /* Semi-transparent dark overlay to improve text legibility over the background */
 .overlay {
@@ -69,6 +70,16 @@ body.light {
   .scroll-arrow {
     animation: none;
   }
+}
+
+#socialLinks img {
+  filter: invert(39%) sepia(97%) saturate(4039%) hue-rotate(292deg)
+    brightness(101%) contrast(103%);
+  transition: filter 0.3s ease;
+}
+#socialLinks a:hover img {
+  filter: invert(39%) sepia(97%) saturate(4039%) hue-rotate(292deg)
+    brightness(120%) contrast(103%);
 }
 @media (prefers-reduced-motion: reduce) {
   .scroll-arrow {
@@ -100,7 +111,8 @@ body.light {
   transition:
     transform 0.3s ease,
     box-shadow 0.3s ease;
-  width: 100%;
+  width: fit-content;
+  margin: 0 auto;
 }
 .gallery-card:hover {
   transform: translateY(-5px);
@@ -109,6 +121,10 @@ body.light {
 
 .gallery-card img {
   transition: filter 0.3s;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  display: block;
 }
 
 .gallery-card:hover img {
