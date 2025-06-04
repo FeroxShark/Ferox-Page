@@ -347,7 +347,7 @@ function App() {
                 React.createElement('img', {
                   src: link.icon,
                   alt: '',
-                  className: 'w-8 h-8',
+                  className: 'w-10 h-10',
                   loading: 'lazy',
                 }),
               ),
