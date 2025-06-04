@@ -1,0 +1,44 @@
+{
+  "profileImageUrl": "img/profile.jpg",
+  "welcomeMessageText": "Ferox",
+  "socialMediaLinks": [
+    { "iconClass": "fab fa-twitter", "url": "https://x.com/Ferox_Shark", "name": "Twitter" },
+    { "iconClass": "fab fa-instagram", "url": "https://www.instagram.com/feroxshark/", "name": "Instagram" },
+    { "iconClass": "fab fa-steam", "url": "https://steamcommunity.com/id/feroxshark/", "name": "Steam" },
+    { "iconClass": "fab fa-discord", "url": "https://discord.com/invite/7uDqm4Khhm", "name": "Discord" },
+    { "iconClass": "fab fa-telegram", "url": "https://t.me/feroxshark", "name": "Telegram" },
+    { "iconClass": "fas fa-vr-cardboard", "url": "https://vrchat.com/home/user/usr_b51db741-9cef-4095-b436-4367176fc4bb", "name": "VRChat" },
+    { "iconClass": "fab fa-twitch", "url": "https://www.twitch.tv/ferox_uwu", "name": "Twitch" },
+    { "iconClass": "fas fa-paw", "url": "https://www.furaffinity.net/user/feroxshark", "name": "Fur Affinity" },
+    { "iconClass": "fab fa-tiktok", "url": "https://www.tiktok.com/@feroxshark", "name": "TikTok" },
+    { "iconClass": "fab fa-github", "url": "https://github.com/FeroxShark", "name": "GitHub" }
+  ],
+  "aboutSectionTitle": "Hewo! My name is Ferox",
+  "aboutMeContent": [
+    "I'm a 19-year-old furry from Argentina 🇦🇷",
+    "Addicted to White Monster",
+    "<br>",
+    "<strong>About me:</strong>",
+    "I am currently studying Software Engineering at Siglo 21 University and making some investments as a hobby.",
+    "I also play VRChat from time to time, feel free to add me if you want."
+  ],
+  "galleryItems": [
+    { "imageUrl": "img/gallery/artwork1.jpg", "description": "Artwork 1 description (optional)" },
+    { "imageUrl": "img/gallery/artwork2.jpg", "description": "Artwork 2 description" },
+    { "imageUrl": "img/gallery/artwork3.jpg", "description": "Artwork 3" },
+    { "imageUrl": "img/gallery/artwork4.jpg", "description": "One more artwork with a slightly longer description to test text flow." },
+    { "imageUrl": "img/gallery/artwork5.jpg", "description": "Artwork 5" },
+    { "imageUrl": "img/gallery/artwork6.jpg", "description": "Artwork 6" }
+  ],
+  "backgroundImages": [
+    "img/backgrounds/bg1.jpg",
+    "img/backgrounds/bg2.jpg",
+    "img/backgrounds/bg3.jpg",
+    "img/backgrounds/bg4.jpg",
+    "img/backgrounds/bg5.jpg"
+  ],
+  "footerInfo": {
+    "text": "Ferox. All rights reserved.",
+    "lastUpdateDate": "June 3, 2025"
+  }
+}

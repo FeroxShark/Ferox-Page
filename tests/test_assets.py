@@ -1,5 +1,5 @@
-import re
 from pathlib import Path
+import json
 
 
 def test_userconfig_assets_exist():
@@ -14,13 +14,17 @@ def test_userconfig_assets_exist():
         assert import_match, 'app.js not imported in main.js'
         js_path = js_path.parent / import_match.group(1)
         assert js_path.exists(), f"{js_path} does not exist"
+def test_config_assets_exist():
+    config_path = Path('data/config.json')
+    assert config_path.exists(), 'config.json missing'
+    config = json.loads(config_path.read_text())
 
-    js_content = js_path.read_text()
-    config_match = re.search(r'const\s+userConfig\s*=\s*{.*?};', js_content, re.S)
-    assert config_match, 'userConfig object not found in js/app.js'
-    config_block = config_match.group(0)
+    image_paths = set()
+    image_paths.add(config.get('profileImageUrl'))
+    for item in config.get('galleryItems', []):
+        image_paths.add(item['imageUrl'])
+    image_paths.update(config.get('backgroundImages', []))
 
-    image_paths = set(re.findall(r"[\"'](img/[^\"']+)[\"']", config_block))
-    assert image_paths, 'No image paths found in userConfig'
     for path in image_paths:
-        assert Path(path).exists(), f"Missing asset: {path}"
+        assert Path(path).exists(), f'Missing asset: {path}'
+
