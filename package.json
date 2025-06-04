@@ -18,5 +18,23 @@
     "cors": "^2.8.5",
     "express": "^5.1.0",
     "helmet": "^8.1.0"
+  "scripts": {
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "prepare": "husky install"
+  },
+  "lint-staged": {
+    "*.{js,css,html}": [
+      "prettier --write"
+    ],
+    "*.js": [
+      "eslint --fix"
+    ]
+  },
+  "devDependencies": {
+    "eslint": "^8.57.0",
+    "prettier": "^3.2.5",
+    "husky": "^8.0.0",
+    "lint-staged": "^15.0.2"
   }
 }
