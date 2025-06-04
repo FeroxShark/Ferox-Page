@@ -114,32 +114,31 @@ body.light {
     transform: translateY(-10px);
   }
 }
-/* Gallery layout using CSS Grid */
-#galleryImages {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1.5rem; /* Tailwind's gap-6 */
+/* Gallery layout using CSS columns for a masonry effect */
+#gallery-grid {
+  column-width: 320px;
+  column-gap: 1.25rem; /* gap-5 */
 }
-  .gallery-card {
-    transition:
-      transform 0.3s ease,
-      box-shadow 0.3s ease;
-    width: 300px;
-    height: 300px;
-    position: relative;
-    margin: 0 auto;
-  }
-  .gallery-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
-  }
+.gallery-card {
+  display: inline-block;
+  width: 100%;
+  margin: 0 0 1.25rem;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+.gallery-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+}
 
-  .gallery-card img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-  }
+.gallery-card img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 8px;
+  display: block;
+}
 
 .loading-skeleton {
   background-color: #334155;
@@ -169,20 +168,6 @@ body.light {
   }
   100% {
     transform: rotate(360deg);
-  }
-}
-
-/* Breakpoints for number of columns */
-@media (min-width: 640px) {
-  /* sm */
-  #galleryImages {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-@media (min-width: 1024px) {
-  /* lg */
-  #galleryImages {
-    grid-template-columns: repeat(3, 1fr);
   }
 }
 
