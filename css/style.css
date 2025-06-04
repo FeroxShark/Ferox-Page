@@ -84,7 +84,7 @@ body.light {
 /* Gallery layout using CSS Grid */
 #galleryImages {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-template-columns: 1fr;
   gap: 1.5rem; /* Tailwind's gap-6 */
 }
 .gallery-card {
@@ -117,14 +117,14 @@ body.light {
 
 /* Breakpoints for number of columns */
 @media (min-width: 640px) { /* sm */
-    #galleryImages {
-        column-count: 2;
-    }
+  #galleryImages {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 @media (min-width: 1024px) { /* lg */
-    #galleryImages {
-        column-count: 3;
-    }
+  #galleryImages {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 /* Modal Styles */
