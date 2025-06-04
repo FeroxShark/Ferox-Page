@@ -104,11 +104,12 @@ const userConfig = {
   aboutSectionTitle: 'Hewo! My name is Ferox',
   aboutMeContent: [
     "I'm a 19-year-old furry from Argentina 🇦🇷",
-    'Addicted to White Monster',
+    'Addicted to White Monster and black coffee',
     '<br>',
-    '<strong>About me:</strong>',
     'I am currently studying Software Engineering at Siglo 21 University and making some investments as a hobby.',
+    '<br>',
     'I also play VRChat from time to time, feel free to add me if you want.',
+    'Cya! :3',
   ],
   galleryItems: [
     {
@@ -227,7 +228,11 @@ function App() {
   }, [modalOpen]);
 
   useEffect(() => {
-    if (lightboxIndex === null) return;
+    if (lightboxIndex === null) {
+      document.body.style.overflow = '';
+      return;
+    }
+    document.body.style.overflow = 'hidden';
     previousFocus.current = document.activeElement;
     const el = lightboxRef.current;
     const focusable = el.querySelectorAll(
@@ -257,6 +262,7 @@ function App() {
     return () => {
       el.removeEventListener('keydown', trap);
       previousFocus.current && previousFocus.current.focus();
+      document.body.style.overflow = '';
     };
   }, [lightboxIndex]);
 
@@ -351,6 +357,15 @@ function App() {
       ),
       React.createElement(
         'div',
+        { id: 'toGalleryCue', className: 'absolute top-6 right-6' },
+        React.createElement('a', {
+          href: '#gallery',
+          className: 'scroll-cue',
+          'aria-label': 'Ir a la galería',
+        }),
+      ),
+      React.createElement(
+        'div',
         {
           id: 'scrollHeroToAbout',
           className:
@@ -410,7 +425,7 @@ function App() {
     ),
     React.createElement(
       'section',
-      { id: 'gallery', className: 'snap-section py-16 md:py-24 mt-20' },
+      { id: 'gallery', className: 'snap-section py-16 md:py-24 mt-32' },
       React.createElement(
         'h2',
         {
@@ -442,7 +457,6 @@ function App() {
             React.createElement(ImageWithLoader, {
               src: item.imageUrl,
               alt: item.description || 'Gallery Image',
-              className: 'max-w-full h-auto block',
               loading: 'lazy',
               onError: (e) => {
                 e.target.src = FALLBACK_IMAGE;
@@ -502,17 +516,19 @@ function App() {
         'div',
         {
           id: 'lightbox',
-          ref: lightboxRef,
-          className: 'modal',
-          role: 'dialog',
-          'aria-modal': 'true',
+          'aria-hidden': 'true',
           onClick: (e) => {
-            if (e.target.id === 'lightbox') closeLightbox();
+            if (e.target === e.currentTarget) closeLightbox();
           },
         },
         React.createElement(
           'div',
-          { className: 'modal-content flex flex-col items-center space-y-4' },
+          {
+            className: 'modal-content',
+            ref: lightboxRef,
+            role: 'dialog',
+            'aria-modal': 'true',
+          },
           React.createElement(
             'span',
             {
@@ -521,33 +537,18 @@ function App() {
             },
             '\u00D7',
           ),
+          React.createElement('button',
+            { className: 'lightbox-nav lightbox-prev', onClick: showPrev },
+            '\u2039'),
           React.createElement('img', {
             src: userConfig.galleryItems[lightboxIndex].imageUrl,
             alt:
               userConfig.galleryItems[lightboxIndex].description ||
               'Gallery image',
-            className: 'max-h-[90vh] w-auto',
           }),
-          React.createElement(
-            'div',
-            { className: 'flex gap-4' },
-            React.createElement(
-              'button',
-              {
-                onClick: showPrev,
-                className: 'px-4 py-2 bg-slate-700 rounded',
-              },
-              'Prev',
-            ),
-            React.createElement(
-              'button',
-              {
-                onClick: showNext,
-                className: 'px-4 py-2 bg-slate-700 rounded',
-              },
-              'Next',
-            ),
-          ),
+          React.createElement('button',
+            { className: 'lightbox-nav lightbox-next', onClick: showNext },
+            '\u203A'),
         ),
       ),
     modalOpen &&
