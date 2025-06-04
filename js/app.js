@@ -231,6 +231,7 @@ function App() {
                   'text-7xl sm:text-8xl md:text-9xl font-bold mb-5 text-red-600',
               },
               userConfig.welcomeMessageText,
+
             ),
             React.createElement(
               'div',
@@ -305,6 +306,7 @@ function App() {
                 key: idx,
                 dangerouslySetInnerHTML: { __html: DOMPurify.sanitize(p) },
               }),
+
             ),
           ),
         ),
