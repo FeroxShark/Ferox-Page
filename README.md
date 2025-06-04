@@ -4,4 +4,4 @@ This repository contains a small personal page built with React. The content con
 
 ## Footer year
 
-The footer displays the current year dynamically. Historically this value was set in a function called `loadDynamicContent()` which populated various elements. The call to `initializeFooterYear()` remains in the codebase as a placeholder in case additional logic is needed in the future. At runtime the year is already injected through `loadDynamicContent()` so the placeholder call performs no work.
+The footer displays the current year dynamically using `new Date().getFullYear()` directly in the React component. The `initializeFooterYear()` function remains as a no-op placeholder for any future footer logic.
