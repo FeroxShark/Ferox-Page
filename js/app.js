@@ -1,4 +1,25 @@
-const { useState, useEffect } = React;
+const { useState, useEffect, useContext, createContext } = React;
+
+const ThemeContext = createContext();
+
+class ErrorBoundary extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = { hasError: false };
+    }
+    static getDerivedStateFromError() {
+        return { hasError: true };
+    }
+    componentDidCatch(error, info) {
+        console.error('ErrorBoundary caught an error', error, info);
+    }
+    render() {
+        if (this.state.hasError) {
+            return React.createElement('p', null, 'Something went wrong.');
+        }
+        return this.props.children;
+    }
+}
 
 const userConfig = {
     profileImageUrl: "img/profile.jpg",
@@ -46,9 +67,17 @@ const userConfig = {
 };
 
 function App() {
+    const [theme, setTheme] = useState('dark');
+    const toggleTheme = () => setTheme(t => t === 'dark' ? 'light' : 'dark');
+
     const [showToTop, setShowToTop] = useState(false);
     const [modalMessage, setModalMessage] = useState("");
     const [modalOpen, setModalOpen] = useState(false);
+
+    useEffect(() => {
+        document.body.classList.remove('light', 'dark');
+        document.body.classList.add(theme);
+    }, [theme]);
 
     useEffect(() => {
         let currentBgIndex = 0;
@@ -86,6 +115,16 @@ function App() {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
+    useEffect(() => {
+        const handleKey = (e) => {
+            if (e.key === 'Escape') closeModal();
+        };
+        if (modalOpen) {
+            document.addEventListener('keydown', handleKey);
+        }
+        return () => document.removeEventListener('keydown', handleKey);
+    }, [modalOpen]);
+
     const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 
     const openModal = (message) => {
@@ -96,6 +135,7 @@ function App() {
     window.showModal = openModal;
 
     return (
+        React.createElement(ThemeContext.Provider, { value: { theme, toggleTheme } },
         React.createElement(React.Fragment, null,
             React.createElement("section", { id: "hero", className: "min-h-screen flex flex-col items-center justify-center relative" },
                 React.createElement("div", { className: "flex flex-col md:flex-row items-center justify-center md:justify-start w-full max-w-6xl" },
@@ -107,6 +147,12 @@ function App() {
                                 React.createElement("a", { key: link.url, href: link.url, target: "_blank", rel: "noopener noreferrer", className: "text-slate-300 hover:text-pink-400 transition-colors duration-300 text-5xl", "aria-label": link.name, title: link.name },
                                     React.createElement("i", { className: link.iconClass })
                                 )
+                            ),
+                            React.createElement("button", {
+                                onClick: toggleTheme,
+                                className: "mt-4 px-4 py-2 bg-slate-700 text-white rounded"
+                            },
+                                theme === 'dark' ? 'Light Mode' : 'Dark Mode'
                             )
                         )
                     )
@@ -137,7 +183,12 @@ function App() {
                 React.createElement("div", { id: "galleryImages", className: "mx-auto" },
                     userConfig.galleryItems.map((item, idx) =>
                         React.createElement("div", { key: idx, className: "gallery-card bg-slate-800 rounded-lg overflow-hidden shadow-lg" },
-                            React.createElement("img", { src: item.imageUrl, alt: item.description || 'Gallery Image', className: "w-full h-auto block" })
+                            React.createElement("img", {
+                                src: item.imageUrl,
+                                alt: item.description || 'Gallery Image',
+                                className: "w-full h-auto block",
+                                loading: "lazy"
+                            })
                         )
                     )
                 )
@@ -155,17 +206,29 @@ function App() {
             showToTop && React.createElement("button", { onClick: scrollToTop, id: "scrollToTopBtn", title: "Go to top" },
                 React.createElement("i", { className: "fas fa-arrow-up" })
             ),
-            modalOpen && React.createElement("div", { id: "messageModal", className: "modal", onClick: e => { if (e.target.id === 'messageModal') closeModal(); } },
+            modalOpen && React.createElement("div", {
+                id: "messageModal",
+                className: "modal",
+                role: "dialog",
+                "aria-modal": "true",
+                onClick: e => { if (e.target.id === 'messageModal') closeModal(); }
+            },
                 React.createElement("div", { className: "modal-content" },
                     React.createElement("span", { className: "modal-close-button", onClick: closeModal }, "\u00D7"),
                     React.createElement("p", { id: "modalMessageText", dangerouslySetInnerHTML: { __html: modalMessage } })
                 )
             )
         )
+        )
     );
 }
 
-ReactDOM.render(React.createElement(App), document.getElementById('root'));
+const rootElement = document.getElementById('root');
+ReactDOM.createRoot(rootElement).render(
+    React.createElement(ErrorBoundary, null,
+        React.createElement(App)
+    )
+);
 
 function initializeFooterYear() {
     // The footer year is inserted directly in the React component using
