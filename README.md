@@ -1,6 +1,8 @@
 # Ferox Page
 
-This repository contains a small personal page built with React. The content configuration lives in `js/app.js` and is rendered at runtime. Static assets reside under `img/` and styling is provided via Tailwind CSS.
+This repository contains a small personal page built with React. The runtime configuration now lives in `data/config.json` and is loaded dynamically by the app in `js/app.js`. Static assets reside under `img/` and styling is provided via Tailwind CSS.
+
+The site is a minimal PWA thanks to `manifest.json` and a small service worker (`sw.js`) that caches key assets for offline usage.
 
 ## Footer year
 
