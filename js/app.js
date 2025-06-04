@@ -189,6 +189,10 @@ function App() {
       if (e.key === 'Escape') {
         if (lightboxIndex !== null) closeLightbox();
         else closeModal();
+      } else if (e.key === 'ArrowLeft') {
+        if (lightboxIndex !== null) showPrev();
+      } else if (e.key === 'ArrowRight') {
+        if (lightboxIndex !== null) showNext();
       }
     };
     if (modalOpen || lightboxIndex !== null) {
@@ -273,7 +277,16 @@ function App() {
     setModalOpen(true);
   };
   const closeModal = () => setModalOpen(false);
-  const openLightbox = (idx) => setLightboxIndex(idx);
+  const lightboxImgRef = useRef(null);
+  const openLightbox = (idx) => {
+    const src = userConfig.galleryItems[idx].imageUrl;
+    const img = new Image();
+    img.onload = () => setLightboxIndex(idx);
+    img.src = src;
+    if (lightboxImgRef.current) {
+      lightboxImgRef.current.src = '';
+    }
+  };
   const closeLightbox = () => setLightboxIndex(null);
   const showPrev = () =>
     setLightboxIndex((i) =>
@@ -354,15 +367,6 @@ function App() {
             ),
           ),
         ),
-      ),
-      React.createElement(
-        'div',
-        { id: 'toGalleryCue', className: 'absolute top-6 right-6' },
-        React.createElement('a', {
-          href: '#gallery',
-          className: 'scroll-cue',
-          'aria-label': 'Ir a la galería',
-        }),
       ),
       React.createElement(
         'div',
@@ -542,10 +546,16 @@ function App() {
             '\u2039',
           ),
           React.createElement('img', {
-            src: userConfig.galleryItems[lightboxIndex].imageUrl,
+            ref: lightboxImgRef,
+            src:
+              lightboxIndex !== null
+                ? userConfig.galleryItems[lightboxIndex].imageUrl
+                : '',
             alt:
-              userConfig.galleryItems[lightboxIndex].description ||
-              'Gallery image',
+              lightboxIndex !== null &&
+              userConfig.galleryItems[lightboxIndex].description
+                ? userConfig.galleryItems[lightboxIndex].description
+                : 'Gallery image',
           }),
           React.createElement(
             'button',
