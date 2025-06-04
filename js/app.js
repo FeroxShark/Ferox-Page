@@ -33,12 +33,11 @@ const userConfig = {
         { imageUrl: "img/gallery/artwork6.jpg", description: "Artwork 6" }
     ],
     backgroundImages: [
-        'img/gallery/artwork1.jpg',
-        'img/gallery/artwork2.jpg',
-        'img/gallery/artwork3.jpg',
-        'img/gallery/artwork4.jpg',
-        'img/gallery/artwork5.jpg',
-        'img/gallery/artwork6.jpg'
+        'img/backgrounds/bg1.jpg',
+        'img/backgrounds/bg2.jpg',
+        'img/backgrounds/bg3.jpg',
+        'img/backgrounds/bg4.jpg',
+        'img/backgrounds/bg5.jpg'
     ],
     footerInfo: {
         text: "Ferox. All rights reserved.",
