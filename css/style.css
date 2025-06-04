@@ -15,6 +15,14 @@ body.light {
   color: #1e293b;
 
 }
+body.dark {
+  background-color: #0f172a; /* bg-slate-900 */
+  color: #e2e8f0;
+}
+body.light {
+  background-color: #f8fafc;
+  color: #1e293b;
+}
 
 /* Navigation */
 .navbar {
