@@ -1,4 +1,4 @@
-const { useState, useEffect, createContext } = React;
+const { useState, useEffect, useRef, createContext } = React;
 
 const ThemeContext = createContext();
 
@@ -23,6 +23,30 @@ class ErrorBoundary extends React.Component {
 
 const SCROLL_OFFSET_SHOW_TO_TOP = 100;
 const FALLBACK_IMAGE = 'img/profile.jpg';
+
+function ImageWithLoader(props) {
+  const [loaded, setLoaded] = useState(false);
+  return React.createElement(
+    'div',
+    {
+      className: loaded
+        ? ''
+        : 'loading-skeleton relative flex items-center justify-center',
+    },
+    !loaded &&
+      React.createElement('div', {
+        className: 'spinner',
+        'aria-hidden': 'true',
+      }),
+    React.createElement(
+      'img',
+      Object.assign({}, props, {
+        onLoad: () => setLoaded(true),
+        style: loaded ? {} : { visibility: 'hidden' },
+      }),
+    ),
+  );
+}
 
 const userConfig = {
   profileImageUrl: 'img/profile.jpg',
@@ -120,17 +144,32 @@ const userConfig = {
 };
 
 function App() {
-  const [theme, setTheme] = useState('dark');
+  const [theme, setTheme] = useState(() =>
+    window.matchMedia('(prefers-color-scheme: dark)').matches
+      ? 'dark'
+      : 'light',
+  );
   const toggleTheme = () => setTheme((t) => (t === 'dark' ? 'light' : 'dark'));
 
   const [showToTop, setShowToTop] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
+  const [lightboxIndex, setLightboxIndex] = useState(null);
+  const modalRef = useRef(null);
+  const lightboxRef = useRef(null);
+  const previousFocus = useRef(null);
 
   useEffect(() => {
     document.body.classList.remove('light', 'dark');
     document.body.classList.add(theme);
   }, [theme]);
+
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-color-scheme: dark)');
+    const handler = (e) => setTheme(e.matches ? 'dark' : 'light');
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
+  }, []);
 
   useEffect(() => {
     const slideshowEl = document.getElementById('bgSlideshow');
@@ -149,13 +188,80 @@ function App() {
 
   useEffect(() => {
     const handleKey = (e) => {
-      if (e.key === 'Escape') closeModal();
+      if (e.key === 'Escape') {
+        if (lightboxIndex !== null) closeLightbox();
+        else closeModal();
+      }
     };
-    if (modalOpen) {
+    if (modalOpen || lightboxIndex !== null) {
       document.addEventListener('keydown', handleKey);
     }
     return () => document.removeEventListener('keydown', handleKey);
+  }, [modalOpen, lightboxIndex]);
+
+  useEffect(() => {
+    if (!modalOpen) return;
+    previousFocus.current = document.activeElement;
+    const el = modalRef.current;
+    const focusable = el.querySelectorAll(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+    );
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    const trap = (e) => {
+      if (e.key === 'Tab') {
+        if (e.shiftKey) {
+          if (document.activeElement === first) {
+            e.preventDefault();
+            last.focus();
+          }
+        } else if (document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    };
+    el.addEventListener('keydown', trap);
+    first && first.focus();
+    return () => {
+      el.removeEventListener('keydown', trap);
+      previousFocus.current && previousFocus.current.focus();
+    };
   }, [modalOpen]);
+
+  useEffect(() => {
+    if (lightboxIndex === null) return;
+    previousFocus.current = document.activeElement;
+    const el = lightboxRef.current;
+    const focusable = el.querySelectorAll(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+    );
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    const trap = (e) => {
+      if (e.key === 'Tab') {
+        if (e.shiftKey) {
+          if (document.activeElement === first) {
+            e.preventDefault();
+            last.focus();
+          }
+        } else if (document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      } else if (e.key === 'ArrowLeft') {
+        showPrev();
+      } else if (e.key === 'ArrowRight') {
+        showNext();
+      }
+    };
+    el.addEventListener('keydown', trap);
+    first && first.focus();
+    return () => {
+      el.removeEventListener('keydown', trap);
+      previousFocus.current && previousFocus.current.focus();
+    };
+  }, [lightboxIndex]);
 
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 
@@ -164,6 +270,16 @@ function App() {
     setModalOpen(true);
   };
   const closeModal = () => setModalOpen(false);
+  const openLightbox = (idx) => setLightboxIndex(idx);
+  const closeLightbox = () => setLightboxIndex(null);
+  const showPrev = () =>
+    setLightboxIndex((i) =>
+      i > 0 ? i - 1 : userConfig.galleryItems.length - 1,
+    );
+  const showNext = () =>
+    setLightboxIndex((i) =>
+      i < userConfig.galleryItems.length - 1 ? i + 1 : 0,
+    );
   window.showModal = openModal;
 
   return React.createElement(
@@ -177,7 +293,7 @@ function App() {
         {
           id: 'hero',
           className:
-            'min-h-screen flex flex-col items-center justify-center relative',
+            'snap-section min-h-screen flex flex-col items-center justify-center relative',
         },
         React.createElement(
           'div',
@@ -185,7 +301,7 @@ function App() {
             className:
               'flex flex-col md:flex-row items-center justify-center md:justify-start w-full max-w-6xl',
           },
-          React.createElement('img', {
+          React.createElement(ImageWithLoader, {
             id: 'profileImage',
             src: userConfig.profileImageUrl,
             alt: 'Profile Picture',
@@ -263,7 +379,10 @@ function App() {
       ),
       React.createElement(
         'section',
-        { id: 'about', className: 'py-16 md:py-24 my-12 relative' },
+        {
+          id: 'about',
+          className: 'snap-section py-16 md:py-24 my-12 relative',
+        },
         React.createElement(
           'div',
           { className: 'max-w-4xl mx-auto px-6 text-center' },
@@ -305,7 +424,7 @@ function App() {
       ),
       React.createElement(
         'section',
-        { id: 'gallery', className: 'py-16 md:py-24 mt-20' },
+        { id: 'gallery', className: 'snap-section py-16 md:py-24 mt-20' },
         React.createElement(
           'h2',
           {
@@ -324,8 +443,17 @@ function App() {
                 key: idx,
                 className:
                   'gallery-card bg-slate-800 rounded-lg overflow-hidden shadow-lg',
+                role: 'button',
+                tabIndex: 0,
+                onClick: () => openLightbox(idx),
+                onKeyDown: (e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    openLightbox(idx);
+                  }
+                },
               },
-              React.createElement('img', {
+              React.createElement(ImageWithLoader, {
                 src: item.imageUrl,
                 alt: item.description || 'Gallery Image',
                 className: 'w-full h-auto block',
@@ -371,11 +499,71 @@ function App() {
           { onClick: scrollToTop, id: 'scrollToTopBtn', title: 'Go to top' },
           React.createElement('i', { className: 'fas fa-arrow-up' }),
         ),
+      lightboxIndex !== null &&
+        React.createElement(
+          'div',
+          {
+            id: 'lightbox',
+            ref: lightboxRef,
+            className: 'modal',
+            role: 'dialog',
+            'aria-modal': 'true',
+            onClick: (e) => {
+              if (e.target.id === 'lightbox') closeLightbox();
+            },
+          },
+          React.createElement(
+            'div',
+            { className: 'modal-content flex flex-col items-center space-y-4' },
+            React.createElement(
+              'span',
+              {
+                className: 'modal-close-button',
+                onClick: closeLightbox,
+              },
+              '\u00D7',
+            ),
+            React.createElement('img', {
+              src: userConfig.galleryItems[lightboxIndex].imageUrl,
+              alt:
+                userConfig.galleryItems[lightboxIndex].description ||
+                'Gallery image',
+              className: 'max-h-[70vh] w-auto',
+            }),
+            userConfig.galleryItems[lightboxIndex].description &&
+              React.createElement(
+                'p',
+                null,
+                userConfig.galleryItems[lightboxIndex].description,
+              ),
+            React.createElement(
+              'div',
+              { className: 'flex gap-4' },
+              React.createElement(
+                'button',
+                {
+                  onClick: showPrev,
+                  className: 'px-4 py-2 bg-slate-700 rounded',
+                },
+                'Prev',
+              ),
+              React.createElement(
+                'button',
+                {
+                  onClick: showNext,
+                  className: 'px-4 py-2 bg-slate-700 rounded',
+                },
+                'Next',
+              ),
+            ),
+          ),
+        ),
       modalOpen &&
         React.createElement(
           'div',
           {
             id: 'messageModal',
+            ref: modalRef,
             className: 'modal',
             role: 'dialog',
             'aria-modal': 'true',
