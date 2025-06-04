@@ -1,27 +1,36 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Ferox - Personal Page</title>
+    <meta name="description" content="Ferox's personal page" />
+    <meta property="og:title" content="Ferox - Personal Page" />
+    <meta property="og:description" content="Personal site of Ferox" />
+    <meta name="twitter:card" content="summary" />
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="css/style.css">
-</head>
-<body class="text-slate-100">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="preload" href="js/app.js" as="script" />
+  </head>
+  <body class="text-slate-100">
     <div id="bgSlideshow"></div>
     <div class="overlay"></div>
     <div id="root" class="content-container container mx-auto px-4 py-8"></div>
 
-    <script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
-    <!--
-      Babel was previously used here to transpile JSX in the browser. The
-      application now relies solely on plain JavaScript via
-      React.createElement so no transpilation is required. Removing the Babel
-      loader avoids CORS issues when opening the page via the file:// protocol.
-    -->
-    <script src="js/app.js"></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react@18/umd/react.production.min.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"
+    ></script>
+    <script src="https://unpkg.com/dompurify@2.4.0/dist/purify.min.js"></script>
+    <script src="js/app.js" onerror="alert('Failed to load application script')"></script>
     <script src="https://unpkg.com/web-vitals@3/dist/web-vitals.iife.js"></script>
     <script>
       webVitals.getCLS(console.log);
@@ -30,5 +39,5 @@
       webVitals.getFCP(console.log);
       webVitals.getTTFB(console.log);
     </script>
-</body>
+  </body>
 </html>
