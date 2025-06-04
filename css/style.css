@@ -84,6 +84,15 @@ body {
     filter: blur(4px);
 }
 
+.loading-skeleton {
+    background-color: #334155;
+    min-height: 200px;
+}
+
+.loading-skeleton img {
+    visibility: hidden;
+}
+
 /* Breakpoints for number of columns */
 @media (min-width: 640px) { /* sm */
     #galleryImages {
@@ -121,7 +130,7 @@ body {
     box-shadow: 0 10px 30px rgba(0,0,0,0.4);
 }
 .modal-close-button {
-    color: #94a3b8; /* text-slate-400 */
+    color: #f1f5f9; /* lighter for contrast */
     float: right;
     font-size: 32px;
     font-weight: bold;

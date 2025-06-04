@@ -45,6 +45,15 @@ const userConfig = {
     }
 };
 
+function GalleryCard({ src, alt }) {
+    const [loaded, setLoaded] = useState(false);
+    return React.createElement(
+        "div",
+        { className: `gallery-card bg-slate-800 rounded-lg overflow-hidden shadow-lg ${loaded ? '' : 'loading-skeleton'}` },
+        React.createElement("img", { src, alt, className: "w-full h-auto block", onLoad: () => setLoaded(true) })
+    );
+}
+
 function App() {
     const [showToTop, setShowToTop] = useState(false);
     const [modalMessage, setModalMessage] = useState("");
@@ -97,6 +106,8 @@ function App() {
 
     return (
         React.createElement(React.Fragment, null,
+            React.createElement("header", { id: "siteHeader", className: "sr-only", "aria-label": "Site header" }),
+            React.createElement("main", { id: "mainContent", role: "main" },
             React.createElement("section", { id: "hero", className: "min-h-screen flex flex-col items-center justify-center relative" },
                 React.createElement("div", { className: "flex flex-col md:flex-row items-center justify-center md:justify-start w-full max-w-6xl" },
                     React.createElement("img", { id: "profileImage", src: userConfig.profileImageUrl, alt: "Profile Picture", className: "w-56 h-56 md:w-64 md:h-64 lg:w-72 lg:h-72 rounded-lg mb-10 md:mb-0 md:mr-14 border-4 border-red-600 shadow-xl object-cover" }),
@@ -136,14 +147,13 @@ function App() {
                 React.createElement("h2", { className: "text-3xl md:text-4xl font-bold text-center mb-12 text-red-500" }, "Gallery"),
                 React.createElement("div", { id: "galleryImages", className: "mx-auto" },
                     userConfig.galleryItems.map((item, idx) =>
-                        React.createElement("div", { key: idx, className: "gallery-card bg-slate-800 rounded-lg overflow-hidden shadow-lg" },
-                            React.createElement("img", { src: item.imageUrl, alt: item.description || 'Gallery Image', className: "w-full h-auto block" })
-                        )
+                        React.createElement(GalleryCard, { key: idx, src: item.imageUrl, alt: item.description || 'Gallery Image' })
                     )
                 )
+            )
             ),
             React.createElement("footer", { className: "text-center py-10 mt-12 border-t border-slate-700" },
-                React.createElement("p", { id: "footerText", className: "text-slate-400" },
+                React.createElement("p", { id: "footerText", className: "text-slate-200" },
                     "\u00A9 ",
                     React.createElement("span", { id: "currentYear" }, new Date().getFullYear()),
                     " ", userConfig.footerInfo.text
