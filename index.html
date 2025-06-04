@@ -51,6 +51,15 @@
       src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"
     ></script>
     <script src="https://unpkg.com/dompurify@2.4.0/dist/purify.min.js"></script>
+    <script src="js/app.js" onerror="alert('Failed to load application script')"></script>
+    <script src="https://unpkg.com/web-vitals@3/dist/web-vitals.iife.js"></script>
+    <script>
+      webVitals.getCLS(console.log);
+      webVitals.getFID(console.log);
+      webVitals.getLCP(console.log);
+      webVitals.getFCP(console.log);
+      webVitals.getTTFB(console.log);
+    </script>
     <script
       src="js/app.js"
       onerror="alert('Failed to load application script')"
