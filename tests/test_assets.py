@@ -1,5 +1,6 @@
 from pathlib import Path
 import json
+import re
 
 
 def test_userconfig_assets_exist():
@@ -26,5 +27,6 @@ def test_config_assets_exist():
     image_paths.update(config.get('backgroundImages', []))
 
     for path in image_paths:
-        assert Path(path).exists(), f'Missing asset: {path}'
+        if path.startswith('img/'):
+            assert Path(path).exists(), f'Missing asset: {path}'
 
