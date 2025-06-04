@@ -32,6 +32,15 @@ Use the theme toggle button in the hero section to switch between dark and light
 
 Any static hosting service will work. Upload the contents of this directory to your preferred provider (GitHub Pages, Netlify, etc.).
 
+## Running locally
+
+Install dependencies and start the Express server which serves the site with security headers enabled:
+
+```bash
+npm install
+npm start
+```
+
 ## Footer year
 
 The footer displays the current year dynamically using `new Date().getFullYear()` directly in the React component. The `initializeFooterYear()` function remains as a no-op placeholder for any future footer logic.

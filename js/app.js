@@ -301,6 +301,15 @@ const userConfig = {
   },
 };
 
+function GalleryCard({ src, alt }) {
+    const [loaded, setLoaded] = useState(false);
+    return React.createElement(
+        "div",
+        { className: `gallery-card bg-slate-800 rounded-lg overflow-hidden shadow-lg ${loaded ? '' : 'loading-skeleton'}` },
+        React.createElement("img", { src, alt, className: "w-full h-auto block", onLoad: () => setLoaded(true) })
+    );
+}
+
 function App() {
   const [theme, setTheme] = useState('dark');
   const toggleTheme = () => setTheme((t) => (t === 'dark' ? 'light' : 'dark'));
@@ -355,6 +364,32 @@ function App() {
     const handleKey = (e) => {
       if (e.key === 'Escape') closeModal();
     };
+    const closeModal = () => setModalOpen(false);
+    window.showModal = openModal;
+
+    return (
+        React.createElement(React.Fragment, null,
+            React.createElement("header", { id: "siteHeader", className: "sr-only", "aria-label": "Site header" }),
+            React.createElement("main", { id: "mainContent", role: "main" },
+            React.createElement("section", { id: "hero", className: "min-h-screen flex flex-col items-center justify-center relative" },
+                React.createElement("div", { className: "flex flex-col md:flex-row items-center justify-center md:justify-start w-full max-w-6xl" },
+                    React.createElement("img", { id: "profileImage", src: userConfig.profileImageUrl, alt: "Profile Picture", className: "w-56 h-56 md:w-64 md:h-64 lg:w-72 lg:h-72 rounded-lg mb-10 md:mb-0 md:mr-14 border-4 border-red-600 shadow-xl object-cover" }),
+                    React.createElement("div", { className: "text-center md:text-left" },
+                        React.createElement("h1", { id: "welcomeMessage", className: "text-7xl sm:text-8xl md:text-9xl font-bold mb-5 text-red-600" }, userConfig.welcomeMessageText),
+                        React.createElement("div", { id: "socialLinks", className: "flex flex-wrap justify-center md:justify-start gap-x-8 gap-y-5 mb-14" },
+                            userConfig.socialMediaLinks.map(link =>
+                                React.createElement("a", { key: link.url, href: link.url, target: "_blank", rel: "noopener noreferrer", className: "text-slate-300 hover:text-pink-400 transition-colors duration-300 text-5xl", "aria-label": link.name, title: link.name },
+                                    React.createElement("i", { className: link.iconClass })
+                                )
+                            )
+                        )
+                    )
+                ),
+                React.createElement("div", { id: "scrollHeroToAbout", className: "scroll-arrow text-3xl text-red-500 absolute bottom-10 left-1/2 transform -translate-x-1/2" },
+                    React.createElement("a", { href: "#about", "aria-label": "Scroll to About Me section" },
+                        React.createElement("i", { className: "fas fa-chevron-down" })
+                    )
+                )
     if (modalOpen) {
       document.addEventListener('keydown', handleKey);
     }
@@ -445,6 +480,24 @@ function App() {
                 theme === 'dark' ? 'Light Mode' : 'Dark Mode',
               ),
             ),
+            React.createElement("section", { id: "gallery", className: "py-16 md:py-24 mt-20" },
+                React.createElement("h2", { className: "text-3xl md:text-4xl font-bold text-center mb-12 text-red-500" }, "Gallery"),
+                React.createElement("div", { id: "galleryImages", className: "mx-auto" },
+                    userConfig.galleryItems.map((item, idx) =>
+                        React.createElement(GalleryCard, { key: idx, src: item.imageUrl, alt: item.description || 'Gallery Image' })
+                    )
+                )
+            )
+            ),
+            React.createElement("footer", { className: "text-center py-10 mt-12 border-t border-slate-700" },
+                React.createElement("p", { id: "footerText", className: "text-slate-200" },
+                    "\u00A9 ",
+                    React.createElement("span", { id: "currentYear" }, new Date().getFullYear()),
+                    " ", userConfig.footerInfo.text
+                ),
+                React.createElement("p", { className: "text-slate-500 text-sm mt-2" }, "Last updated: ",
+                    React.createElement("span", { id: "lastUpdated" }, userConfig.footerInfo.lastUpdateDate)
+                )
           ),
         ),
         React.createElement(

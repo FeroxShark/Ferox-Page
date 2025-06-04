@@ -106,6 +106,25 @@ body.light {
 .gallery-card:hover img {
   filter: blur(4px);
 
+.loading-skeleton {
+    background-color: #334155;
+    min-height: 200px;
+}
+
+.loading-skeleton img {
+    visibility: hidden;
+}
+
+/* Breakpoints for number of columns */
+@media (min-width: 640px) { /* sm */
+    #galleryImages {
+        column-count: 2;
+    }
+}
+@media (min-width: 1024px) { /* lg */
+    #galleryImages {
+        column-count: 3;
+    }
 }
 
 /* Modal Styles */
@@ -133,6 +152,13 @@ body.light {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
 }
 .modal-close-button {
+    color: #f1f5f9; /* lighter for contrast */
+    float: right;
+    font-size: 32px;
+    font-weight: bold;
+    line-height: 1;
+    cursor: pointer;
+    transition: color 0.2s ease;
   color: #94a3b8; /* text-slate-400 */
   float: right;
   font-size: 32px;

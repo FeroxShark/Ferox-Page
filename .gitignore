@@ -1,4 +1,5 @@
 node_modules/
+package-lock.json
+tests/__pycache__/
 .husky/_/
-
 .pytest_cache/
