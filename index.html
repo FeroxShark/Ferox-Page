@@ -4,6 +4,17 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Ferox - Personal Page</title>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://unpkg.com https://cdn.tailwindcss.com https://cdnjs.cloudflare.com; style-src 'self' https://cdnjs.cloudflare.com 'unsafe-inline'; img-src 'self' data:; connect-src 'self';">
+    <meta http-equiv="Strict-Transport-Security" content="max-age=63072000; includeSubDomains; preload">
+    <link rel="manifest" href="manifest.json">
+    <link rel="preload" href="css/style.css" as="style">
+    <link rel="preload" href="img/profile.jpg" as="image">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preload" href="js/app.js" as="script">
+    <script src="https://cdn.tailwindcss.com" defer></script>
+</head>
+<body class="text-slate-100">
     <meta name="description" content="Ferox's personal page" />
     <meta property="og:title" content="Ferox - Personal Page" />
     <meta property="og:description" content="Personal site of Ferox" />
@@ -21,6 +32,16 @@
     <div class="overlay"></div>
     <div id="root" class="content-container container mx-auto px-4 py-8"></div>
 
+    <script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-router-dom@6/umd/react-router-dom.development.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => navigator.serviceWorker.register('sw.js'));
+      }
+    </script>
+</body>
     <script
       crossorigin
       src="https://unpkg.com/react@18/umd/react.production.min.js"
