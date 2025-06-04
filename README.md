@@ -4,9 +4,31 @@ This repository contains a small personal page built with React. The content con
 
 ## Getting started
 
-Open `index.html` in a modern browser. No build step is required. React 18 is loaded from a CDN.
+Clone the repo and install the development dependencies:
+
+```bash
+git clone <repo-url>
+cd Ferox-Page
+npm install
+```
+
+The page is entirely static, so you can open `index.html` directly in your browser or serve the folder using a simple HTTP server:
+
+```bash
+npx http-server .
+```
 
 Use the theme toggle button in the hero section to switch between dark and light modes.
+
+### Development tasks
+
+- **Lint:** `npm run lint`
+- **Format:** `npm run format`
+- **Tests:** `pytest -q`
+
+### Deployment
+
+Any static hosting service will work. Upload the contents of this directory to your preferred provider (GitHub Pages, Netlify, etc.).
 
 ## Footer year
 
