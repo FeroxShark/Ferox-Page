@@ -10,7 +10,7 @@
   "scripts": {
     "start": "node server.js",
     "build:css": "npx tailwindcss-cli build css/tailwind.input.css -o css/tailwind.css --minify --content index.html js/app.js",
-    "lint": "eslint .",
+    "lint": "ESLINT_USE_FLAT_CONFIG=false eslint -c .eslintrc.cjs .",
     "format": "prettier --write .",
     "prepare": "husky install",
     "test": "pytest -q"
@@ -27,7 +27,7 @@
       "prettier --write"
     ],
     "*.js": [
-      "eslint --fix"
+      "ESLINT_USE_FLAT_CONFIG=false npx eslint --fix"
     ]
   },
   "devDependencies": {
