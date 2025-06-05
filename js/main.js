@@ -1,6 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
   import('./app.js');
-  import('./air-trail.js');
+  if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    import('./air-trail.js');
+  }
 
   const bg = document.getElementById('bgSlideshow');
   const hero = document.getElementById('hero');
