@@ -1,6 +1,6 @@
 # Ferox Page
 
-This repository contains a small personal page built with React. The runtime configuration now lives in `data/config.json` and is loaded dynamically by the app in `js/app.js`. Static assets reside under `img/` and styling is provided via Tailwind CSS.
+This repository contains a small personal page built with React and bundled with [Vite](https://vitejs.dev/). The runtime configuration lives in `data/config.json` and is loaded dynamically by the app in `src/App.jsx`. Static assets reside under `img/` and styling is provided via Tailwind CSS.
 
 The site is a minimal PWA thanks to `manifest.json` and a small service worker (`sw.js`) that caches key assets for offline usage.
 
@@ -14,13 +14,30 @@ cd Ferox-Page
 npm install
 ```
 
-The page is entirely static, so you can open `index.html` directly in your browser or serve the folder using a simple HTTP server:
+During development run the Vite dev server:
 
 ```bash
-npx http-server .
+npm run dev
 ```
 
-Use the theme toggle button in the hero section to switch between dark and light modes.
+For a production build execute:
+
+```bash
+npm run build
+```
+
+### Project structure
+
+```
+src/         # React components and entry point
+data/        # Runtime configuration
+img/         # Static images
+css/         # Stylesheets
+```
+
+Update values in `data/config.json` to customize texts, links and gallery images.
+
+Use the contrast toggle button in the hero section to enable a high contrast color scheme.
 
 ### Development tasks
 

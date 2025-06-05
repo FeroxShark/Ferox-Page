@@ -5,16 +5,10 @@ import re
 
 def test_userconfig_assets_exist():
     html = Path("index.html").read_text()
-    script_match = re.search(r'<script[^>]+src="([^\"]*js/(?:main|app)\.js)"', html)
+    script_match = re.search(r'<script[^>]+src="([^\"]*src/main\.jsx)"', html)
     assert script_match, 'main script not found in index.html'
-    js_path = Path(script_match.group(1))
+    js_path = Path(script_match.group(1).lstrip('/'))
     assert js_path.exists(), f"{js_path} does not exist"
-    if js_path.name == 'main.js':
-        main_content = js_path.read_text()
-        import_match = re.search(r"import\(['\"]([^'\"]*app\.js)['\"]\)", main_content)
-        assert import_match, 'app.js not imported in main.js'
-        js_path = js_path.parent / import_match.group(1)
-        assert js_path.exists(), f"{js_path} does not exist"
 def test_config_assets_exist():
     config_path = Path('data/config.json')
     assert config_path.exists(), 'config.json missing'
