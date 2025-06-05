@@ -186,7 +186,7 @@ function App() {
   useEffect(() => {
     const handleScroll = () =>
       setShowToTop(window.scrollY > SCROLL_OFFSET_SHOW_TO_TOP);
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
