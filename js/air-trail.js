@@ -15,18 +15,18 @@
     document.body.appendChild(canvas);
   }
 
-  if (!window.PointerEvent) return;
+  const supportsPointer = !!window.PointerEvent;
 
-  const ctx  = canvas.getContext('2d');
-  const dpr  = window.devicePixelRatio || 1;
-  let   w, h;
+  const ctx = canvas.getContext('2d');
+  const dpr = window.devicePixelRatio || 1;
+  let w, h;
 
   function resize() {
-    canvas.width  = window.innerWidth  * dpr;
+    canvas.width = window.innerWidth * dpr;
     canvas.height = window.innerHeight * dpr;
-    canvas.style.width  = '100%';
+    canvas.style.width = '100%';
     canvas.style.height = '100%';
-    w = canvas.width  / dpr;
+    w = canvas.width / dpr;
     h = canvas.height / dpr;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
@@ -63,19 +63,27 @@
   let lastY;
   let lastScroll = 0;
 
+  function getCoords(event) {
+    if (event.touches && event.touches[0]) {
+      return [event.touches[0].clientX, event.touches[0].clientY];
+    }
+    return [event.clientX, event.clientY];
+  }
+
   function onMove(e) {
+    const [x, y] = getCoords(e);
     if (lastX === undefined) {
-      lastX = e.clientX;
-      lastY = e.clientY;
+      lastX = x;
+      lastY = y;
     }
 
-    const vx = e.clientX - lastX;
-    const vy = e.clientY - lastY;
-    particles.push(new Particle(e.clientX, e.clientY, vx, vy));
+    const vx = x - lastX;
+    const vy = y - lastY;
+    particles.push(new Particle(x, y, vx, vy));
     if (particles.length > 600) particles.shift();
 
-    lastX = e.clientX;
-    lastY = e.clientY;
+    lastX = x;
+    lastY = y;
   }
 
   function resetPointer() {
@@ -83,17 +91,21 @@
     lastY = undefined;
   }
 
-  window.addEventListener(
-    'pointerdown',
-    (e) => {
-      lastX = e.clientX;
-      lastY = e.clientY;
-    },
-    { passive: true }
-  );
-  window.addEventListener('pointermove', onMove, { passive: true });
-  window.addEventListener('pointerup', resetPointer, { passive: true });
-  window.addEventListener('pointercancel', resetPointer, { passive: true });
+  const startTracking = (e) => {
+    [lastX, lastY] = getCoords(e);
+  };
+
+  if (supportsPointer) {
+    window.addEventListener('pointerdown', startTracking, { passive: true });
+    window.addEventListener('pointermove', onMove, { passive: true });
+    window.addEventListener('pointerup', resetPointer, { passive: true });
+    window.addEventListener('pointercancel', resetPointer, { passive: true });
+  } else {
+    window.addEventListener('touchstart', startTracking, { passive: true });
+    window.addEventListener('touchmove', onMove, { passive: true });
+    window.addEventListener('touchend', resetPointer, { passive: true });
+    window.addEventListener('touchcancel', resetPointer, { passive: true });
+  }
 
   window.addEventListener(
     'scroll',
@@ -101,7 +113,7 @@
       scrollFactor = 2;
       lastScroll = performance.now();
     },
-    { passive: true }
+    { passive: true },
   );
 
   ctx.strokeStyle = 'rgba(255,255,255,0.8)';
