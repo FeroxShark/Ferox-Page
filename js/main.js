@@ -1,8 +1,14 @@
 document.addEventListener('DOMContentLoaded', () => {
   import('./app.js');
-  if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-    import('./air-trail.js');
-  }
+// Cargamos el efecto solo en dispositivos táctiles / pointer “coarse”.
+const isTouchDevice =
+  ('ontouchstart' in window) ||
+  navigator.maxTouchPoints > 0 ||
+  window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+
+if (isTouchDevice) {
+  import('./air-trail.js');
+}
 
   const bg = document.getElementById('bgSlideshow');
   const hero = document.getElementById('hero');
