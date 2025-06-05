@@ -1,14 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
   import('./app.js');
-// Cargamos el efecto solo en dispositivos táctiles / pointer “coarse”.
-const isTouchDevice =
-  ('ontouchstart' in window) ||
-  navigator.maxTouchPoints > 0 ||
-  window.matchMedia('(hover: none) and (pointer: coarse)').matches;
-
-if (isTouchDevice) {
+  // Load the air trail effect on both mouse and touch devices for a consistent
+  // experience across platforms.
   import('./air-trail.js');
-}
 
   const bg = document.getElementById('bgSlideshow');
   const hero = document.getElementById('hero');
