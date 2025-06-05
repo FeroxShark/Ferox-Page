@@ -4,9 +4,13 @@ const cors = require('cors');
 
 const app = express();
 app.use(cors());
-app.use(helmet({
-  crossOriginResourcePolicy: false
-}));
+app.use(
+  helmet({
+    crossOriginResourcePolicy: false,
+    // Disable the default CSP so the meta tag in index.html controls it.
+    contentSecurityPolicy: false,
+  }),
+);
 
 app.use(helmet.frameguard({ action: 'deny' }));
 app.use(helmet.referrerPolicy({ policy: 'strict-origin-when-cross-origin' }));
