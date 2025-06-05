@@ -305,3 +305,12 @@ body.light {
     background-image: url('../img/backgrounds/bg5.jpg');
   }
 }
+
+/* High contrast accessibility mode */
+body.high-contrast {
+  background-color: #000 !important;
+  color: #fff !important;
+}
+body.high-contrast a {
+  color: #ff0;
+}

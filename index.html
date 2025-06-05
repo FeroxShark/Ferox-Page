@@ -42,8 +42,6 @@
     <link rel="stylesheet" href="css/style.css" />
     <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16.png" />
-    <link rel="modulepreload" href="js/app.js" />
-    <link rel="preload" href="js/main.js" as="script" />
     <script src="https://cdn.tailwindcss.com" defer></script>
   </head>
   <body class="text-slate-100">
@@ -51,20 +49,7 @@
     <div class="overlay"></div>
     <div id="root" class="content-container container mx-auto px-4 py-8"></div>
 
-    <script
-      crossorigin
-      src="https://unpkg.com/react@18/umd/react.production.min.js"
-    ></script>
-    <script
-      crossorigin
-      src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"
-    ></script>
-    <script
-      crossorigin
-      src="https://unpkg.com/react-router-dom@6/umd/react-router-dom.development.js"
-    ></script>
-    <script src="https://unpkg.com/dompurify@2.4.0/dist/purify.min.js"></script>
-    <script type="module" src="js/main.js"></script>
+    <script type="module" src="/src/main.jsx"></script>
     <script>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () =>

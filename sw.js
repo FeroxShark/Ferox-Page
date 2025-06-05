@@ -4,17 +4,18 @@ const ASSETS = [
   'index.html',
   'css/style.css',
   'css/tailwind.css',
-  'js/app.js',
-  'js/main.js',
-  'data/config.json'
+  'src/main.jsx',
+  'data/config.json',
 ];
-self.addEventListener('install', event => {
+self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS))
+    caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS)),
   );
 });
-self.addEventListener('fetch', event => {
+self.addEventListener('fetch', (event) => {
   event.respondWith(
-    caches.match(event.request).then(response => response || fetch(event.request))
+    caches
+      .match(event.request)
+      .then((response) => response || fetch(event.request)),
   );
 });
