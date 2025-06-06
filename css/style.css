@@ -306,3 +306,24 @@ body.light {
     background-image: url('../img/backgrounds/bg5.jpg');
   }
 }
+
+.cursor-trail {
+  position: fixed;
+  pointer-events: none;
+  width: 16px;
+  height: 16px;
+  background-color: #dc2626;
+  border-radius: 9999px;
+  filter: blur(8px);
+  transform: translate(-50%, -50%);
+  opacity: 0.7;
+  transition:
+    opacity 0.4s,
+    transform 0.4s;
+  z-index: 9999;
+}
+
+.cursor-trail.fade-out {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(2);
+}
