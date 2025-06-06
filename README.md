@@ -48,3 +48,9 @@ The footer displays the current year dynamically using `new Date().getFullYear()
 ## Building CSS
 
 Run `npm run build:css` to generate a purged Tailwind CSS file before deployment.
+
+## Air trail effect
+
+The animated cursor trail can be customized by editing `js/air-trail.js`.
+Its color and thickness now adjust automatically based on pointer speed,
+and the effect is disabled when `prefers-reduced-motion` is enabled.
