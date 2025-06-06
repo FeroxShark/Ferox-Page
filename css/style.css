@@ -72,6 +72,11 @@ body.light {
   pointer-events: none;
   z-index: 2;
 }
+@media (prefers-reduced-motion: reduce) {
+  #airTrail {
+    display: none;
+  }
+}
 /* Scroll cue arrow */
 .scroll-cue {
   width: 32px;

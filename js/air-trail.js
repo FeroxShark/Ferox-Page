@@ -1,4 +1,9 @@
 (() => {
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  if (reducedMotion.matches) {
+    return;
+  }
+
   let canvas = document.getElementById('airTrail');
   if (!canvas) {
     canvas = document.createElement('canvas');
@@ -19,6 +24,12 @@
 
   const ctx = canvas.getContext('2d');
   const dpr = window.devicePixelRatio || 1;
+  const baseColor = 'rgba(255,255,255,0.8)';
+  const baseWidth = 2;
+  const maxParticles =
+    navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4
+      ? 300
+      : 600;
   let w, h;
 
   function resize() {
@@ -34,12 +45,14 @@
   window.addEventListener('resize', resize, { passive: true });
 
   class Particle {
-    constructor(x, y, vx, vy) {
+    constructor(x, y, vx, vy, life = 1, width = baseWidth, color = baseColor) {
       this.x = x;
       this.y = y;
       this.vx = vx;
       this.vy = vy;
-      this.life = 1;
+      this.life = life;
+      this.width = width;
+      this.color = color;
     }
     update(dt, decay) {
       this.x += this.vx * dt;
@@ -49,6 +62,8 @@
     }
     draw() {
       ctx.globalAlpha = this.life;
+      ctx.strokeStyle = this.color;
+      ctx.lineWidth = this.width * dpr;
       ctx.beginPath();
       ctx.moveTo(this.x, this.y);
       ctx.lineTo(this.x - this.vx * 2, this.y - this.vy * 2);
@@ -79,8 +94,14 @@
 
     const vx = x - lastX;
     const vy = y - lastY;
-    particles.push(new Particle(x, y, vx, vy));
-    if (particles.length > 600) particles.shift();
+    const speed = Math.hypot(vx, vy);
+    const width = baseWidth + Math.min(5, speed / 10);
+    const hue = (200 + speed * 15) % 360;
+    const color = `hsla(${hue},100%,70%,0.8)`;
+    const pointerType = e.pointerType || (e.touches ? 'touch' : 'mouse');
+    const life = pointerType === 'touch' ? 1.5 : 1;
+    particles.push(new Particle(x, y, vx, vy, life, width, color));
+    if (particles.length > maxParticles) particles.shift();
 
     lastX = x;
     lastY = y;
@@ -118,9 +139,10 @@
     { passive: true },
   );
 
-  ctx.strokeStyle = 'rgba(255,255,255,0.8)';
-  ctx.lineWidth = 2 * dpr;
+  ctx.strokeStyle = baseColor;
+  ctx.lineWidth = baseWidth * dpr;
   ctx.lineCap = 'round';
+  ctx.filter = 'blur(1px)';
 
   function loop(time) {
     const dt = (time - last) / 16.7;
