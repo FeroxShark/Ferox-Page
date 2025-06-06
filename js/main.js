@@ -1,8 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
   import('./app.js');
-  // Load the air trail effect on both mouse and touch devices for a consistent
-  // experience across platforms.
-  import('./air-trail.js');
 
   const bg = document.getElementById('bgSlideshow');
   const hero = document.getElementById('hero');
