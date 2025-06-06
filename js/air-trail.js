@@ -100,11 +100,13 @@
     window.addEventListener('pointermove', onMove, { passive: true });
     window.addEventListener('pointerup', resetPointer, { passive: true });
     window.addEventListener('pointercancel', resetPointer, { passive: true });
+    window.addEventListener('pointerleave', resetPointer, { passive: true });
   } else {
     window.addEventListener('touchstart', startTracking, { passive: true });
     window.addEventListener('touchmove', onMove, { passive: true });
     window.addEventListener('touchend', resetPointer, { passive: true });
     window.addEventListener('touchcancel', resetPointer, { passive: true });
+    window.addEventListener('mouseleave', resetPointer, { passive: true });
   }
 
   window.addEventListener(
