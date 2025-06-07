@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
   import('./app.js');
+  import('./airtrail.js').then((m) => m.initAirTrail());
 
   const bg = document.getElementById('bgSlideshow');
   const hero = document.getElementById('hero');
@@ -15,28 +16,5 @@ document.addEventListener('DOMContentLoaded', () => {
     observer.observe(hero);
   }
 
-  const createTrail = (x, y) => {
-    const dot = document.createElement('div');
-    dot.className = 'cursor-trail';
-    dot.style.left = `${x}px`;
-    dot.style.top = `${y}px`;
-    document.body.appendChild(dot);
-    requestAnimationFrame(() => {
-      dot.classList.add('fade-out');
-    });
-    dot.addEventListener('transitionend', () => dot.remove());
-  };
-
-  document.addEventListener('mousemove', (e) => {
-    createTrail(e.clientX, e.clientY);
-  });
-
-  document.addEventListener(
-    'touchmove',
-    (e) => {
-      const touch = e.touches[0];
-      if (touch) createTrail(touch.clientX, touch.clientY);
-    },
-    { passive: true },
-  );
+  // AirTrail effect handles pointer events internally
 });
