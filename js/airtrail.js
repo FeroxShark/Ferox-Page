@@ -1,4 +1,8 @@
 export function initAirTrail() {
+  const MAX_PARTICLES = 150;
+  const THROTTLE_MS = 16;
+  let lastMoveTime = 0;
+
   const canvas = document.createElement('canvas');
   canvas.id = 'airtrail-canvas';
   Object.assign(canvas.style, {
@@ -8,7 +12,7 @@ export function initAirTrail() {
     width: '100%',
     height: '100%',
     pointerEvents: 'none',
-    zIndex: 9999,
+    zIndex: 0,
   });
   document.body.appendChild(canvas);
 
@@ -25,11 +29,14 @@ export function initAirTrail() {
 
   function addParticle(x, y, dx, dy) {
     // Limita la cantidad para evitar lag
-    if (particles.length > 200) particles.shift();
+    if (particles.length > MAX_PARTICLES) particles.shift();
     particles.push({ x, y, dx, dy, life: 1, prevX: x, prevY: y });
   }
 
   function handleMove(x, y) {
+    const now = performance.now();
+    if (now - lastMoveTime < THROTTLE_MS) return;
+    lastMoveTime = now;
     if (lastX === undefined) {
       lastX = x;
       lastY = y;
