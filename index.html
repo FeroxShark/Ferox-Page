@@ -13,20 +13,14 @@
       name="description"
       content="Personal portfolio and gallery of Ferox, software engineering student and VR enthusiast."
     />
-    <link rel="canonical" href="https://feroxshark.github.io/Ferox-Page/" />
-    <meta name="keywords" content="Ferox, portfolio, gallery, software engineer, VR" />
-    <meta name="theme-color" content="#0f172a" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Ferox - Personal Page" />
-    <meta name="twitter:description" content="Explore Ferox's projects, artwork and social links." />
-    <meta name="twitter:image" content="https://feroxshark.github.io/Ferox-Page/img/profile.jpg" />
+    <link rel="canonical" href="https://example.com/" />
     <link rel="sitemap" type="application/xml" href="sitemap.xml" />
     <meta property="og:title" content="Ferox - Personal Page" />
     <meta
       property="og:description"
       content="Explore Ferox's projects, artwork and social links."
     />
-    <meta property="og:image" content="https://feroxshark.github.io/Ferox-Page/img/profile.jpg" />
+    <meta property="og:image" content="img/profile.jpg" />
     <title>Ferox - Personal Page</title>
     <link rel="preload" href="https://placehold.co/1920x1080.webp" as="image" />
     <link rel="stylesheet" href="css/tailwind.css" />
@@ -36,7 +30,7 @@
     />
     <meta
       http-equiv="Content-Security-Policy"
-      content="default-src 'self'; script-src 'self' https://unpkg.com https://cdnjs.cloudflare.com; style-src 'self' https://cdnjs.cloudflare.com 'unsafe-inline'; img-src 'self' data:; font-src 'self' https://cdnjs.cloudflare.com; connect-src 'self';"
+      content="default-src 'self'; script-src 'self' https://unpkg.com https://cdn.tailwindcss.com https://cdnjs.cloudflare.com; style-src 'self' https://cdnjs.cloudflare.com 'unsafe-inline'; img-src 'self' data:; font-src 'self' https://cdnjs.cloudflare.com; connect-src 'self';"
     />
     <meta
       http-equiv="Strict-Transport-Security"
@@ -50,6 +44,7 @@
     <link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16.png" />
     <link rel="modulepreload" href="js/app.js" />
     <link rel="preload" href="js/main.js" as="script" />
+    <script src="https://cdn.tailwindcss.com" defer></script>
   </head>
   <body class="text-slate-100">
     <div id="bgSlideshow"></div>
@@ -63,6 +58,10 @@
     <script
       crossorigin
       src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-router-dom@6/umd/react-router-dom.development.js"
     ></script>
     <script src="https://unpkg.com/dompurify@2.4.0/dist/purify.min.js"></script>
     <script type="module" src="js/main.js"></script>
