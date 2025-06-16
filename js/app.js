@@ -144,9 +144,14 @@ const DEFAULT_CONFIG = {
 
 function App() {
   const [userConfig, setUserConfig] = useState(DEFAULT_CONFIG);
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const [theme, setTheme] = useState(prefersDark ? 'dark' : 'light');
 
   useEffect(() => {
-    document.body.classList.add('dark');
+    document.documentElement.classList.toggle('dark', theme === 'dark');
+  }, [theme]);
+
+  useEffect(() => {
     fetch('data/config.json')
       .then((res) => (res.ok ? res.json() : Promise.reject(res.status)))
       .then(setUserConfig)
@@ -308,12 +313,26 @@ function App() {
     React.Fragment,
     null,
     React.createElement(
-      'section',
-      {
-        id: 'hero',
-        className:
-          'snap-section min-h-screen flex flex-col items-center justify-center relative',
-      },
+      'main',
+      { id: 'mainContent' },
+      React.createElement(
+        'section',
+        {
+          id: 'hero',
+          className:
+            'snap-section min-h-screen flex flex-col items-center justify-center relative',
+        },
+      React.createElement(
+        'button',
+        {
+          id: 'themeToggle',
+          onClick: () => setTheme(theme === 'dark' ? 'light' : 'dark'),
+          className:
+            'absolute top-5 right-5 p-2 rounded-full bg-slate-700 hover:bg-slate-600 focus:outline-none',
+          'aria-label': 'Toggle dark mode',
+        },
+        React.createElement('i', { className: theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon' }),
+      ),
       React.createElement(
         'div',
         {
@@ -472,6 +491,12 @@ function App() {
                 openModal('Image failed to load.');
               },
             }),
+            item.description &&
+              React.createElement(
+                'figcaption',
+                { className: 'p-2 text-center text-sm text-slate-400' },
+                item.description,
+              ),
           ),
         ),
       ),
@@ -525,7 +550,7 @@ function App() {
         'div',
         {
           id: 'lightbox',
-          'aria-hidden': 'true',
+          'aria-hidden': 'false',
           onClick: (e) => {
             if (e.target === e.currentTarget) closeLightbox();
           },
@@ -539,10 +564,11 @@ function App() {
             'aria-modal': 'true',
           },
           React.createElement(
-            'span',
+            'button',
             {
               className: 'modal-close-button',
               onClick: closeLightbox,
+              'aria-label': 'Close lightbox',
             },
             '\u00D7',
           ),
@@ -587,8 +613,12 @@ function App() {
           'div',
           { className: 'modal-content' },
           React.createElement(
-            'span',
-            { className: 'modal-close-button', onClick: closeModal },
+            'button',
+            {
+              className: 'modal-close-button',
+              onClick: closeModal,
+              'aria-label': 'Close modal',
+            },
             '\u00D7',
           ),
           React.createElement('p', {
