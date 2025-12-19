@@ -1,39 +1,36 @@
 {
   "name": "ferox-page",
   "version": "1.0.0",
-  "description": "This repository contains a small personal page built with React. The content configuration lives in js/app.js and is rendered at runtime. Static assets reside under img/ and styling is provided via Tailwind CSS.",
-  "main": "index.js",
-  "type": "commonjs",
-  "directories": {
-    "test": "tests"
-  },
+  "description": "Personal page built with React and Vite.",
+  "main": "index.html",
+  "type": "module",
   "scripts": {
-    "start": "node server.js",
-    "build:css": "npx tailwindcss-cli build css/tailwind.input.css -o css/tailwind.css --minify --content index.html js/app.js",
-    "lint": "ESLINT_USE_FLAT_CONFIG=false eslint -c .eslintrc.cjs .",
-    "format": "prettier --write .",
-    "prepare": "husky install",
-    "test": "pytest -q"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
+    "format": "prettier --write ."
   },
   "dependencies": {
-    "cors": "^2.8.5",
-    "express": "^5.1.0",
-    "helmet": "^8.1.0",
-    "tailwindcss": "^4.1.8",
-    "tailwindcss-cli": "^0.1.2"
-  },
-  "lint-staged": {
-    "*.{js,css,html}": [
-      "prettier --write"
-    ],
-    "*.js": [
-      "ESLINT_USE_FLAT_CONFIG=false npx eslint --fix"
-    ]
+    "clsx": "^2.1.1",
+    "dompurify": "^3.3.0",
+    "framer-motion": "^12.23.25",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "tailwind-merge": "^3.4.0"
   },
   "devDependencies": {
+    "@types/react": "^18.2.66",
+    "@types/react-dom": "^18.2.22",
+    "@vitejs/plugin-react": "^4.2.1",
+    "autoprefixer": "^10.4.19",
     "eslint": "^8.57.0",
+    "eslint-plugin-react": "^7.34.1",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.6",
+    "postcss": "^8.4.38",
     "prettier": "^3.2.5",
-    "husky": "^8.0.0",
-    "lint-staged": "^15.0.2"
+    "tailwindcss": "^3.4.3",
+    "vite": "^5.2.0"
   }
 }
