@@ -65,7 +65,6 @@ function Hero({ userConfig, openModal }) {
                                     src={link.icon}
                                     alt=""
                                     className="w-8 h-8 invert opacity-80 hover:opacity-100 transition-opacity"
-                                    loading="lazy"
                                 />
                             </motion.a>
                         ))}

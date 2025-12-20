@@ -6,32 +6,15 @@ import Gallery from './components/Gallery';
 import Footer from './components/Footer';
 import Modal from './components/Modal';
 import Lightbox from './components/Lightbox';
+import CONFIG from './data/config.json';
 
 const SCROLL_OFFSET_SHOW_TO_TOP = 100;
 
-const DEFAULT_CONFIG = {
-    profileImageUrl: 'img/profile.jpg',
-    welcomeMessageText: 'Ferox',
-    socialMediaLinks: [],
-    aboutSectionTitle: 'Hewo! My name is Ferox',
-    aboutMeContent: [],
-    galleryItems: [],
-    backgroundImages: [],
-    footerInfo: {
-        text: 'Ferox. All rights reserved.',
-        lastUpdateDate: 'June 3, 2025',
-    },
-};
-
 function App() {
-    const [userConfig, setUserConfig] = useState(DEFAULT_CONFIG);
+    const [userConfig] = useState(CONFIG);
 
     useEffect(() => {
         document.body.classList.add('dark');
-        fetch('data/config.json')
-            .then((res) => (res.ok ? res.json() : Promise.reject(res.status)))
-            .then(setUserConfig)
-            .catch((err) => console.error('Failed to load config.json', err));
     }, []);
 
     const [showToTop, setShowToTop] = useState(false);
