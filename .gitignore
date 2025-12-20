@@ -3,3 +3,5 @@ package-lock.json
 tests/__pycache__/
 .husky/_/
 .pytest_cache/
+
+dist

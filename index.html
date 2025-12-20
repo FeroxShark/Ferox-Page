@@ -20,7 +20,6 @@
   <meta http-equiv="Content-Security-Policy"
     content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://unpkg.com https://cdn.tailwindcss.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com; img-src 'self' data: https://placehold.co; font-src 'self' https://cdnjs.cloudflare.com https://fonts.gstatic.com; connect-src 'self';" />
   <meta http-equiv="Strict-Transport-Security" content="max-age=63072000; includeSubDomains; preload" />
-  <link rel="manifest" href="manifest.json" />
   <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png" />
   <link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16.png" />
 </head>
@@ -28,13 +27,6 @@
 <body class="text-slate-100">
   <div id="root"></div>
   <script type="module" src="/src/main.jsx"></script>
-  <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () =>
-        navigator.serviceWorker.register('sw.js'),
-      );
-    }
-  </script>
 </body>
 
 </html>
