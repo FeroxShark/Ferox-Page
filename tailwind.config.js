@@ -47,6 +47,24 @@ export default {
         sm: "calc(var(--radius) - 4px)",
       },
     },
+    perspective: {
+      '1000': '1000px',
+    },
   },
-  plugins: [],
+  plugins: [
+    function ({ addUtilities }) {
+      const newUtilities = {
+        '.perspective-1000': {
+          perspective: '1000px',
+        },
+        '.transform-style-3d': {
+          transformStyle: 'preserve-3d',
+        },
+        '.backface-hidden': {
+          backfaceVisibility: 'hidden',
+        },
+      }
+      addUtilities(newUtilities)
+    }
+  ],
 }

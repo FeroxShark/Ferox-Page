@@ -31,4 +31,7 @@ export default defineConfig({
     })
   ],
   base: '/Ferox-Page/',
+  server: {
+    port: 3000,
+  },
 })
