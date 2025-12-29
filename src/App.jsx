@@ -80,7 +80,7 @@ function App() {
                 }}
             />
 
-            <div id="main-wrapper" className="min-h-screen flex items-center justify-center p-4 relative z-10">
+            <div id="main-wrapper" className="min-h-screen flex flex-col items-center justify-center p-4 relative z-10">
                 <div className="main-glass-container relative z-10">
                     <Hero userConfig={userConfig} openModal={openModal} />
                     <About userConfig={userConfig} />
