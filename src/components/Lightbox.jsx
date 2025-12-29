@@ -54,18 +54,22 @@ function Lightbox({ index, userConfig, onClose, showPrev, showNext }) {
                 if (e.target === e.currentTarget) onClose();
             }}
         >
+            <span className="modal-close-button" onClick={onClose}>
+                ×
+            </span>
+            <button className="lightbox-nav lightbox-prev" onClick={showPrev}>
+                ‹
+            </button>
+            <button className="lightbox-nav lightbox-next" onClick={showNext}>
+                ›
+            </button>
+
             <div
                 className="modal-content"
                 ref={lightboxRef}
                 role="dialog"
                 aria-modal="true"
             >
-                <span className="modal-close-button" onClick={onClose}>
-                    ×
-                </span>
-                <button className="lightbox-nav lightbox-prev" onClick={showPrev}>
-                    ‹
-                </button>
                 <img
                     ref={lightboxImgRef}
                     src={userConfig.galleryItems[index].imageUrl}
@@ -75,9 +79,6 @@ function Lightbox({ index, userConfig, onClose, showPrev, showNext }) {
                             : 'Gallery image'
                     }
                 />
-                <button className="lightbox-nav lightbox-next" onClick={showNext}>
-                    ›
-                </button>
             </div>
         </div>
     );

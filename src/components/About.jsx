@@ -6,7 +6,7 @@ function About({ userConfig }) {
     return (
         <section
             id="about"
-            className="snap-section py-16 md:py-24 my-12 relative flex items-center justify-center"
+            className="py-10 relative flex items-center justify-center"
         >
             <motion.div
                 initial={{ opacity: 0, y: 50 }}
@@ -15,10 +15,10 @@ function About({ userConfig }) {
                 transition={{ duration: 0.8 }}
                 className="max-w-4xl mx-auto px-6 text-center relative z-10"
             >
-                <div className="glass-panel p-10 md:p-16 rounded-3xl">
+                <div>
                     <h2
                         id="aboutTitle"
-                        className="text-4xl md:text-5xl font-bold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-red-400"
+                        className="text-4xl md:text-5xl font-bold mb-8 text-slate-100"
                     >
                         {userConfig.aboutSectionTitle}
                     </h2>
@@ -35,15 +35,6 @@ function About({ userConfig }) {
                     </div>
                 </div>
             </motion.div>
-
-            <div
-                id="scrollAboutToGallery"
-                className="scroll-arrow text-3xl text-red-500 absolute bottom-[-2rem] sm:bottom-[-3rem] left-1/2 transform -translate-x-1/2 mt-8"
-            >
-                <a href="#gallery" aria-label="Scroll to Gallery section">
-                    <i className="fas fa-chevron-down"></i>
-                </a>
-            </div>
         </section>
     );
 }

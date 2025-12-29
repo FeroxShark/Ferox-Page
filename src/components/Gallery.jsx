@@ -21,12 +21,12 @@ const itemAnim = {
 
 function Gallery({ userConfig, openLightbox, openModal }) {
     return (
-        <section id="gallery" className="snap-section py-16 md:py-24 mt-32">
+        <section id="gallery" className="py-10">
             <motion.h2
                 initial={{ opacity: 0, y: -20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                className="text-3xl md:text-4xl font-bold text-center mb-12 text-red-500"
+                className="text-3xl md:text-4xl font-bold text-center mb-12 text-slate-100"
             >
                 Gallery
             </motion.h2>
@@ -35,42 +35,39 @@ function Gallery({ userConfig, openLightbox, openModal }) {
                 initial="hidden"
                 whileInView="show"
                 viewport={{ once: true }}
-                id="gallery-grid"
-                className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mx-auto px-4 max-w-7xl"
+                id="gallery-masonry"
+                className="masonry-grid mx-auto px-4 max-w-7xl"
             >
                 {userConfig.galleryItems.map((item, idx) => (
-                    <motion.figure
+                    <motion.div
                         variants={itemAnim}
                         key={idx}
-                        className="gallery-card glass-card rounded-xl overflow-hidden cursor-pointer group relative aspect-[4/3]"
-                        role="button"
-                        tabIndex={0}
-                        onClick={() => openLightbox(idx)}
-                        onKeyDown={(e) => {
-                            if (e.key === 'Enter' || e.key === ' ') {
-                                e.preventDefault();
-                                openLightbox(idx);
-                            }
-                        }}
+                        className="masonry-item"
                     >
-                        <div className="w-full h-full overflow-hidden">
+                        <div
+                            className="neon-border-card"
+                            role="button"
+                            tabIndex={0}
+                            onClick={() => openLightbox(idx)}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter' || e.key === ' ') {
+                                    e.preventDefault();
+                                    openLightbox(idx);
+                                }
+                            }}
+                        >
                             <ImageWithLoader
                                 src={item.imageUrl}
                                 alt={item.description || 'Gallery Image'}
                                 loading="lazy"
-                                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 will-change-transform"
+                                className="w-full h-auto block"
                                 onError={(e) => {
                                     e.target.src = FALLBACK_IMAGE;
                                     openModal('Image failed to load.');
                                 }}
                             />
                         </div>
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
-                            <p className="text-white text-lg font-medium translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                                {item.description || 'View Image'}
-                            </p>
-                        </div>
-                    </motion.figure>
+                    </motion.div>
                 ))}
             </motion.div>
         </section>

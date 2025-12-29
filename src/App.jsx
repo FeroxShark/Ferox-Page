@@ -23,26 +23,6 @@ function App() {
     const [lightboxIndex, setLightboxIndex] = useState(null);
 
     useEffect(() => {
-        const el = document.getElementById('bgSlideshow');
-        const images = userConfig.backgroundImages || [];
-        if (images.length === 0) return;
-
-        let idx = 0;
-        el.style.backgroundImage = `url('${images[idx]}')`;
-
-        const interval = setInterval(() => {
-            idx = (idx + 1) % images.length;
-            const nextImg = new Image();
-            nextImg.src = images[idx];
-            nextImg.onload = () => {
-                el.style.backgroundImage = `url('${images[idx]}')`;
-            };
-        }, 8000);
-
-        return () => clearInterval(interval);
-    }, [userConfig.backgroundImages]);
-
-    useEffect(() => {
         const handleScroll = () =>
             setShowToTop(window.scrollY > SCROLL_OFFSET_SHOW_TO_TOP);
         window.addEventListener('scroll', handleScroll, { passive: true });
@@ -88,21 +68,33 @@ function App() {
 
     return (
         <>
-            <div id="bgSlideshow"></div>
-            <div className="overlay"></div>
-            <div id="root" className="content-container container mx-auto px-4 py-8">
-                <Hero userConfig={userConfig} openModal={openModal} />
-                <About userConfig={userConfig} />
-                <Gallery
-                    userConfig={userConfig}
-                    openLightbox={openLightbox}
-                    openModal={openModal}
-                />
-                <Footer userConfig={userConfig} />
+
+            {/* Fixed Background Image */}
+            <div
+                className="fixed inset-0 w-full h-full z-0"
+                style={{
+                    backgroundImage: `url(${userConfig.backgroundImages[0]})`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    backgroundRepeat: 'no-repeat',
+                }}
+            />
+
+            <div id="main-wrapper" className="min-h-screen flex items-center justify-center p-4 relative z-10">
+                <div className="main-glass-container relative z-10">
+                    <Hero userConfig={userConfig} openModal={openModal} />
+                    <About userConfig={userConfig} />
+                    <Gallery
+                        userConfig={userConfig}
+                        openLightbox={openLightbox}
+                        openModal={openModal}
+                    />
+                    <Footer userConfig={userConfig} />
+                </div>
 
                 <div
                     id="scrollGalleryToTop"
-                    className="scroll-arrow text-3xl text-red-500 mt-8 text-center"
+                    className="scroll-arrow text-3xl text-slate-400 hover:text-[hsl(var(--primary))] transition-colors mt-8 text-center"
                 >
                     <a href="#hero" aria-label="Back to top">
                         <i className="fas fa-chevron-up"></i>

@@ -1,7 +1,152 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion';
 import ImageWithLoader from './ImageWithLoader';
 import { cn } from '../lib/utils';
+
+const PixelLink = ({ link, isLastOdd }) => {
+    const containerRef = useRef(null);
+    const [pixels, setPixels] = useState([]);
+    const pixelRefs = useRef([]);
+    const currentHue = useRef(0); // Mutable ref for dynamic color
+
+    // Generate grid on mount/resize
+    useEffect(() => {
+        if (!containerRef.current) return;
+        const resizeObserver = new ResizeObserver(() => {
+            const rect = containerRef.current.getBoundingClientRect();
+            const cellSize = 12; // 12px cells, significantly denser
+            const cols = Math.ceil(rect.width / cellSize);
+            const rows = Math.ceil(rect.height / cellSize);
+            // Add a small buffer to ensure coverage
+            const newPixels = Array.from({ length: cols * rows }, (_, i) => ({
+                id: i,
+                x: (i % cols) * cellSize,
+                y: Math.floor(i / cols) * cellSize,
+                size: cellSize
+            }));
+            setPixels(newPixels);
+            pixelRefs.current = pixelRefs.current.slice(0, newPixels.length);
+        });
+        resizeObserver.observe(containerRef.current);
+        return () => resizeObserver.disconnect();
+    }, []);
+
+    const animationFrameId = useRef(null);
+
+    // New Random Hue on EVERY Enter
+    const handleMouseEnter = () => {
+        currentHue.current = Math.floor(Math.random() * 360);
+    };
+
+    const handleMouseMove = (e) => {
+        if (!containerRef.current) return;
+        const rect = containerRef.current.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        // Optimize: Use requestAnimationFrame to throttle updates to screen refresh rate
+        cancelAnimationFrame(animationFrameId.current);
+        animationFrameId.current = requestAnimationFrame(() => {
+            pixelRefs.current.forEach((pixel, index) => {
+                if (!pixel) return;
+                const px = pixels[index].x + pixels[index].size / 2;
+                const py = pixels[index].y + pixels[index].size / 2;
+
+                // True Euclidean Distance
+                const dist = Math.hypot(x - px, y - py);
+                const radius = 20; // Tight core
+
+                if (dist < radius) {
+                    // CORE: Solid Light
+                    pixel.style.transition = 'none'; // Instant ON
+                    pixel.style.opacity = '1';
+                    pixel.style.backgroundColor = `hsl(${currentHue.current}, 100%, 60%)`;
+                    pixel.style.boxShadow = `0 0 10px hsl(${currentHue.current}, 100%, 60%)`;
+                } else {
+                    // OUTER: Exponential Decay
+                    // Divisor 50 = Long "throw" to cover the whole box
+                    const decay = Math.exp(-(dist - radius) / 50);
+
+                    // Always apply, no cutoff
+                    pixel.style.transition = 'none';
+                    pixel.style.opacity = decay.toFixed(3);
+                    pixel.style.backgroundColor = `hsl(${currentHue.current}, 100%, 60%)`;
+                    pixel.style.boxShadow = 'none';
+                }
+            });
+        });
+    };
+
+    const handleMouseLeave = () => {
+        cancelAnimationFrame(animationFrameId.current);
+        pixelRefs.current.forEach(pixel => {
+            if (pixel) {
+                pixel.style.transition = 'opacity 0.5s ease-out'; // Slow smooth fade
+                pixel.style.opacity = '0';
+                pixel.style.backgroundColor = 'transparent';
+                pixel.style.boxShadow = 'none';
+            }
+        });
+    };
+
+    return (
+        <motion.a
+            href={link.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            ref={containerRef}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            className={cn(
+                "group relative overflow-hidden rounded-xl border border-white/5 bg-white/5 p-4 backdrop-blur-md transition-all neon-border-card decoration-0",
+                isLastOdd && "col-span-2"
+            )}
+            onMouseEnter={handleMouseEnter}
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
+        >
+            {/* Background Grid Layer */}
+            <div className="absolute inset-0 pointer-events-none z-0">
+                {pixels.map((p, i) => (
+                    <div
+                        key={p.id}
+                        ref={el => pixelRefs.current[i] = el}
+                        className="pixel-cell absolute"
+                        style={{
+                            left: p.x,
+                            top: p.y,
+                            width: p.size,
+                            height: p.size,
+                            opacity: 0,
+                            willChange: 'opacity, background-color'
+                        }}
+                    />
+                ))}
+            </div>
+
+            {/* Content Layer (z-10 to stay above grid) */}
+            <div className="relative z-10 flex items-center justify-center gap-3 pointer-events-none">
+                <div
+                    className="h-6 w-6 bg-white/80 transition-colors group-hover:bg-white"
+                    style={{
+                        maskImage: `url(${link.icon})`,
+                        WebkitMaskImage: `url(${link.icon})`,
+                        maskSize: 'contain',
+                        WebkitMaskSize: 'contain',
+                        maskRepeat: 'no-repeat',
+                        WebkitMaskRepeat: 'no-repeat',
+                        maskPosition: 'center',
+                        WebkitMaskPosition: 'center'
+                    }}
+                />
+                <span className="font-medium text-white/80 transition-colors group-hover:text-white">
+                    {link.name}
+                </span>
+            </div>
+        </motion.a>
+    );
+};
+
 
 const FALLBACK_IMAGE = 'img/profile.jpg';
 
@@ -12,7 +157,6 @@ function Hero({ userConfig, openModal }) {
     const mouseX = useSpring(x, { stiffness: 150, damping: 15 });
     const mouseY = useSpring(y, { stiffness: 150, damping: 15 });
 
-    // Reduced rotation limits for better performance
     const rotateX = useTransform(mouseY, [-0.5, 0.5], ["10deg", "-10deg"]);
     const rotateY = useTransform(mouseX, [-0.5, 0.5], ["-10deg", "10deg"]);
 
@@ -20,7 +164,6 @@ function Hero({ userConfig, openModal }) {
     const isMobile = useRef(false);
 
     useEffect(() => {
-        // Simple mobile detection
         isMobile.current = window.matchMedia("(max-width: 768px)").matches;
     }, []);
 
@@ -31,17 +174,12 @@ function Hero({ userConfig, openModal }) {
 
     const handleMouseMove = (e) => {
         if (isMobile.current || !rectRef.current) return;
-
         const width = rectRef.current.width;
         const height = rectRef.current.height;
-
-        // Use clientX/Y relative to the cached rect to avoid re-measuring
         const mouseXVal = e.clientX - rectRef.current.left;
         const mouseYVal = e.clientY - rectRef.current.top;
-
         const xPct = mouseXVal / width - 0.5;
         const yPct = mouseYVal / height - 0.5;
-
         x.set(xPct);
         y.set(yPct);
     };
@@ -53,11 +191,8 @@ function Hero({ userConfig, openModal }) {
     };
 
     return (
-        <section
-            id="hero"
-            className="snap-section min-h-screen flex flex-col items-center justify-center relative overflow-hidden"
-        >
-            <div className="flex flex-col md:flex-row items-center justify-center w-full max-w-6xl z-10 px-4 gap-10">
+        <section id="hero" className="flex flex-col items-center justify-center relative overflow-hidden py-10">
+            <div className="flex flex-col md:flex-row items-center justify-center w-full z-10 gap-10">
                 <motion.div
                     initial={{ opacity: 0, scale: 0.5 }}
                     animate={{ opacity: 1, scale: 1 }}
@@ -66,13 +201,8 @@ function Hero({ userConfig, openModal }) {
                     onMouseEnter={handleMouseEnter}
                     onMouseMove={handleMouseMove}
                     onMouseLeave={handleMouseLeave}
-                    style={{
-                        rotateX,
-                        rotateY,
-                        transformStyle: "preserve-3d",
-                    }}
+                    style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
                 >
-                    <div className="absolute inset-0 bg-red-600 blur-3xl opacity-20 rounded-full scale-110 animate-pulse -z-10" />
                     <ImageWithLoader
                         id="profileImage"
                         src={userConfig.profileImageUrl}
@@ -92,7 +222,7 @@ function Hero({ userConfig, openModal }) {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.2, duration: 0.5 }}
                         id="welcomeMessage"
-                        className="text-6xl sm:text-7xl md:text-8xl font-bold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-purple-600 drop-shadow-sm"
+                        className="text-6xl sm:text-7xl md:text-8xl font-bold mb-8 text-slate-100 drop-shadow-sm"
                     >
                         {userConfig.welcomeMessageText}
                     </motion.h1>
@@ -106,50 +236,11 @@ function Hero({ userConfig, openModal }) {
                     >
                         {userConfig.socialMediaLinks.map((link, index) => {
                             const isLastOdd = index === userConfig.socialMediaLinks.length - 1 && userConfig.socialMediaLinks.length % 2 !== 0;
-                            return (
-                                <motion.a
-                                    key={link.url}
-                                    href={link.url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    whileHover={{ scale: 1.05 }}
-                                    whileTap={{ scale: 0.95 }}
-                                    className={cn(
-                                        "p-4 bg-white/5 rounded-xl backdrop-blur-md border border-white/10 hover:bg-white/10 hover:border-red-500/50 transition-all flex items-center justify-center gap-3 group",
-                                        isLastOdd && "col-span-2"
-                                    )}
-                                    aria-label={link.name}
-                                    title={link.name}
-                                >
-                                    <img
-                                        src={link.icon}
-                                        alt=""
-                                        className="w-6 h-6 invert opacity-80 group-hover:opacity-100 transition-opacity"
-                                    />
-                                    <span className="text-white/80 font-medium group-hover:text-white transition-colors">{link.name}</span>
-                                </motion.a>
-                            );
+                            return <PixelLink key={link.url} link={link} isLastOdd={isLastOdd} />;
                         })}
                     </motion.div>
                 </div>
             </div>
-
-            <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 1, duration: 1 }}
-                id="scrollHeroToAbout"
-                className="absolute bottom-10 left-1/2 transform -translate-x-1/2"
-            >
-                <a
-                    href="#about"
-                    aria-label="Scroll to About Me section"
-                    className="flex flex-col items-center gap-2 text-red-500/80 hover:text-red-500 transition-colors"
-                >
-                    <span className="text-sm uppercase tracking-widest opacity-50">Scroll</span>
-                    <i className="fas fa-chevron-down text-2xl animate-bounce"></i>
-                </a>
-            </motion.div>
         </section>
     );
 }

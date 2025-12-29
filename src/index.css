@@ -4,34 +4,73 @@
 
 @layer base {
   :root {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    --background: 240 50% 4%;
+    /* #050510 - Deep bluish black */
+    --foreground: 0 0% 100%;
+    /* #FFFFFF - Pure White */
 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
+    --card: 240 50% 6%;
+    --card-foreground: 0 0% 100%;
 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 240 50% 6%;
+    --popover-foreground: 0 0% 100%;
 
-    --primary: 0 72% 51%;
-    /* Red-600 */
-    --primary-foreground: 210 40% 98%;
+    --primary: 260 100% 65%;
+    /* #7c4dff - Deep Violet */
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 270 100% 50%;
+    /* #8000FF - Purple */
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    /* ... */
+    .main-glass-container {
+      /* Refined Liquid Glass Style */
+      background-color: rgba(20, 20, 35, 0.3);
+      backdrop-filter: blur(30px) saturate(120%);
+      -webkit-backdrop-filter: blur(30px) saturate(120%);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+      border-radius: 24px;
+      padding: 40px;
+      width: 100%;
+      max-width: 1200px;
+      margin: 40px auto;
+      position: relative;
+      z-index: 10;
+    }
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    /* ... */
+    /* Neon Border Card Style */
+    .neon-border-card {
+      border-radius: 12px;
+      overflow: hidden;
+      position: relative;
+      cursor: pointer;
+      border: 1px solid rgba(124, 77, 255, 0.3);
+      box-shadow: 0 0 10px rgba(124, 77, 255, 0.1);
+      transition: all 0.3s ease;
+      background-color: rgba(20, 20, 35, 0.4);
+    }
+
+    .neon-border-card:hover {
+      border-color: #7c4dff;
+      box-shadow: 0 0 20px rgba(124, 77, 255, 0.5);
+      transform: translateY(-2px);
+    }
+
+    --muted: 240 30% 15%;
+    --muted-foreground: 240 10% 70%;
+
+    --accent: 300 100% 50%;
+    --accent-foreground: 0 0% 100%;
 
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    --border: 240 30% 15%;
+    --input: 240 30% 15%;
+    --ring: 300 100% 50%;
   }
 }
 
@@ -41,11 +80,37 @@
   }
 
   body {
-    background-color: hsl(var(--background));
+    background-color: #050505;
+    background-image: url('/img/backgrounds/bg1.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
     color: hsl(var(--foreground));
     font-family: 'Inter', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+    position: relative;
+    min-height: 100vh;
+  }
+
+  /* Dark Overlay for Liquid Glass Effect */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(5, 5, 10, 0.6);
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    text-shadow: 0 0 15px rgba(255, 0, 255, 0.4);
   }
 }
 
@@ -54,99 +119,100 @@ html {
   scroll-snap-type: y proximity;
 }
 
-/* Dynamic Background */
-#bgSlideshow {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-repeat: no-repeat;
-  z-index: -2;
-  transition: opacity 1s ease-in-out;
-  filter: blur(20px) saturate(1.5);
-  transform: scale(1.1);
-  will-change: transform, opacity;
-  /* Prevent blur edges */
-}
-
-@media (max-width: 768px) {
-  #bgSlideshow {
-    filter: blur(10px) saturate(1.2);
-  }
-}
-
-.overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(135deg,
-      rgba(220, 38, 38, 0.3) 0%,
-      rgba(147, 51, 234, 0.3) 50%,
-      rgba(15, 23, 42, 0.9) 100%);
-  mix-blend-mode: overlay;
-  z-index: -1;
-}
-
 /* Glassmorphism Utilities */
 .glass-panel {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  background: rgba(20, 0, 30, 0.3);
+  backdrop-filter: blur(12px) saturate(150%);
+  -webkit-backdrop-filter: blur(12px) saturate(150%);
+  border: 1px solid rgba(255, 0, 255, 0.2);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
 }
 
 @media (max-width: 768px) {
   .glass-panel {
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(8px) saturate(150%);
+    -webkit-backdrop-filter: blur(8px) saturate(150%);
   }
 }
 
-.glass-card {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+.main-glass-container {
+  /* Restored Liquid Glass Style */
+  background-color: rgba(20, 20, 30, 0.3);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+  border-radius: 24px;
+  padding: 40px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 40px auto;
   position: relative;
-  overflow: hidden;
-  will-change: transform;
+  z-index: 10;
 }
 
 @media (max-width: 768px) {
-  .glass-card {
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
+  .main-glass-container {
+    padding: 20px;
+    margin: 20px auto;
+    border-radius: 16px;
   }
 }
 
-.glass-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
+/* Masonry Layout */
+.masonry-grid {
+  column-count: 3;
+  column-gap: 1.5rem;
   width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transition: 0.5s;
 }
 
-.glass-card:hover::before {
-  left: 100%;
+@media (max-width: 768px) {
+  .masonry-grid {
+    column-count: 1;
+  }
 }
 
-.glass-card:hover {
-  border-color: rgba(255, 255, 255, 0.4);
-  box-shadow: 0 8px 32px 0 rgba(220, 38, 38, 0.2);
+.masonry-item {
+  break-inside: avoid;
+  margin-bottom: 1.5rem;
+  position: relative;
+  /* Ensure images fit naturally */
+  width: 100%;
 }
+
+/* Neon Border Card Style */
+/* Neon Border Card Style */
+.neon-border-card {
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  /* Subtle start */
+  transition: all 0.3s ease;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.neon-border-card:hover {
+  border-color: hsl(var(--neon-violet));
+  /* Default neon accent */
+  box-shadow: 0 0 15px rgba(180, 100, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+.neon-border-card img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: filter 0.3s ease, transform 0.5s ease;
+}
+
+.neon-border-card:hover img {
+  filter: brightness(1.2);
+  transform: scale(1.02);
+}
+
+
 
 /* Animations */
 @keyframes float {
@@ -232,6 +298,7 @@ html {
 }
 
 /* Lightbox */
+/* Lightbox */
 #lightbox {
   position: fixed;
   top: 0;
@@ -239,8 +306,8 @@ html {
   width: 100vw;
   height: 100vh;
   z-index: 100;
-  background-color: rgba(0, 0, 0, 0.9);
-  backdrop-filter: blur(8px);
+  background-color: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -265,7 +332,7 @@ html {
 }
 
 .modal-content img {
-  max-width: 100%;
+  max-width: 90vw;
   max-height: 90vh;
   object-fit: contain;
   border-radius: 8px;
@@ -274,20 +341,31 @@ html {
 
 .modal-close-button {
   position: absolute;
-  top: -40px;
-  right: 0;
+  top: 4%;
+  right: 4%;
   color: white;
-  font-size: 2.5rem;
+  font-size: 3rem;
   line-height: 1;
   cursor: pointer;
   transition: all 0.2s;
   z-index: 101;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  padding: 10px;
 }
 
 .modal-close-button:hover {
   color: hsl(var(--primary));
   transform: scale(1.1);
+}
+
+/* Profile Image Hover */
+#profileImage {
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+}
+
+#profileImage:hover {
+  transform: translateZ(50px) scale(1.05);
+  box-shadow: 0 0 40px rgba(255, 0, 0, 0.8) !important;
 }
 
 .lightbox-nav {
@@ -297,9 +375,9 @@ html {
   background: rgba(255, 255, 255, 0.1);
   color: white;
   border: 1px solid rgba(255, 255, 255, 0.2);
-  font-size: 2rem;
-  width: 50px;
-  height: 50px;
+  font-size: 3rem;
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -316,25 +394,31 @@ html {
 }
 
 .lightbox-prev {
-  left: -70px;
+  left: 4%;
 }
 
 .lightbox-next {
-  right: -70px;
+  right: 4%;
 }
 
 /* Mobile adjustments */
 @media (max-width: 768px) {
   .lightbox-prev {
-    left: 10px;
+    left: 2%;
   }
 
   .lightbox-next {
-    right: 10px;
+    right: 2%;
   }
 
   .modal-close-button {
-    top: 10px;
-    right: 10px;
+    top: 2%;
+    right: 2%;
   }
+}
+
+/* Pixel Grid Strict Styling */
+.pixel-cell {
+  border: 0.5px solid rgba(255, 255, 255, 0.08);
+  box-sizing: border-box;
 }

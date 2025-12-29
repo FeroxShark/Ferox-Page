@@ -55,12 +55,10 @@
   ],
   "aboutSectionTitle": "Hewo! My name is Ferox",
   "aboutMeContent": [
-    "I'm a 19-year-old furry from Argentina 🇦🇷",
+    "I'm a 20-year-old furry from Argentina 🇦🇷",
     "Addicted to White Monster and black coffee",
     "<br>",
     "I am currently studying Software Engineering at Siglo 21 University and making some investments as a hobby.",
-    "<br>",
-    "I also play VRChat from time to time, feel free to add me if you want.",
     "Cya! :3"
   ],
   "galleryItems": [
@@ -97,7 +95,7 @@
     "img/backgrounds/bg5.jpg"
   ],
   "footerInfo": {
-    "text": "Ferox. All rights reserved.",
-    "lastUpdateDate": "June 3, 2025"
+    "text": "Ferox (Juan Martin Granero). All rights reserved.",
+    "lastUpdateDate": "December 29, 2025"
   }
 }
