@@ -26,7 +26,8 @@ export default defineConfig({
         ]
       },
       workbox: {
-        globPatterns: ['**/*.{js,css,html,ico,png,svg,jpg,jpeg,json}']
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,jpg,jpeg,json}'],
+        maximumFileSizeToCacheInBytes: 10 * 1024 * 1024 // 10MB to match bg1.jpg size
       }
     })
   ],
