@@ -58,7 +58,7 @@ function Gallery({ userConfig, openLightbox, openModal }) {
                                 src={item.imageUrl}
                                 alt={item.description || 'Gallery Image'}
                                 loading="lazy"
-                                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 will-change-transform"
                                 onError={(e) => {
                                     e.target.src = FALLBACK_IMAGE;
                                     openModal('Image failed to load.');

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion';
 import ImageWithLoader from './ImageWithLoader';
 import { cn } from '../lib/utils';
@@ -12,17 +12,36 @@ function Hero({ userConfig, openModal }) {
     const mouseX = useSpring(x, { stiffness: 150, damping: 15 });
     const mouseY = useSpring(y, { stiffness: 150, damping: 15 });
 
-    const rotateX = useTransform(mouseY, [-0.5, 0.5], ["15deg", "-15deg"]);
-    const rotateY = useTransform(mouseX, [-0.5, 0.5], ["-15deg", "15deg"]);
+    // Reduced rotation limits for better performance
+    const rotateX = useTransform(mouseY, [-0.5, 0.5], ["10deg", "-10deg"]);
+    const rotateY = useTransform(mouseX, [-0.5, 0.5], ["-10deg", "10deg"]);
+
+    const rectRef = useRef(null);
+    const isMobile = useRef(false);
+
+    useEffect(() => {
+        // Simple mobile detection
+        isMobile.current = window.matchMedia("(max-width: 768px)").matches;
+    }, []);
+
+    const handleMouseEnter = (e) => {
+        if (isMobile.current) return;
+        rectRef.current = e.currentTarget.getBoundingClientRect();
+    };
 
     const handleMouseMove = (e) => {
-        const rect = e.currentTarget.getBoundingClientRect();
-        const width = rect.width;
-        const height = rect.height;
-        const mouseXVal = e.clientX - rect.left;
-        const mouseYVal = e.clientY - rect.top;
+        if (isMobile.current || !rectRef.current) return;
+
+        const width = rectRef.current.width;
+        const height = rectRef.current.height;
+
+        // Use clientX/Y relative to the cached rect to avoid re-measuring
+        const mouseXVal = e.clientX - rectRef.current.left;
+        const mouseYVal = e.clientY - rectRef.current.top;
+
         const xPct = mouseXVal / width - 0.5;
         const yPct = mouseYVal / height - 0.5;
+
         x.set(xPct);
         y.set(yPct);
     };
@@ -30,6 +49,7 @@ function Hero({ userConfig, openModal }) {
     const handleMouseLeave = () => {
         x.set(0);
         y.set(0);
+        rectRef.current = null;
     };
 
     return (
@@ -43,6 +63,7 @@ function Hero({ userConfig, openModal }) {
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.5 }}
                     className="relative perspective-1000"
+                    onMouseEnter={handleMouseEnter}
                     onMouseMove={handleMouseMove}
                     onMouseLeave={handleMouseLeave}
                     style={{

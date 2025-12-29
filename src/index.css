@@ -67,9 +67,16 @@ html {
   background-repeat: no-repeat;
   z-index: -2;
   transition: opacity 1s ease-in-out;
-  filter: blur(40px) saturate(1.5);
+  filter: blur(20px) saturate(1.5);
   transform: scale(1.1);
+  will-change: transform, opacity;
   /* Prevent blur edges */
+}
+
+@media (max-width: 768px) {
+  #bgSlideshow {
+    filter: blur(10px) saturate(1.2);
+  }
 }
 
 .overlay {
@@ -89,21 +96,36 @@ html {
 /* Glassmorphism Utilities */
 .glass-panel {
   background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 }
 
+@media (max-width: 768px) {
+  .glass-panel {
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+  }
+}
+
 .glass-card {
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   border: 1px solid rgba(255, 255, 255, 0.18);
   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: hidden;
+  will-change: transform;
+}
+
+@media (max-width: 768px) {
+  .glass-card {
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+  }
 }
 
 .glass-card::before {

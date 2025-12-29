@@ -2,16 +2,56 @@
   "profileImageUrl": "img/profile.jpg",
   "welcomeMessageText": "Ferox",
   "socialMediaLinks": [
-    { "icon": "icons/twitter.svg", "url": "https://x.com/Ferox_Shark", "name": "Twitter" },
-    { "icon": "icons/instagram.svg", "url": "https://www.instagram.com/feroxshark/", "name": "Instagram" },
-    { "icon": "icons/steam.svg", "url": "https://steamcommunity.com/id/feroxshark/", "name": "Steam" },
-    { "icon": "icons/discord.svg", "url": "https://discord.com/invite/7uDqm4Khhm", "name": "Discord" },
-    { "icon": "icons/telegram.svg", "url": "https://t.me/feroxshark", "name": "Telegram" },
-    { "icon": "icons/vr-cardboard.svg", "url": "https://vrchat.com/home/user/usr_b51db741-9cef-4095-b436-4367176fc4bb", "name": "VRChat" },
-    { "icon": "icons/twitch.svg", "url": "https://www.twitch.tv/ferox_uwu", "name": "Twitch" },
-    { "icon": "icons/paw.svg", "url": "https://www.furaffinity.net/user/feroxshark", "name": "Fur Affinity" },
-    { "icon": "icons/tiktok.svg", "url": "https://www.tiktok.com/@feroxshark", "name": "TikTok" },
-    { "icon": "icons/github.svg", "url": "https://github.com/FeroxShark", "name": "GitHub" }
+    {
+      "icon": "icons/twitter.svg",
+      "url": "https://x.com/Ferox_Shark",
+      "name": "Twitter"
+    },
+    {
+      "icon": "icons/instagram.svg",
+      "url": "https://www.instagram.com/feroxshark/",
+      "name": "Instagram"
+    },
+    {
+      "icon": "icons/steam.svg",
+      "url": "https://steamcommunity.com/id/feroxshark/",
+      "name": "Steam"
+    },
+    {
+      "icon": "icons/discord.svg",
+      "url": "https://discord.com/invite/7uDqm4Khhm",
+      "name": "Discord"
+    },
+    {
+      "icon": "icons/telegram.svg",
+      "url": "https://t.me/feroxshark",
+      "name": "Telegram"
+    },
+    {
+      "icon": "icons/vr-cardboard.svg",
+      "url": "https://vrchat.com/home/user/usr_b51db741-9cef-4095-b436-4367176fc4bb",
+      "name": "VRChat"
+    },
+    {
+      "icon": "icons/twitch.svg",
+      "url": "https://www.twitch.tv/ferox_uwu",
+      "name": "Twitch"
+    },
+    {
+      "icon": "icons/paw.svg",
+      "url": "https://www.furaffinity.net/user/feroxshark",
+      "name": "Fur Affinity"
+    },
+    {
+      "icon": "icons/tiktok.svg",
+      "url": "https://www.tiktok.com/@feroxshark",
+      "name": "TikTok"
+    },
+    {
+      "icon": "icons/github.svg",
+      "url": "https://github.com/FeroxShark",
+      "name": "GitHub"
+    }
   ],
   "aboutSectionTitle": "Hewo! My name is Ferox",
   "aboutMeContent": [
@@ -24,12 +64,30 @@
     "Cya! :3"
   ],
   "galleryItems": [
-    { "imageUrl": "img/gallery/artwork1.jpg", "description": "Artwork 1 description (optional)" },
-    { "imageUrl": "img/gallery/artwork2.jpg", "description": "Artwork 2 description" },
-    { "imageUrl": "img/gallery/artwork3.jpg", "description": "Artwork 3" },
-    { "imageUrl": "img/gallery/artwork4.jpg", "description": "One more artwork with a slightly longer description to test text flow." },
-    { "imageUrl": "img/gallery/artwork5.jpg", "description": "Artwork 5" },
-    { "imageUrl": "img/gallery/artwork6.jpg", "description": "Artwork 6" }
+    {
+      "imageUrl": "img/gallery/artwork1.jpg",
+      "description": "Artwork 1 description (optional)"
+    },
+    {
+      "imageUrl": "img/gallery/artwork2.jpg",
+      "description": "Artwork 2 description"
+    },
+    {
+      "imageUrl": "img/gallery/artwork3.jpg",
+      "description": "Artwork 3"
+    },
+    {
+      "imageUrl": "img/gallery/artwork4.jpg",
+      "description": "One more artwork with a slightly longer description to test text flow."
+    },
+    {
+      "imageUrl": "img/gallery/artwork5.jpg",
+      "description": "Artwork 5"
+    },
+    {
+      "imageUrl": "img/gallery/artwork6.jpg",
+      "description": "Artwork 6"
+    }
   ],
   "backgroundImages": [
     "img/backgrounds/bg1.jpg",
