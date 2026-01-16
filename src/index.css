@@ -384,7 +384,7 @@ html {
   justify-content: center;
   cursor: pointer;
   transition: all 0.2s ease;
-  backdrop-filter: blur(4px);
+
   z-index: 101;
 }
 

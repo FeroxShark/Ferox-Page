@@ -98,7 +98,7 @@ const PixelLink = ({ link, isLastOdd }) => {
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             className={cn(
-                "group relative overflow-hidden rounded-xl border border-white/5 bg-white/5 p-4 backdrop-blur-md transition-all neon-border-card decoration-0",
+                "group relative overflow-hidden rounded-xl border border-white/5 bg-white/5 p-4 transition-all neon-border-card decoration-0",
                 isLastOdd && "col-span-2"
             )}
             onMouseEnter={handleMouseEnter}
