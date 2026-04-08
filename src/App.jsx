@@ -82,7 +82,7 @@ function App() {
             {/* Animated color overlay on top of photo */}
             <div className="fixed inset-0 w-full h-full animated-bg-overlay" style={{ zIndex: 1 }} />
 
-            <div id="main-wrapper" className="min-h-screen flex flex-col items-center justify-center p-4 relative" style={{ zIndex: 2 }}>
+            <div id="main-wrapper" className="min-h-screen flex flex-col items-center justify-center p-2 sm:p-4 relative" style={{ zIndex: 2 }}>
                 <div className="main-glass-container relative z-10">
                     <Hero userConfig={userConfig} openModal={openModal} />
                     <About userConfig={userConfig} />

@@ -98,7 +98,7 @@ const PixelLink = ({ link, isLastOdd }) => {
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             className={cn(
-                "group relative overflow-hidden rounded-xl border border-white/5 bg-white/5 p-4 transition-all neon-border-card decoration-0",
+                "group relative overflow-hidden rounded-xl border border-white/5 bg-white/5 p-2.5 sm:p-4 transition-all neon-border-card decoration-0",
                 isLastOdd && "col-span-2"
             )}
             onMouseEnter={handleMouseEnter}
@@ -125,9 +125,9 @@ const PixelLink = ({ link, isLastOdd }) => {
             </div>
 
             {/* Content Layer (z-10 to stay above grid) */}
-            <div className="relative z-10 flex items-center justify-center gap-3 pointer-events-none">
+            <div className="relative z-10 flex items-center justify-center gap-2 sm:gap-3 pointer-events-none">
                 <div
-                    className="h-6 w-6 bg-white/80 transition-colors group-hover:bg-white"
+                    className="h-5 w-5 sm:h-6 sm:w-6 bg-white/80 transition-colors group-hover:bg-white"
                     style={{
                         maskImage: `url(${link.icon})`,
                         WebkitMaskImage: `url(${link.icon})`,
@@ -139,7 +139,7 @@ const PixelLink = ({ link, isLastOdd }) => {
                         WebkitMaskPosition: 'center'
                     }}
                 />
-                <span className="font-medium text-white/80 transition-colors group-hover:text-white">
+                <span className="font-medium text-sm sm:text-base text-white/80 transition-colors group-hover:text-white">
                     {link.name}
                 </span>
             </div>
@@ -191,7 +191,7 @@ function Hero({ userConfig, openModal }) {
     };
 
     return (
-        <section id="hero" className="flex flex-col items-center justify-center relative overflow-hidden py-10">
+        <section id="hero" className="flex flex-col items-center justify-center relative overflow-hidden py-6 md:py-10">
             <div className="flex flex-col md:flex-row items-center justify-center w-full z-10 gap-10">
                 <motion.div
                     initial={{ opacity: 0, scale: 0.5 }}
@@ -201,15 +201,14 @@ function Hero({ userConfig, openModal }) {
                     onMouseEnter={handleMouseEnter}
                     onMouseMove={handleMouseMove}
                     onMouseLeave={handleMouseLeave}
-                    style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
+                    style={{ rotateX, rotateY }}
                 >
-                    <div className="profile-ring">
+                    <div className="profile-ring mb-6 md:mb-0">
                         <ImageWithLoader
                             id="profileImage"
                             src={userConfig.profileImageUrl}
                             alt="Profile Picture"
-                            className="w-36 h-36 sm:w-44 sm:h-44 md:w-64 md:h-64 lg:w-72 lg:h-72 rounded-full mb-6 md:mb-0 shadow-2xl object-cover relative z-10 transition-transform duration-100"
-                            style={{ transform: "translateZ(50px)" }}
+                            className="w-36 h-36 sm:w-44 sm:h-44 md:w-64 md:h-64 lg:w-72 lg:h-72 rounded-full object-cover block"
                             onError={(e) => {
                                 e.target.src = FALLBACK_IMAGE;
                                 openModal('Image failed to load.');
@@ -234,7 +233,7 @@ function Hero({ userConfig, openModal }) {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.4, duration: 0.5 }}
                         id="socialLinks"
-                        className="grid grid-cols-2 gap-3 mb-8 w-full"
+                        className="grid grid-cols-2 gap-2 sm:gap-3 mb-6 w-full"
                     >
                         {userConfig.socialMediaLinks.map((link, index) => {
                             const isLastOdd = index === userConfig.socialMediaLinks.length - 1 && userConfig.socialMediaLinks.length % 2 !== 0;

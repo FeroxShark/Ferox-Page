@@ -155,6 +155,8 @@ html {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  padding: 0.1em 0.05em;
+  display: inline-block;
 }
 
 /* ─── Profile Ring ────────────────────────────────── */
@@ -171,6 +173,14 @@ html {
 .profile-ring > div {
   border-radius: 50%;
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-ring img {
+  border-radius: 50%;
+  display: block;
 }
 
 /* ─── Glass Container (updated) ──────────────────── */
@@ -208,8 +218,8 @@ html {
 
 @media (max-width: 768px) {
   .main-glass-container {
-    padding: 20px;
-    margin: 20px auto;
+    padding: 16px;
+    margin: 12px auto;
     border-radius: 16px;
   }
 }
@@ -228,9 +238,10 @@ html {
   }
 }
 
-@media (max-width: 540px) {
+@media (max-width: 480px) {
   .gallery-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
   }
 }
 

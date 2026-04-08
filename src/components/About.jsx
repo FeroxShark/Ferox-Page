@@ -31,13 +31,13 @@ function About({ userConfig }) {
                 <div>
                     <h2
                         id="aboutTitle"
-                        className="text-4xl md:text-5xl font-black mb-8 gradient-text"
+                        className="text-3xl md:text-5xl font-black mb-6 gradient-text"
                     >
                         {userConfig.aboutSectionTitle}
                     </h2>
                     <div
                         id="aboutContent"
-                        className="text-xl md:text-2xl text-slate-300 space-y-6 leading-relaxed"
+                        className="text-base md:text-xl text-slate-300 space-y-4 leading-relaxed"
                     >
                         {userConfig.aboutMeContent.map((p, idx) => (
                             <p
