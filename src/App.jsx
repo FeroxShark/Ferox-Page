@@ -69,7 +69,7 @@ function App() {
     return (
         <>
 
-            {/* Fixed Background Image */}
+            {/* Background photo */}
             <div
                 className="fixed inset-0 w-full h-full z-0"
                 style={{
@@ -79,15 +79,16 @@ function App() {
                     backgroundRepeat: 'no-repeat',
                 }}
             />
+            {/* Animated color overlay on top of photo */}
+            <div className="fixed inset-0 w-full h-full animated-bg-overlay" style={{ zIndex: 1 }} />
 
-            <div id="main-wrapper" className="min-h-screen flex flex-col items-center justify-center p-4 relative z-10">
+            <div id="main-wrapper" className="min-h-screen flex flex-col items-center justify-center p-4 relative" style={{ zIndex: 2 }}>
                 <div className="main-glass-container relative z-10">
                     <Hero userConfig={userConfig} openModal={openModal} />
                     <About userConfig={userConfig} />
                     <Gallery
                         userConfig={userConfig}
                         openLightbox={openLightbox}
-                        openModal={openModal}
                     />
                     <Footer userConfig={userConfig} />
                 </div>
@@ -119,6 +120,7 @@ function App() {
                 onClose={closeLightbox}
                 showPrev={showPrev}
                 showNext={showNext}
+                onJumpTo={openLightbox}
             />
 
             <Modal isOpen={modalOpen} message={modalMessage} onClose={closeModal} />

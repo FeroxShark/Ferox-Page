@@ -54,8 +54,9 @@
     }
   ],
   "aboutSectionTitle": "Hewo! My name is Ferox",
+  "birthday": "2005-12-19",
   "aboutMeContent": [
-    "I'm a 20-year-old furry from Argentina 🇦🇷",
+    "I'm a {{age}}-year-old furry from Argentina 🇦🇷",
     "Addicted to White Monster and black coffee",
     "<br>",
     "I am currently studying Software Engineering at Siglo 21 University and making some investments as a hobby.",
@@ -95,7 +96,7 @@
     "img/backgrounds/bg5.jpg"
   ],
   "footerInfo": {
-    "text": "Ferox (Juan Martin Granero). All rights reserved.",
-    "lastUpdateDate": "December 29, 2025"
+    "text": "Ferox · All rights reserved.",
+    "lastUpdateDate": "April 2026"
   }
 }

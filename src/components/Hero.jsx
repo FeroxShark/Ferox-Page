@@ -203,17 +203,19 @@ function Hero({ userConfig, openModal }) {
                     onMouseLeave={handleMouseLeave}
                     style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
                 >
-                    <ImageWithLoader
-                        id="profileImage"
-                        src={userConfig.profileImageUrl}
-                        alt="Profile Picture"
-                        className="w-56 h-56 md:w-64 md:h-64 lg:w-72 lg:h-72 rounded-2xl mb-10 md:mb-0 border-4 border-white/10 shadow-2xl object-cover relative z-10 transition-transform duration-100"
-                        style={{ transform: "translateZ(50px)" }}
-                        onError={(e) => {
-                            e.target.src = FALLBACK_IMAGE;
-                            openModal('Image failed to load.');
-                        }}
-                    />
+                    <div className="profile-ring">
+                        <ImageWithLoader
+                            id="profileImage"
+                            src={userConfig.profileImageUrl}
+                            alt="Profile Picture"
+                            className="w-36 h-36 sm:w-44 sm:h-44 md:w-64 md:h-64 lg:w-72 lg:h-72 rounded-full mb-6 md:mb-0 shadow-2xl object-cover relative z-10 transition-transform duration-100"
+                            style={{ transform: "translateZ(50px)" }}
+                            onError={(e) => {
+                                e.target.src = FALLBACK_IMAGE;
+                                openModal('Image failed to load.');
+                            }}
+                        />
+                    </div>
                 </motion.div>
 
                 <div className="text-center md:text-left relative z-10 w-full max-w-lg">
@@ -222,7 +224,7 @@ function Hero({ userConfig, openModal }) {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.2, duration: 0.5 }}
                         id="welcomeMessage"
-                        className="text-6xl sm:text-7xl md:text-8xl font-bold mb-8 text-slate-100 drop-shadow-sm"
+                        className="text-5xl sm:text-6xl md:text-8xl font-black mb-6 gradient-text"
                     >
                         {userConfig.welcomeMessageText}
                     </motion.h1>
@@ -232,7 +234,7 @@ function Hero({ userConfig, openModal }) {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.4, duration: 0.5 }}
                         id="socialLinks"
-                        className="grid grid-cols-2 gap-4 mb-14 w-full"
+                        className="grid grid-cols-2 gap-3 mb-8 w-full"
                     >
                         {userConfig.socialMediaLinks.map((link, index) => {
                             const isLastOdd = index === userConfig.socialMediaLinks.length - 1 && userConfig.socialMediaLinks.length % 2 !== 0;

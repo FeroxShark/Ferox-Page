@@ -1,86 +1,137 @@
 import React, { useEffect, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
-function Lightbox({ index, userConfig, onClose, showPrev, showNext }) {
-    const lightboxRef = useRef(null);
-    const lightboxImgRef = useRef(null);
+function Lightbox({ index, userConfig, onClose, showPrev, showNext, onJumpTo }) {
+    const items = userConfig.galleryItems;
     const previousFocus = useRef(null);
+    const thumbsRef = useRef(null);
+    const activeThumbRef = useRef(null);
 
+    // Lock scroll + restore focus
     useEffect(() => {
         if (index === null) {
             document.body.style.overflow = '';
+            previousFocus.current?.focus();
             return;
         }
         document.body.style.overflow = 'hidden';
         previousFocus.current = document.activeElement;
-        const el = lightboxRef.current;
-        const focusable = el.querySelectorAll(
-            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
-        );
-        const first = focusable[0];
-        const last = focusable[focusable.length - 1];
-        const trap = (e) => {
-            if (e.key === 'Tab') {
-                if (e.shiftKey) {
-                    if (document.activeElement === first) {
-                        e.preventDefault();
-                        last.focus();
-                    }
-                } else if (document.activeElement === last) {
-                    e.preventDefault();
-                    first.focus();
-                }
-            } else if (e.key === 'ArrowLeft') {
-                showPrev();
-            } else if (e.key === 'ArrowRight') {
-                showNext();
-            }
+    }, [index]);
+
+    // Keyboard navigation
+    useEffect(() => {
+        if (index === null) return;
+        const handler = (e) => {
+            if (e.key === 'ArrowLeft') showPrev();
+            if (e.key === 'ArrowRight') showNext();
         };
-        el.addEventListener('keydown', trap);
-        first && first.focus();
-        return () => {
-            el.removeEventListener('keydown', trap);
-            previousFocus.current && previousFocus.current.focus();
-            document.body.style.overflow = '';
-        };
+        window.addEventListener('keydown', handler);
+        return () => window.removeEventListener('keydown', handler);
     }, [index, showPrev, showNext]);
 
-    if (index === null) return null;
+    // Scroll active thumbnail into view
+    useEffect(() => {
+        if (index !== null && activeThumbRef.current) {
+            activeThumbRef.current.scrollIntoView({
+                behavior: 'smooth',
+                block: 'nearest',
+                inline: 'center'
+            });
+        }
+    }, [index]);
+
+    const handleDragEnd = (_, info) => {
+        if (info.offset.x > 80) showPrev();
+        else if (info.offset.x < -80) showNext();
+    };
 
     return (
-        <div
-            id="lightbox"
-            aria-hidden="true"
-            onClick={(e) => {
-                if (e.target === e.currentTarget) onClose();
-            }}
-        >
-            <span className="modal-close-button" onClick={onClose}>
-                ×
-            </span>
-            <button className="lightbox-nav lightbox-prev" onClick={showPrev}>
-                ‹
-            </button>
-            <button className="lightbox-nav lightbox-next" onClick={showNext}>
-                ›
-            </button>
+        <AnimatePresence>
+            {index !== null && (
+                <motion.div
+                    key="lightbox"
+                    className="lightbox-overlay"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                    onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
+                    role="dialog"
+                    aria-modal="true"
+                    aria-label="Image viewer"
+                >
+                    {/* Header bar */}
+                    <div className="lightbox-header">
+                        <span className="lightbox-counter">
+                            {index + 1} / {items.length}
+                        </span>
+                        <button
+                            className="lightbox-close"
+                            onClick={onClose}
+                            aria-label="Close"
+                        >
+                            <i className="fas fa-times" />
+                        </button>
+                    </div>
 
-            <div
-                className="modal-content"
-                ref={lightboxRef}
-                role="dialog"
-                aria-modal="true"
-            >
-                <img
-                    ref={lightboxImgRef}
-                    src={userConfig.galleryItems[index].imageUrl}
-                    alt={
-                        userConfig.galleryItems[index].description
-                            ? userConfig.galleryItems[index].description
-                            : 'Gallery image'
-                    }
-                />
-            </div>
-        </div>
+                    {/* Main image */}
+                    <div className="lightbox-image-container">
+                        <AnimatePresence mode="wait">
+                            <motion.img
+                                key={index}
+                                src={items[index].imageUrl}
+                                alt={items[index].description || `Gallery image ${index + 1}`}
+                                initial={{ opacity: 0, scale: 0.97 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                exit={{ opacity: 0, scale: 0.97 }}
+                                transition={{ duration: 0.18 }}
+                                drag="x"
+                                dragConstraints={{ left: 0, right: 0 }}
+                                dragElastic={0.15}
+                                onDragEnd={handleDragEnd}
+                                draggable={false}
+                            />
+                        </AnimatePresence>
+                    </div>
+
+                    {/* Navigation arrows */}
+                    <button
+                        className="lightbox-arrow lightbox-arrow-prev"
+                        onClick={(e) => { e.stopPropagation(); showPrev(); }}
+                        aria-label="Previous image"
+                    >
+                        <i className="fas fa-chevron-left" />
+                    </button>
+                    <button
+                        className="lightbox-arrow lightbox-arrow-next"
+                        onClick={(e) => { e.stopPropagation(); showNext(); }}
+                        aria-label="Next image"
+                    >
+                        <i className="fas fa-chevron-right" />
+                    </button>
+
+                    {/* Thumbnail strip */}
+                    <div
+                        className="lightbox-thumbs"
+                        ref={thumbsRef}
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        {items.map((item, idx) => (
+                            <button
+                                key={idx}
+                                ref={idx === index ? activeThumbRef : null}
+                                className={`lightbox-thumb-btn${idx === index ? ' active' : ''}`}
+                                onClick={() => onJumpTo(idx)}
+                                aria-label={`View image ${idx + 1}`}
+                                aria-pressed={idx === index}
+                            >
+                                <img src={item.imageUrl} alt="" aria-hidden="true" />
+                            </button>
+                        ))}
+                    </div>
+                </motion.div>
+            )}
+        </AnimatePresence>
     );
 }
 

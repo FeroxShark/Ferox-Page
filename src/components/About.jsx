@@ -1,8 +1,21 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import DOMPurify from 'dompurify';
 import { motion } from 'framer-motion';
 
+function getAge(birthday) {
+    const birth = new Date(birthday + 'T00:00:00');
+    const today = new Date();
+    let age = today.getFullYear() - birth.getFullYear();
+    const monthDiff = today.getMonth() - birth.getMonth();
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
+        age--;
+    }
+    return age;
+}
+
 function About({ userConfig }) {
+    const age = useMemo(() => getAge(userConfig.birthday), [userConfig.birthday]);
+
     return (
         <section
             id="about"
@@ -18,7 +31,7 @@ function About({ userConfig }) {
                 <div>
                     <h2
                         id="aboutTitle"
-                        className="text-4xl md:text-5xl font-bold mb-8 text-slate-100"
+                        className="text-4xl md:text-5xl font-black mb-8 gradient-text"
                     >
                         {userConfig.aboutSectionTitle}
                     </h2>
@@ -29,7 +42,11 @@ function About({ userConfig }) {
                         {userConfig.aboutMeContent.map((p, idx) => (
                             <p
                                 key={idx}
-                                dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(p) }}
+                                dangerouslySetInnerHTML={{
+                                    __html: DOMPurify.sanitize(
+                                        p.replace('{{age}}', age)
+                                    ),
+                                }}
                             />
                         ))}
                     </div>

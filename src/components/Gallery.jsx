@@ -1,32 +1,27 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import ImageWithLoader from './ImageWithLoader';
-
-const FALLBACK_IMAGE = 'img/profile.jpg';
 
 const container = {
     hidden: { opacity: 0 },
     show: {
         opacity: 1,
-        transition: {
-            staggerChildren: 0.1
-        }
+        transition: { staggerChildren: 0.07 }
     }
 };
 
 const itemAnim = {
-    hidden: { opacity: 0, y: 20 },
-    show: { opacity: 1, y: 0 }
+    hidden: { opacity: 0, scale: 0.94, y: 16 },
+    show: { opacity: 1, scale: 1, y: 0, transition: { duration: 0.35 } }
 };
 
-function Gallery({ userConfig, openLightbox, openModal }) {
+function Gallery({ userConfig, openLightbox }) {
     return (
         <section id="gallery" className="py-10">
             <motion.h2
                 initial={{ opacity: 0, y: -20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                className="text-3xl md:text-4xl font-bold text-center mb-12 text-slate-100"
+                className="text-3xl md:text-4xl font-black text-center mb-10 gradient-text"
             >
                 Gallery
             </motion.h2>
@@ -35,38 +30,29 @@ function Gallery({ userConfig, openLightbox, openModal }) {
                 initial="hidden"
                 whileInView="show"
                 viewport={{ once: true }}
-                id="gallery-masonry"
-                className="masonry-grid mx-auto px-4 max-w-7xl"
+                className="gallery-grid"
             >
                 {userConfig.galleryItems.map((item, idx) => (
                     <motion.div
-                        variants={itemAnim}
                         key={idx}
-                        className="masonry-item"
+                        variants={itemAnim}
+                        className="gallery-card"
+                        role="button"
+                        tabIndex={0}
+                        aria-label={item.description || `Gallery image ${idx + 1}`}
+                        onClick={() => openLightbox(idx)}
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter' || e.key === ' ') {
+                                e.preventDefault();
+                                openLightbox(idx);
+                            }
+                        }}
                     >
-                        <div
-                            className="neon-border-card"
-                            role="button"
-                            tabIndex={0}
-                            onClick={() => openLightbox(idx)}
-                            onKeyDown={(e) => {
-                                if (e.key === 'Enter' || e.key === ' ') {
-                                    e.preventDefault();
-                                    openLightbox(idx);
-                                }
-                            }}
-                        >
-                            <ImageWithLoader
-                                src={item.imageUrl}
-                                alt={item.description || 'Gallery Image'}
-                                loading="lazy"
-                                className="w-full h-auto block"
-                                onError={(e) => {
-                                    e.target.src = FALLBACK_IMAGE;
-                                    openModal('Image failed to load.');
-                                }}
-                            />
-                        </div>
+                        <img
+                            src={item.imageUrl}
+                            alt={`Artwork ${idx + 1}`}
+                            loading="lazy"
+                        />
                     </motion.div>
                 ))}
             </motion.div>
