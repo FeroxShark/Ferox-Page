@@ -1,22 +1,19 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import DOMPurify from 'dompurify';
 import Hero from './components/Hero';
-import About from './components/About';
+import Setup from './components/Setup';
 import Gallery from './components/Gallery';
+import Favorites from './components/Favorites';
+import Manifesto from './components/Manifesto';
 import Footer from './components/Footer';
 import Modal from './components/Modal';
 import Lightbox from './components/Lightbox';
 import CONFIG from './data/config.json';
 
-const SCROLL_OFFSET_SHOW_TO_TOP = 100;
+const SCROLL_OFFSET_SHOW_TO_TOP = 200;
 
 function App() {
     const [userConfig] = useState(CONFIG);
-
-    useEffect(() => {
-        document.body.classList.add('dark');
-    }, []);
-
     const [showToTop, setShowToTop] = useState(false);
     const [modalMessage, setModalMessage] = useState('');
     const [modalOpen, setModalOpen] = useState(false);
@@ -68,51 +65,52 @@ function App() {
 
     return (
         <>
+            {/* Scanline overlay */}
+            <div className="scanline" aria-hidden="true"></div>
 
-            {/* Background photo */}
+            {/* Persistent HUD frame — corner metadata, mix-blend */}
             <div
-                className="fixed inset-0 w-full h-full z-0"
-                style={{
-                    backgroundImage: `url(${userConfig.backgroundImages[0]})`,
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                    backgroundRepeat: 'no-repeat',
-                }}
-            />
-            {/* Animated color overlay on top of photo */}
-            <div className="fixed inset-0 w-full h-full animated-bg-overlay" style={{ zIndex: 1 }} />
-
-            <div id="main-wrapper" className="min-h-screen flex flex-col items-center justify-center p-2 sm:p-4 relative" style={{ zIndex: 2 }}>
-                <div className="main-glass-container relative z-10">
-                    <Hero userConfig={userConfig} openModal={openModal} />
-                    <About userConfig={userConfig} />
-                    <Gallery
-                        userConfig={userConfig}
-                        openLightbox={openLightbox}
-                    />
-                    <Footer userConfig={userConfig} />
+                className="fixed inset-0 pointer-events-none z-40 p-[5vw] flex flex-col justify-between mix-blend-difference text-sys-white opacity-70 font-mono text-[10px] uppercase tracking-widest hidden md:flex"
+                aria-hidden="true"
+            >
+                <div className="flex justify-between w-full">
+                    <div>
+                        SYS: FEROX.ARCHIVE
+                        <br />
+                        SYNC_RATE: <span className="text-sys-yellow">60HZ</span>
+                    </div>
+                    <div className="text-right">
+                        V.1.0.0
+                        <br />
+                        FEED_STATUS: LIVE
+                    </div>
                 </div>
-
-                <div
-                    id="scrollGalleryToTop"
-                    className="scroll-arrow text-3xl text-slate-400 hover:text-[hsl(var(--primary))] transition-colors mt-8 text-center"
-                >
-                    <a href="#hero" aria-label="Back to top">
-                        <i className="fas fa-chevron-up"></i>
-                    </a>
+                <div className="flex justify-between w-full items-end">
+                    <div>THREAD: MAIN_LOOP</div>
+                    <div className="text-right">MEM: 99%</div>
                 </div>
-
-                {showToTop && (
-                    <button
-                        onClick={scrollToTop}
-                        id="scrollToTopBtn"
-                        title="Go to top"
-                        style={{ display: 'block' }}
-                    >
-                        <i className="fas fa-arrow-up"></i>
-                    </button>
-                )}
             </div>
+
+            {/* Main content */}
+            <main className="relative z-10">
+                <Hero userConfig={userConfig} openModal={openModal} />
+                <Setup userConfig={userConfig} />
+                <Gallery userConfig={userConfig} openLightbox={openLightbox} />
+                <Favorites userConfig={userConfig} />
+                <Manifesto userConfig={userConfig} />
+                <Footer userConfig={userConfig} />
+            </main>
+
+            {showToTop && (
+                <button
+                    onClick={scrollToTop}
+                    id="scrollToTopBtn"
+                    aria-label="Back to top"
+                    title="Back to top"
+                >
+                    ^
+                </button>
+            )}
 
             <Lightbox
                 index={lightboxIndex}

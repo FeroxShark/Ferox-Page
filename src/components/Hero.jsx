@@ -1,247 +1,108 @@
-import React, { useRef, useEffect, useState } from 'react';
-import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion';
+import React from 'react';
+import { motion } from 'framer-motion';
 import ImageWithLoader from './ImageWithLoader';
-import { cn } from '../lib/utils';
-
-const PixelLink = ({ link, isLastOdd }) => {
-    const containerRef = useRef(null);
-    const [pixels, setPixels] = useState([]);
-    const pixelRefs = useRef([]);
-    const currentHue = useRef(0); // Mutable ref for dynamic color
-
-    // Generate grid on mount/resize
-    useEffect(() => {
-        if (!containerRef.current) return;
-        const resizeObserver = new ResizeObserver(() => {
-            const rect = containerRef.current.getBoundingClientRect();
-            const cellSize = 12; // 12px cells, significantly denser
-            const cols = Math.ceil(rect.width / cellSize);
-            const rows = Math.ceil(rect.height / cellSize);
-            // Add a small buffer to ensure coverage
-            const newPixels = Array.from({ length: cols * rows }, (_, i) => ({
-                id: i,
-                x: (i % cols) * cellSize,
-                y: Math.floor(i / cols) * cellSize,
-                size: cellSize
-            }));
-            setPixels(newPixels);
-            pixelRefs.current = pixelRefs.current.slice(0, newPixels.length);
-        });
-        resizeObserver.observe(containerRef.current);
-        return () => resizeObserver.disconnect();
-    }, []);
-
-    const animationFrameId = useRef(null);
-
-    // New Random Hue on EVERY Enter
-    const handleMouseEnter = () => {
-        currentHue.current = Math.floor(Math.random() * 360);
-    };
-
-    const handleMouseMove = (e) => {
-        if (!containerRef.current) return;
-        const rect = containerRef.current.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-
-        // Optimize: Use requestAnimationFrame to throttle updates to screen refresh rate
-        cancelAnimationFrame(animationFrameId.current);
-        animationFrameId.current = requestAnimationFrame(() => {
-            pixelRefs.current.forEach((pixel, index) => {
-                if (!pixel) return;
-                const px = pixels[index].x + pixels[index].size / 2;
-                const py = pixels[index].y + pixels[index].size / 2;
-
-                // True Euclidean Distance
-                const dist = Math.hypot(x - px, y - py);
-                const radius = 20; // Tight core
-
-                if (dist < radius) {
-                    // CORE: Solid Light
-                    pixel.style.transition = 'none'; // Instant ON
-                    pixel.style.opacity = '1';
-                    pixel.style.backgroundColor = `hsl(${currentHue.current}, 100%, 60%)`;
-                    pixel.style.boxShadow = `0 0 10px hsl(${currentHue.current}, 100%, 60%)`;
-                } else {
-                    // OUTER: Exponential Decay
-                    // Divisor 50 = Long "throw" to cover the whole box
-                    const decay = Math.exp(-(dist - radius) / 50);
-
-                    // Always apply, no cutoff
-                    pixel.style.transition = 'none';
-                    pixel.style.opacity = decay.toFixed(3);
-                    pixel.style.backgroundColor = `hsl(${currentHue.current}, 100%, 60%)`;
-                    pixel.style.boxShadow = 'none';
-                }
-            });
-        });
-    };
-
-    const handleMouseLeave = () => {
-        cancelAnimationFrame(animationFrameId.current);
-        pixelRefs.current.forEach(pixel => {
-            if (pixel) {
-                pixel.style.transition = 'opacity 0.5s ease-out'; // Slow smooth fade
-                pixel.style.opacity = '0';
-                pixel.style.backgroundColor = 'transparent';
-                pixel.style.boxShadow = 'none';
-            }
-        });
-    };
-
-    return (
-        <motion.a
-            href={link.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            ref={containerRef}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            className={cn(
-                "group relative overflow-hidden rounded-xl border border-white/5 bg-white/5 p-2.5 sm:p-4 transition-all neon-border-card decoration-0",
-                isLastOdd && "col-span-2"
-            )}
-            onMouseEnter={handleMouseEnter}
-            onMouseMove={handleMouseMove}
-            onMouseLeave={handleMouseLeave}
-        >
-            {/* Background Grid Layer */}
-            <div className="absolute inset-0 pointer-events-none z-0">
-                {pixels.map((p, i) => (
-                    <div
-                        key={p.id}
-                        ref={el => pixelRefs.current[i] = el}
-                        className="pixel-cell absolute"
-                        style={{
-                            left: p.x,
-                            top: p.y,
-                            width: p.size,
-                            height: p.size,
-                            opacity: 0,
-                            willChange: 'opacity, background-color'
-                        }}
-                    />
-                ))}
-            </div>
-
-            {/* Content Layer (z-10 to stay above grid) */}
-            <div className="relative z-10 flex items-center justify-center gap-2 sm:gap-3 pointer-events-none">
-                <div
-                    className="h-5 w-5 sm:h-6 sm:w-6 bg-white/80 transition-colors group-hover:bg-white"
-                    style={{
-                        maskImage: `url(${link.icon})`,
-                        WebkitMaskImage: `url(${link.icon})`,
-                        maskSize: 'contain',
-                        WebkitMaskSize: 'contain',
-                        maskRepeat: 'no-repeat',
-                        WebkitMaskRepeat: 'no-repeat',
-                        maskPosition: 'center',
-                        WebkitMaskPosition: 'center'
-                    }}
-                />
-                <span className="font-medium text-sm sm:text-base text-white/80 transition-colors group-hover:text-white">
-                    {link.name}
-                </span>
-            </div>
-        </motion.a>
-    );
-};
-
 
 const FALLBACK_IMAGE = 'img/profile.jpg';
 
 function Hero({ userConfig, openModal }) {
-    const x = useMotionValue(0);
-    const y = useMotionValue(0);
-
-    const mouseX = useSpring(x, { stiffness: 150, damping: 15 });
-    const mouseY = useSpring(y, { stiffness: 150, damping: 15 });
-
-    const rotateX = useTransform(mouseY, [-0.5, 0.5], ["10deg", "-10deg"]);
-    const rotateY = useTransform(mouseX, [-0.5, 0.5], ["-10deg", "10deg"]);
-
-    const rectRef = useRef(null);
-    const isMobile = useRef(false);
-
-    useEffect(() => {
-        isMobile.current = window.matchMedia("(max-width: 768px)").matches;
-    }, []);
-
-    const handleMouseEnter = (e) => {
-        if (isMobile.current) return;
-        rectRef.current = e.currentTarget.getBoundingClientRect();
-    };
-
-    const handleMouseMove = (e) => {
-        if (isMobile.current || !rectRef.current) return;
-        const width = rectRef.current.width;
-        const height = rectRef.current.height;
-        const mouseXVal = e.clientX - rectRef.current.left;
-        const mouseYVal = e.clientY - rectRef.current.top;
-        const xPct = mouseXVal / width - 0.5;
-        const yPct = mouseYVal / height - 0.5;
-        x.set(xPct);
-        y.set(yPct);
-    };
-
-    const handleMouseLeave = () => {
-        x.set(0);
-        y.set(0);
-        rectRef.current = null;
-    };
+    const { welcomeMessageText, handle, location, status, tagline, socialMediaLinks } = userConfig;
 
     return (
-        <section id="hero" className="flex flex-col items-center justify-center relative overflow-hidden py-6 md:py-10">
-            <div className="flex flex-col md:flex-row items-center justify-center w-full z-10 gap-10">
-                <motion.div
-                    initial={{ opacity: 0, scale: 0.5 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.5 }}
-                    className="relative perspective-1000"
-                    onMouseEnter={handleMouseEnter}
-                    onMouseMove={handleMouseMove}
-                    onMouseLeave={handleMouseLeave}
-                    style={{ rotateX, rotateY }}
-                >
-                    <div className="profile-ring mb-6 md:mb-0">
-                        <ImageWithLoader
-                            id="profileImage"
-                            src={userConfig.profileImageUrl}
-                            alt="Profile Picture"
-                            className="w-36 h-36 sm:w-44 sm:h-44 md:w-64 md:h-64 lg:w-72 lg:h-72 rounded-full object-cover block"
-                            onError={(e) => {
-                                e.target.src = FALLBACK_IMAGE;
-                                openModal('Image failed to load.');
-                            }}
-                        />
+        <section
+            id="hero"
+            className="relative min-h-[90vh] flex flex-col justify-center px-[5vw] pt-24 pb-12 bg-sys-black text-sys-white hud-bracket hud-bracket-tl hud-bracket-br border-b border-sys-white/20"
+        >
+            <div className="max-w-7xl mx-auto w-full grid grid-cols-1 md:grid-cols-12 gap-10 items-end relative z-10">
+                {/* Left HUD ident column */}
+                <div className="col-span-1 md:col-span-4 font-mono text-sm tracking-widest leading-relaxed flex flex-col gap-6 uppercase">
+                    <div>
+                        <span className="text-sys-purple block mb-1">&gt;&gt; HANDLE</span>
+                        <p>{handle}</p>
                     </div>
-                </motion.div>
+                    <div>
+                        <span className="text-sys-purple block mb-1">&gt;&gt; ORIGIN</span>
+                        <p>{location}</p>
+                    </div>
+                    <div>
+                        <span className="text-sys-purple block mb-1">&gt;&gt; STATUS</span>
+                        <p>
+                            <span className="text-sys-yellow">■</span> {status}
+                        </p>
+                    </div>
+                    <div className="h-px w-full bg-sys-white/20 my-2"></div>
 
-                <div className="text-center md:text-left relative z-10 w-full max-w-lg">
+                    {/* Social icon strip */}
+                    <div className="grid grid-cols-5 gap-px bg-sys-white/10 border border-sys-white/10">
+                        {socialMediaLinks.map((link) => (
+                            <a
+                                key={link.url}
+                                href={link.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                aria-label={link.name}
+                                className="group relative flex items-center justify-center aspect-square bg-sys-black hover:bg-sys-yellow hover-snap"
+                            >
+                                <div
+                                    className="h-5 w-5 bg-sys-white group-hover:bg-sys-black hover-snap"
+                                    style={{
+                                        maskImage: `url(${link.icon})`,
+                                        WebkitMaskImage: `url(${link.icon})`,
+                                        maskSize: 'contain',
+                                        WebkitMaskSize: 'contain',
+                                        maskRepeat: 'no-repeat',
+                                        WebkitMaskRepeat: 'no-repeat',
+                                        maskPosition: 'center',
+                                        WebkitMaskPosition: 'center',
+                                    }}
+                                />
+                            </a>
+                        ))}
+                    </div>
+                </div>
+
+                {/* Right massive typography + profile */}
+                <div className="col-span-1 md:col-span-8 flex flex-col gap-8">
+                    <div className="flex items-end gap-6">
+                        <div className="w-24 h-24 md:w-32 md:h-32 flex-shrink-0 border border-sys-white/30 overflow-hidden">
+                            <ImageWithLoader
+                                id="profileImage"
+                                src={userConfig.profileImageUrl}
+                                alt="Profile"
+                                className="w-full h-full object-cover hover-snap"
+                                onError={(e) => {
+                                    e.target.src = FALLBACK_IMAGE;
+                                    openModal && openModal('Image failed to load.');
+                                }}
+                            />
+                        </div>
+                        <div className="font-mono text-xs uppercase tracking-widest text-sys-white/60 pb-2">
+                            <div>REGISTERED</div>
+                            <div className="text-sys-yellow">2005-12-19</div>
+                        </div>
+                    </div>
+
                     <motion.h1
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.2, duration: 0.5 }}
-                        id="welcomeMessage"
-                        className="text-5xl sm:text-6xl md:text-8xl font-black mb-6 gradient-text"
+                        transition={{ duration: 0.6, ease: 'easeOut' }}
+                        className="font-display text-[18vw] md:text-[14vw] leading-[0.85] tracking-tighter uppercase m-0"
                     >
-                        {userConfig.welcomeMessageText}
+                        <span className="block">{welcomeMessageText}</span>
+                        <span className="block text-stroke-white">_SHARK</span>
                     </motion.h1>
 
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.4, duration: 0.5 }}
-                        id="socialLinks"
-                        className="grid grid-cols-2 gap-2 sm:gap-3 mb-6 w-full"
-                    >
-                        {userConfig.socialMediaLinks.map((link, index) => {
-                            const isLastOdd = index === userConfig.socialMediaLinks.length - 1 && userConfig.socialMediaLinks.length % 2 !== 0;
-                            return <PixelLink key={link.url} link={link} isLastOdd={isLastOdd} />;
-                        })}
-                    </motion.div>
+                    <div className="flex items-center gap-4">
+                        <div className="h-[2px] flex-grow bg-sys-yellow"></div>
+                        <p className="font-mono text-sm md:text-base uppercase tracking-widest text-sys-yellow">
+                            {tagline}
+                        </p>
+                    </div>
                 </div>
             </div>
+
+            {/* Ambient geometric decor */}
+            <div className="hidden md:block absolute top-[20%] right-[8%] w-48 h-48 border border-sys-purple/40 rotate-45 pointer-events-none"></div>
+            <div className="hidden md:block absolute bottom-[15%] left-[45%] w-24 h-24 border border-sys-white/10 rotate-12 pointer-events-none"></div>
         </section>
     );
 }

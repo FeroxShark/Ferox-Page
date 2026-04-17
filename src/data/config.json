@@ -1,57 +1,21 @@
 {
   "profileImageUrl": "img/profile.jpg",
   "welcomeMessageText": "Ferox",
+  "handle": "FEROX_SHARK",
+  "location": "ARGENTINA // UTC-3",
+  "status": "ONLINE",
+  "tagline": "Software engineer. Furry. Mess of interests.",
   "socialMediaLinks": [
-    {
-      "icon": "icons/twitter.svg",
-      "url": "https://x.com/Ferox_Shark",
-      "name": "Twitter"
-    },
-    {
-      "icon": "icons/instagram.svg",
-      "url": "https://www.instagram.com/feroxshark/",
-      "name": "Instagram"
-    },
-    {
-      "icon": "icons/steam.svg",
-      "url": "https://steamcommunity.com/id/feroxshark/",
-      "name": "Steam"
-    },
-    {
-      "icon": "icons/discord.svg",
-      "url": "https://discord.com/invite/7uDqm4Khhm",
-      "name": "Discord"
-    },
-    {
-      "icon": "icons/telegram.svg",
-      "url": "https://t.me/feroxshark",
-      "name": "Telegram"
-    },
-    {
-      "icon": "icons/vr-cardboard.svg",
-      "url": "https://vrchat.com/home/user/usr_b51db741-9cef-4095-b436-4367176fc4bb",
-      "name": "VRChat"
-    },
-    {
-      "icon": "icons/twitch.svg",
-      "url": "https://www.twitch.tv/ferox_uwu",
-      "name": "Twitch"
-    },
-    {
-      "icon": "icons/paw.svg",
-      "url": "https://www.furaffinity.net/user/feroxshark",
-      "name": "Fur Affinity"
-    },
-    {
-      "icon": "icons/tiktok.svg",
-      "url": "https://www.tiktok.com/@feroxshark",
-      "name": "TikTok"
-    },
-    {
-      "icon": "icons/github.svg",
-      "url": "https://github.com/FeroxShark",
-      "name": "GitHub"
-    }
+    { "icon": "icons/twitter.svg", "url": "https://x.com/Ferox_Shark", "name": "Twitter" },
+    { "icon": "icons/instagram.svg", "url": "https://www.instagram.com/feroxshark/", "name": "Instagram" },
+    { "icon": "icons/steam.svg", "url": "https://steamcommunity.com/id/feroxshark/", "name": "Steam" },
+    { "icon": "icons/discord.svg", "url": "https://discord.com/invite/7uDqm4Khhm", "name": "Discord" },
+    { "icon": "icons/telegram.svg", "url": "https://t.me/feroxshark", "name": "Telegram" },
+    { "icon": "icons/vr-cardboard.svg", "url": "https://vrchat.com/home/user/usr_b51db741-9cef-4095-b436-4367176fc4bb", "name": "VRChat" },
+    { "icon": "icons/twitch.svg", "url": "https://www.twitch.tv/ferox_uwu", "name": "Twitch" },
+    { "icon": "icons/paw.svg", "url": "https://www.furaffinity.net/user/feroxshark", "name": "Fur Affinity" },
+    { "icon": "icons/tiktok.svg", "url": "https://www.tiktok.com/@feroxshark", "name": "TikTok" },
+    { "icon": "icons/github.svg", "url": "https://github.com/FeroxShark", "name": "GitHub" }
   ],
   "aboutSectionTitle": "Hewo! My name is Ferox",
   "birthday": "2005-12-19",
@@ -62,31 +26,57 @@
     "I am currently studying Software Engineering at Siglo 21 University and making some investments as a hobby.",
     "Cya! :3"
   ],
+  "setup": [
+    { "category": "COMPUTE_CORE", "designation": "AMD RYZEN 5 7600", "status": "6C/12T // 5.17 GHZ BOOST" },
+    { "category": "RENDER_ENGINE", "designation": "NVIDIA RTX 3090", "status": "24GB VRAM // LOCAL AI" },
+    { "category": "MAINBOARD", "designation": "ASROCK X870 PRO-A WIFI", "status": "AM5 // PCIE 5.0" },
+    { "category": "MEMORY_BANK", "designation": "32GB DDR5", "status": "DUAL CHANNEL" },
+    { "category": "PRIMARY_OPTIC", "designation": "GIGABYTE 1080P", "status": "1920X1080 // 200HZ" },
+    { "category": "VR_RIG", "designation": "META QUEST PRO", "status": "PANCAKE // EYE-TRACKED" },
+    { "category": "TACTICAL_INPUT", "designation": "DUCKY ONE 2 MINI // G PRO X SUPERLIGHT", "status": "60% // WIRELESS" },
+    { "category": "SOFTWARE_STACK", "designation": "ARCH LINUX", "status": "BTW" }
+  ],
+  "favorites": {
+    "games": [
+      { "title": "Satisfactory", "caption": "FACTORY // SANDBOX", "url": "https://store.steampowered.com/app/526870/Satisfactory/" },
+      { "title": "Subnautica", "caption": "SURVIVAL // OCEAN", "url": "https://store.steampowered.com/app/264710/Subnautica/" },
+      { "title": "Cyberpunk 2077", "caption": "RPG // NIGHT CITY", "url": "https://store.steampowered.com/app/1091500/Cyberpunk_2077/" },
+      { "title": "Horizon Zero Dawn", "caption": "RPG // MACHINES", "url": "https://store.steampowered.com/app/1151640/Horizon_Zero_Dawn_Complete_Edition/" },
+      { "title": "Horizon Forbidden West", "caption": "RPG // SEQUEL", "url": "https://store.steampowered.com/app/2420110/Horizon_Forbidden_West_Complete_Edition/" },
+      { "title": "Portal", "caption": "PUZZLE // CANON", "url": "https://store.steampowered.com/app/400/Portal/" },
+      { "title": "Signalis", "caption": "HORROR // PS1-CORE", "url": "https://store.steampowered.com/app/1262350/SIGNALIS/" },
+      { "title": "Half-Life: Alyx", "caption": "VR // STANDARD-SETTER", "url": "https://store.steampowered.com/app/546560/HalfLife_Alyx/" },
+      { "title": "VRChat", "caption": "SOCIAL // DORMANT", "url": "https://store.steampowered.com/app/438100/VRChat/" }
+    ],
+    "music": [
+      { "title": "Space Oddity", "caption": "DAVID BOWIE", "url": "https://www.youtube.com/watch?v=iYYRH4apXDo" },
+      { "title": "180db_[130]", "caption": "APHEX TWIN", "url": "https://www.youtube.com/watch?v=hNlRYHdI8mQ" },
+      { "title": "The World We Knew", "caption": "FRANK SINATRA", "url": "https://www.youtube.com/watch?v=s1ABWNYZaFE" },
+      { "title": "Where's Your Head At", "caption": "BASEMENT JAXX", "url": "https://www.youtube.com/watch?v=jwUCcedbe2E" },
+      { "title": "Better Now", "caption": "POST MALONE", "url": "https://www.youtube.com/watch?v=Oggrsg4jZPM" }
+    ],
+    "other": [
+      { "title": "White Monster", "caption": "FUEL // CRITICAL" },
+      { "title": "Black Coffee", "caption": "BACKUP_POWER" },
+      { "title": "Murder Drones", "caption": "ANIMATION // GLITTER PROD" },
+      { "title": "Cyberpunk: Edgerunners", "caption": "ANIME // TRIGGER" }
+    ]
+  },
+  "manifesto": {
+    "intro": "",
+    "sections": [
+      "I'm Juan Martin, online as Ferox. Argentinian, software engineering student at Siglo 21, part-time investor, full-time furry, and occasional artist. This page exists because I got tired of every handle linking back to another handle. A bridge with nothing on it is just a redirect.",
+      "If you found this page, you probably know me from somewhere. If not — welcome. Stay for the weird stuff."
+    ],
+    "pullQuote": "A bridge with nothing on it is just a redirect."
+  },
   "galleryItems": [
-    {
-      "imageUrl": "img/gallery/artwork1.jpg",
-      "description": "Artwork 1 description (optional)"
-    },
-    {
-      "imageUrl": "img/gallery/artwork2.jpg",
-      "description": "Artwork 2 description"
-    },
-    {
-      "imageUrl": "img/gallery/artwork3.jpg",
-      "description": "Artwork 3"
-    },
-    {
-      "imageUrl": "img/gallery/artwork4.jpg",
-      "description": "One more artwork with a slightly longer description to test text flow."
-    },
-    {
-      "imageUrl": "img/gallery/artwork5.jpg",
-      "description": "Artwork 5"
-    },
-    {
-      "imageUrl": "img/gallery/artwork6.jpg",
-      "description": "Artwork 6"
-    }
+    { "imageUrl": "img/gallery/artwork1.jpg", "description": "Artwork 1 description (optional)" },
+    { "imageUrl": "img/gallery/artwork2.jpg", "description": "Artwork 2 description" },
+    { "imageUrl": "img/gallery/artwork3.jpg", "description": "Artwork 3" },
+    { "imageUrl": "img/gallery/artwork4.jpg", "description": "One more artwork with a slightly longer description to test text flow." },
+    { "imageUrl": "img/gallery/artwork5.jpg", "description": "Artwork 5" },
+    { "imageUrl": "img/gallery/artwork6.jpg", "description": "Artwork 6" }
   ],
   "backgroundImages": [
     "img/backgrounds/bg1.jpg",
@@ -97,6 +87,7 @@
   ],
   "footerInfo": {
     "text": "Ferox · All rights reserved.",
-    "lastUpdateDate": "April 2026"
+    "lastUpdateDate": "April 2026",
+    "contactEmail": "mailto:feroxshark@gmail.com"
   }
 }

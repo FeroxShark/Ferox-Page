@@ -7,64 +7,30 @@ export default {
   theme: {
     extend: {
       colors: {
-        border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
-        primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
-        },
-        secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
-        },
-        destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))",
-        },
-        muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
-        },
-        accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
-        },
-        popover: {
-          DEFAULT: "hsl(var(--popover))",
-          foreground: "hsl(var(--popover-foreground))",
-        },
-        card: {
-          DEFAULT: "hsl(var(--card))",
-          foreground: "hsl(var(--card-foreground))",
-        },
+        'sys-black': '#050505',
+        'sys-white': '#F4F4F4',
+        'sys-yellow': '#FFED00',
+        'sys-yellow-soft': '#FFF873',
+        'sys-purple': '#B829FF',
+        'sys-purple-deep': '#710878',
+      },
+      fontFamily: {
+        display: ['Anton', 'sans-serif'],
+        mono: ['"Share Tech Mono"', 'ui-monospace', 'monospace'],
+        body: ['"Space Grotesk"', 'Inter', 'sans-serif'],
+        sans: ['"Space Grotesk"', 'Inter', 'sans-serif'],
       },
       borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
+        none: '0px',
+        DEFAULT: '0px',
+      },
+      borderWidth: {
+        '1': '1px',
+      },
+      spacing: {
+        'vw': '5vw',
       },
     },
-    perspective: {
-      '1000': '1000px',
-    },
   },
-  plugins: [
-    function ({ addUtilities }) {
-      const newUtilities = {
-        '.perspective-1000': {
-          perspective: '1000px',
-        },
-        '.transform-style-3d': {
-          transformStyle: 'preserve-3d',
-        },
-        '.backface-hidden': {
-          backfaceVisibility: 'hidden',
-        },
-      }
-      addUtilities(newUtilities)
-    }
-  ],
+  plugins: [],
 }
