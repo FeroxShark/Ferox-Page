@@ -2,19 +2,21 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import ImageWithLoader from './ImageWithLoader';
 
-const FALLBACK_IMAGE = 'img/profile.jpg';
+// Neutral inline placeholder so a failed profile image never loops on itself.
+const FALLBACK_IMAGE =
+    "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='128' height='128'%3E%3Crect width='128' height='128' fill='%23111'/%3E%3Ctext x='50%25' y='50%25' fill='%23B829FF' font-family='monospace' font-size='10' text-anchor='middle' dy='.3em'%3ENO_SIGNAL%3C/text%3E%3C/svg%3E";
 
 function Hero({ userConfig, openModal }) {
-    const { welcomeMessageText, handle, location, status, tagline, socialMediaLinks } = userConfig;
+    const { welcomeMessageText, handle, location, status, tagline, socialMediaLinks, birthday } = userConfig;
 
     return (
         <section
             id="hero"
             className="relative min-h-[90vh] flex flex-col justify-center px-[5vw] pt-24 pb-12 bg-sys-black text-sys-white hud-bracket hud-bracket-tl hud-bracket-br border-b border-sys-white/20"
         >
-            <div className="max-w-7xl mx-auto w-full grid grid-cols-1 md:grid-cols-12 gap-10 items-end relative z-10">
+            <div className="max-w-7xl mx-auto w-full grid grid-cols-1 md:grid-cols-12 gap-10 items-center relative z-10">
                 {/* Left HUD ident column */}
-                <div className="col-span-1 md:col-span-4 font-mono text-sm tracking-widest leading-relaxed flex flex-col gap-6 uppercase">
+                <div className="order-2 md:order-1 col-span-1 md:col-span-4 font-mono text-sm tracking-widest leading-relaxed flex flex-col gap-6 uppercase">
                     <div>
                         <span className="text-sys-purple block mb-1">&gt;&gt; HANDLE</span>
                         <p>{handle}</p>
@@ -61,23 +63,24 @@ function Hero({ userConfig, openModal }) {
                 </div>
 
                 {/* Right massive typography + profile */}
-                <div className="col-span-1 md:col-span-8 flex flex-col gap-8">
+                <div className="order-1 md:order-2 col-span-1 md:col-span-8 flex flex-col gap-8">
                     <div className="flex items-end gap-6">
                         <div className="w-24 h-24 md:w-32 md:h-32 flex-shrink-0 border border-sys-white/30 overflow-hidden">
                             <ImageWithLoader
                                 id="profileImage"
                                 src={userConfig.profileImageUrl}
-                                alt="Profile"
+                                alt="Ferox profile portrait"
                                 className="w-full h-full object-cover hover-snap"
                                 onError={(e) => {
+                                    if (e.target.src.startsWith('data:')) return;
                                     e.target.src = FALLBACK_IMAGE;
-                                    openModal && openModal('Image failed to load.');
+                                    openModal && openModal('Profile image failed to load.');
                                 }}
                             />
                         </div>
                         <div className="font-mono text-xs uppercase tracking-widest text-sys-white/60 pb-2">
                             <div>REGISTERED</div>
-                            <div className="text-sys-yellow">2005-12-19</div>
+                            <div className="text-sys-yellow">{birthday}</div>
                         </div>
                     </div>
 
@@ -88,7 +91,7 @@ function Hero({ userConfig, openModal }) {
                         className="font-display text-[18vw] md:text-[14vw] leading-[0.85] tracking-tighter uppercase m-0"
                     >
                         <span className="block">{welcomeMessageText}</span>
-                        <span className="block text-stroke-white">_SHARK</span>
+                        <span className="block text-stroke-white text-stroke-2">_SHARK</span>
                     </motion.h1>
 
                     <div className="flex items-center gap-4">

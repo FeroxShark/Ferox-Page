@@ -3,6 +3,7 @@ import React from 'react';
 function Footer({ userConfig }) {
     const year = new Date().getFullYear();
     const contact = userConfig.footerInfo?.contactEmail;
+    const lastSync = __BUILD_DATE__;
 
     return (
         <footer className="relative bg-sys-yellow text-sys-black overflow-hidden py-16 md:py-20 px-[5vw] border-t border-sys-purple border-b-8 border-b-sys-purple">
@@ -34,12 +35,12 @@ function Footer({ userConfig }) {
                 </div>
 
                 <div className="text-left md:text-right w-full md:w-auto">
-                    <h2 className="font-display text-[12vw] md:text-[6vw] leading-[0.8] uppercase tracking-tighter text-sys-black">
+                    <h2 className="font-display text-[12vw] md:text-[6vw] leading-[0.92] uppercase tracking-tighter text-sys-black">
                         END_OF<br />TRANSMISSION
                     </h2>
-                    <div className="font-mono text-[10px] md:text-xs mt-4 flex flex-wrap justify-start md:justify-end gap-4 md:gap-6 text-sys-black/70 font-bold uppercase tracking-widest">
+                    <div className="font-mono text-[10px] md:text-xs mt-4 flex flex-wrap justify-start md:justify-end gap-4 md:gap-6 text-sys-black/80 font-bold uppercase tracking-widest">
                         <span>SYS.YEAR: {year}</span>
-                        <span>LAST_SYNC: {userConfig.footerInfo?.lastUpdateDate}</span>
+                        <span>LAST_SYNC: {lastSync}</span>
                         <span>SESSION_ID: 0XF83A_B</span>
                     </div>
                 </div>

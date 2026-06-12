@@ -48,13 +48,14 @@ function Modal({ isOpen, message, onClose }) {
             }}
         >
             <div className="modal-content">
-                <span className="modal-close-button" onClick={onClose}>
+                <button
+                    className="modal-close-button"
+                    onClick={onClose}
+                    aria-label="Close"
+                >
                     ×
-                </span>
-                <p
-                    id="modalMessageText"
-                    dangerouslySetInnerHTML={{ __html: message }}
-                />
+                </button>
+                <p id="modalMessageText">{message}</p>
             </div>
         </div>
     );

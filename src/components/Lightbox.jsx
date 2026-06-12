@@ -6,6 +6,8 @@ function Lightbox({ index, userConfig, onClose, showPrev, showNext, onJumpTo }) 
     const previousFocus = useRef(null);
     const thumbsRef = useRef(null);
     const activeThumbRef = useRef(null);
+    const overlayRef = useRef(null);
+    const closeBtnRef = useRef(null);
 
     // Lock scroll + restore focus
     useEffect(() => {
@@ -16,18 +18,47 @@ function Lightbox({ index, userConfig, onClose, showPrev, showNext, onJumpTo }) 
         }
         document.body.style.overflow = 'hidden';
         previousFocus.current = document.activeElement;
+        // Move focus into the dialog so the keyboard user starts inside it
+        closeBtnRef.current?.focus();
     }, [index]);
 
-    // Keyboard navigation
+    // Keyboard navigation + focus trap
     useEffect(() => {
         if (index === null) return;
         const handler = (e) => {
             if (e.key === 'ArrowLeft') showPrev();
             if (e.key === 'ArrowRight') showNext();
+            if (e.key === 'Tab') {
+                const focusable = overlayRef.current?.querySelectorAll(
+                    'button, [href], [tabindex]:not([tabindex="-1"])',
+                );
+                if (!focusable || focusable.length === 0) return;
+                const first = focusable[0];
+                const last = focusable[focusable.length - 1];
+                if (e.shiftKey && document.activeElement === first) {
+                    e.preventDefault();
+                    last.focus();
+                } else if (!e.shiftKey && document.activeElement === last) {
+                    e.preventDefault();
+                    first.focus();
+                }
+            }
         };
         window.addEventListener('keydown', handler);
         return () => window.removeEventListener('keydown', handler);
     }, [index, showPrev, showNext]);
+
+    // Preload neighbouring images so arrow navigation doesn't flash
+    useEffect(() => {
+        if (index === null) return;
+        [index - 1, index + 1].forEach((i) => {
+            const item = items[(i + items.length) % items.length];
+            if (item) {
+                const img = new Image();
+                img.src = item.imageUrl;
+            }
+        });
+    }, [index, items]);
 
     // Scroll active thumbnail into view
     useEffect(() => {
@@ -50,6 +81,7 @@ function Lightbox({ index, userConfig, onClose, showPrev, showNext, onJumpTo }) 
             {index !== null && (
                 <motion.div
                     key="lightbox"
+                    ref={overlayRef}
                     className="lightbox-overlay"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
@@ -66,11 +98,14 @@ function Lightbox({ index, userConfig, onClose, showPrev, showNext, onJumpTo }) 
                             {index + 1} / {items.length}
                         </span>
                         <button
+                            ref={closeBtnRef}
                             className="lightbox-close"
                             onClick={onClose}
                             aria-label="Close"
                         >
-                            <i className="fas fa-times" />
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="square" aria-hidden="true">
+                                <path d="M6 6l12 12M18 6L6 18" />
+                            </svg>
                         </button>
                     </div>
 
@@ -100,14 +135,18 @@ function Lightbox({ index, userConfig, onClose, showPrev, showNext, onJumpTo }) 
                         onClick={(e) => { e.stopPropagation(); showPrev(); }}
                         aria-label="Previous image"
                     >
-                        <i className="fas fa-chevron-left" />
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="square" aria-hidden="true">
+                            <path d="M15 18l-6-6 6-6" />
+                        </svg>
                     </button>
                     <button
                         className="lightbox-arrow lightbox-arrow-next"
                         onClick={(e) => { e.stopPropagation(); showNext(); }}
                         aria-label="Next image"
                     >
-                        <i className="fas fa-chevron-right" />
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="square" aria-hidden="true">
+                            <path d="M9 18l6-6-6-6" />
+                        </svg>
                     </button>
 
                     {/* Thumbnail strip */}
@@ -125,7 +164,7 @@ function Lightbox({ index, userConfig, onClose, showPrev, showNext, onJumpTo }) 
                                 aria-label={`View image ${idx + 1}`}
                                 aria-pressed={idx === index}
                             >
-                                <img src={item.imageUrl} alt="" aria-hidden="true" />
+                                <img src={item.imageUrl} alt="" aria-hidden="true" loading="lazy" decoding="async" />
                             </button>
                         ))}
                     </div>

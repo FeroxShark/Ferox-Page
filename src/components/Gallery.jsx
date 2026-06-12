@@ -22,35 +22,29 @@ function Gallery({ userConfig, openLightbox }) {
                     {items.map((item, idx) => {
                         const id = String(idx + 1).padStart(3, '0');
                         return (
-                            <motion.div
+                            <motion.button
                                 key={idx}
+                                type="button"
                                 initial={{ opacity: 0 }}
                                 whileInView={{ opacity: 1 }}
                                 viewport={{ once: true }}
                                 transition={{ delay: idx * 0.04 }}
-                                role="button"
-                                tabIndex={0}
                                 aria-label={item.description || `Artwork ${idx + 1}`}
                                 onClick={() => openLightbox(idx)}
-                                onKeyDown={(e) => {
-                                    if (e.key === 'Enter' || e.key === ' ') {
-                                        e.preventDefault();
-                                        openLightbox(idx);
-                                    }
-                                }}
-                                className="group relative overflow-hidden bg-sys-black cursor-pointer"
+                                className="group relative overflow-hidden bg-sys-black cursor-pointer text-left focus:outline-none focus-visible:ring-4 focus-visible:ring-sys-yellow focus-visible:ring-inset"
                             >
                                 <img
                                     src={item.imageUrl}
-                                    alt={`Artwork ${idx + 1}`}
+                                    alt={item.description || `Artwork ${idx + 1}`}
                                     loading="lazy"
-                                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                    decoding="async"
+                                    className="w-full h-full object-cover"
                                 />
                                 <div className="absolute inset-0 border-[6px] border-transparent group-hover:border-sys-yellow pointer-events-none hover-snap"></div>
                                 <div className="absolute bottom-3 left-3 bg-sys-black text-sys-white px-2 py-1 font-mono text-[10px] uppercase tracking-widest">
                                     FILE_{id}
                                 </div>
-                            </motion.div>
+                            </motion.button>
                         );
                     })}
                 </div>

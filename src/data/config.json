@@ -17,15 +17,7 @@
     { "icon": "icons/tiktok.svg", "url": "https://www.tiktok.com/@feroxshark", "name": "TikTok" },
     { "icon": "icons/github.svg", "url": "https://github.com/FeroxShark", "name": "GitHub" }
   ],
-  "aboutSectionTitle": "Hewo! My name is Ferox",
   "birthday": "2005-12-19",
-  "aboutMeContent": [
-    "I'm a {{age}}-year-old furry from Argentina 🇦🇷",
-    "Addicted to White Monster and black coffee",
-    "<br>",
-    "I am currently studying Software Engineering at Siglo 21 University and making some investments as a hobby.",
-    "Cya! :3"
-  ],
   "setup": [
     { "category": "COMPUTE_CORE", "designation": "AMD RYZEN 5 7600", "status": "6C/12T // 5.17 GHZ BOOST" },
     { "category": "RENDER_ENGINE", "designation": "NVIDIA RTX 3090", "status": "24GB VRAM // LOCAL AI" },
@@ -65,27 +57,23 @@
   "manifesto": {
     "intro": "",
     "sections": [
-      "I'm Juan Martin, online as Ferox. Argentinian, software engineering student at Siglo 21, part-time investor, full-time furry, and occasional artist. This page exists because I got tired of every handle linking back to another handle. A bridge with nothing on it is just a redirect.",
+      "I'm Juan Martin, online as Ferox. Argentinian, software engineering student at Siglo 21, part-time investor, full-time furry, and occasional artist. This page exists because I got tired of every handle linking back to another handle.",
       "If you found this page, you probably know me from somewhere. If not — welcome. Stay for the weird stuff."
     ],
     "pullQuote": "A bridge with nothing on it is just a redirect."
   },
   "galleryItems": [
-    { "imageUrl": "img/gallery/artwork1.jpg", "description": "Artwork 1 description (optional)" },
-    { "imageUrl": "img/gallery/artwork3.jpg", "description": "Artwork 3" },
-    { "imageUrl": "img/gallery/artwork5.jpg", "description": "Artwork 5" },
-    { "imageUrl": "img/gallery/artwork9.png", "description": "Artwork 9" }
-  ],
-  "backgroundImages": [
-    "img/backgrounds/bg1.jpg",
-    "img/backgrounds/bg2.jpg",
-    "img/backgrounds/bg3.jpg",
-    "img/backgrounds/bg4.jpg",
-    "img/backgrounds/bg5.jpg"
+    { "imageUrl": "img/gallery/artwork1.webp", "description": "Ferox's dark canine-shark fursona with a spiky orange mane and glowing neon eyes in a dim room" },
+    { "imageUrl": "img/gallery/artwork2.webp", "description": "Two furry characters embracing at sunset" },
+    { "imageUrl": "img/gallery/artwork3.webp", "description": "Bright orange fox character portrait, smiling among sparkles" },
+    { "imageUrl": "img/gallery/artwork4.webp", "description": "Two canine characters nuzzling, surrounded by hearts" },
+    { "imageUrl": "img/gallery/artwork5.webp", "description": "Grey wolf with glowing pink markings on a yellow background" },
+    { "imageUrl": "img/gallery/artwork6.webp", "description": "Two foxes cuddling in winter sweaters in the snow" },
+    { "imageUrl": "img/gallery/artwork7.webp", "description": "Ferox's fursona facing the camera, orange mane and glowing magenta face markings" },
+    { "imageUrl": "img/gallery/artwork8.webp", "description": "Ferox's fursona in profile with head raised, pink glowing stripes along the body" }
   ],
   "footerInfo": {
     "text": "Ferox · All rights reserved.",
-    "lastUpdateDate": "April 2026",
     "contactEmail": "mailto:feroxshark@gmail.com"
   }
 }

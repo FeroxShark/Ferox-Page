@@ -30,12 +30,12 @@ function Favorites({ userConfig }) {
                 />
 
                 <div className="flex flex-col gap-px bg-sys-white/10 border border-sys-white/10">
-                    {/* Header row */}
-                    <div className="grid grid-cols-12 gap-4 p-4 text-sys-white/50 font-mono text-[10px] bg-sys-black uppercase tracking-widest">
+                    {/* Header row — hidden on mobile where rows stack */}
+                    <div className="hidden md:grid grid-cols-12 gap-4 p-4 text-sys-white/70 font-mono text-[10px] bg-sys-black uppercase tracking-widest">
                         <div className="col-span-1">ID</div>
                         <div className="col-span-3">CATEGORY</div>
-                        <div className="col-span-5 md:col-span-6">ASSET_NAME</div>
-                        <div className="col-span-3 md:col-span-2 text-right">META</div>
+                        <div className="col-span-6">ASSET_NAME</div>
+                        <div className="col-span-2 text-right">META</div>
                     </div>
 
                     {rows.map((row, idx) => {
@@ -49,15 +49,18 @@ function Favorites({ userConfig }) {
                             <Tag
                                 key={`${row.categoryKey}-${idx}`}
                                 {...linkProps}
-                                className={`group grid grid-cols-12 gap-4 p-4 items-center bg-[#0a0a0a] ${meta.hoverBg} hover-snap ${row.url ? 'cursor-pointer' : ''}`}
+                                className={`group flex flex-col gap-1 md:grid md:grid-cols-12 md:gap-4 p-4 md:items-center bg-[#0a0a0a] ${meta.hoverBg} hover-snap ${row.url ? 'cursor-pointer' : ''}`}
                             >
-                                <div className="col-span-1 font-mono text-xs text-sys-white/40 group-hover:text-inherit">
-                                    {id}
+                                {/* Mobile meta line: id + category */}
+                                <div className="flex md:contents items-center gap-3 font-mono text-[10px] uppercase tracking-widest">
+                                    <div className="md:col-span-1 text-sys-white/60 group-hover:text-inherit">
+                                        {id}
+                                    </div>
+                                    <div className={`md:col-span-3 ${meta.color} group-hover:text-inherit`}>
+                                        {meta.label}
+                                    </div>
                                 </div>
-                                <div className={`col-span-3 font-mono text-[10px] uppercase tracking-widest ${meta.color} group-hover:text-inherit`}>
-                                    {meta.label}
-                                </div>
-                                <div className="col-span-5 md:col-span-6 font-display text-xl md:text-3xl uppercase tracking-tighter leading-tight">
+                                <div className="md:col-span-6 font-display text-2xl md:text-3xl uppercase tracking-tighter leading-tight break-words">
                                     {row.title}
                                     {row.url && (
                                         <span className="ml-3 font-mono text-[10px] align-middle opacity-0 group-hover:opacity-100">
@@ -65,7 +68,7 @@ function Favorites({ userConfig }) {
                                         </span>
                                     )}
                                 </div>
-                                <div className="col-span-3 md:col-span-2 text-right font-mono text-[10px] uppercase tracking-widest text-sys-white/60 group-hover:text-inherit">
+                                <div className="md:col-span-2 md:text-right font-mono text-[10px] uppercase tracking-widest text-sys-white/70 group-hover:text-inherit">
                                     {row.caption}
                                 </div>
                             </Tag>

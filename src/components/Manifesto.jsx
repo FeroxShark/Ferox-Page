@@ -24,18 +24,21 @@ function Manifesto({ userConfig }) {
             className="relative bg-sys-white text-sys-black py-24 md:py-32 px-[5vw] border-t border-sys-black border-b-[8px] border-b-sys-black"
         >
             <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-12">
-                {/* Sticky marker */}
+                {/* Sticky marker — header and meta share one sticky container
+                    so the metadata never slides under the heading on scroll */}
                 <div className="md:col-span-3">
-                    <div className="md:sticky md:top-12 font-mono text-xl md:text-2xl font-bold uppercase text-sys-purple tracking-tight border-l-4 border-sys-purple pl-4">
-                        04 // DIRECTIVE
-                    </div>
-                    <div className="hidden md:block mt-6 font-mono text-[10px] uppercase tracking-widest text-sys-black/50 pl-5 leading-relaxed">
-                        <div className="text-sys-purple mb-1">&gt;&gt; SUBJECT</div>
-                        <div>{userConfig.welcomeMessageText}</div>
-                        <div className="text-sys-purple mt-3 mb-1">&gt;&gt; AGE</div>
-                        <div>{age} CYCLES</div>
-                        <div className="text-sys-purple mt-3 mb-1">&gt;&gt; LOCATION</div>
-                        <div>{userConfig.location}</div>
+                    <div className="md:sticky md:top-12">
+                        <div className="font-mono text-xl md:text-2xl font-bold uppercase text-sys-purple tracking-tight border-l-4 border-sys-purple pl-4">
+                            04 // DIRECTIVE
+                        </div>
+                        <div className="hidden md:block mt-6 font-mono text-[10px] uppercase tracking-widest text-sys-black/60 pl-5 leading-relaxed">
+                            <div className="text-sys-purple mb-1">&gt;&gt; SUBJECT</div>
+                            <div>{userConfig.welcomeMessageText}</div>
+                            <div className="text-sys-purple mt-3 mb-1">&gt;&gt; AGE</div>
+                            <div>{age} CYCLES</div>
+                            <div className="text-sys-purple mt-3 mb-1">&gt;&gt; LOCATION</div>
+                            <div>{userConfig.location}</div>
+                        </div>
                     </div>
                 </div>
 

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import DOMPurify from 'dompurify';
 import Hero from './components/Hero';
 import Setup from './components/Setup';
 import Gallery from './components/Gallery';
@@ -15,6 +14,7 @@ const SCROLL_OFFSET_SHOW_TO_TOP = 200;
 function App() {
     const [userConfig] = useState(CONFIG);
     const [showToTop, setShowToTop] = useState(false);
+    const [hudVisible, setHudVisible] = useState(true);
     const [modalMessage, setModalMessage] = useState('');
     const [modalOpen, setModalOpen] = useState(false);
     const [lightboxIndex, setLightboxIndex] = useState(null);
@@ -26,8 +26,21 @@ function App() {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
+    // Hide the corner HUD once the footer scrolls into view so it doesn't
+    // overlap the footer's own corner metadata.
+    useEffect(() => {
+        const footer = document.querySelector('footer');
+        if (!footer) return;
+        const observer = new IntersectionObserver(
+            ([entry]) => setHudVisible(!entry.isIntersecting),
+            { threshold: 0.01 },
+        );
+        observer.observe(footer);
+        return () => observer.disconnect();
+    }, []);
+
     const openModal = (message) => {
-        setModalMessage(DOMPurify.sanitize(message));
+        setModalMessage(message);
         setModalOpen(true);
     };
     const closeModal = () => setModalOpen(false);
@@ -36,6 +49,8 @@ function App() {
         const src = userConfig.galleryItems[idx].imageUrl;
         const img = new Image();
         img.onload = () => setLightboxIndex(idx);
+        // Open anyway on error so a broken file never swallows the click.
+        img.onerror = () => setLightboxIndex(idx);
         img.src = src;
     };
     const closeLightbox = () => setLightboxIndex(null);
@@ -65,12 +80,17 @@ function App() {
 
     return (
         <>
+            {/* Skip to content for keyboard / screen-reader users */}
+            <a href="#hero" className="skip-link">
+                Skip to content
+            </a>
+
             {/* Scanline overlay */}
             <div className="scanline" aria-hidden="true"></div>
 
             {/* Persistent HUD frame — corner metadata, mix-blend */}
             <div
-                className="fixed inset-0 pointer-events-none z-40 p-[5vw] flex flex-col justify-between mix-blend-difference text-sys-white opacity-70 font-mono text-[10px] uppercase tracking-widest hidden md:flex"
+                className={`fixed inset-0 pointer-events-none z-40 p-[5vw] flex-col justify-between mix-blend-difference text-sys-white font-mono text-[10px] uppercase tracking-widest hidden md:flex transition-opacity duration-300 ${hudVisible ? 'opacity-70' : 'opacity-0'}`}
                 aria-hidden="true"
             >
                 <div className="flex justify-between w-full">
@@ -108,7 +128,18 @@ function App() {
                     aria-label="Back to top"
                     title="Back to top"
                 >
-                    ^
+                    <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2.5"
+                        strokeLinecap="square"
+                        aria-hidden="true"
+                    >
+                        <path d="M12 19V5M5 12l7-7 7 7" />
+                    </svg>
                 </button>
             )}
 

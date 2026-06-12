@@ -16,6 +16,14 @@
     scroll-behavior: smooth;
   }
 
+  /* Keyboard focus ring for every interactive element */
+  a:focus-visible,
+  button:focus-visible,
+  [tabindex]:focus-visible {
+    outline: 3px solid var(--sys-yellow);
+    outline-offset: 2px;
+  }
+
   body {
     background-color: var(--sys-black);
     color: var(--sys-white);
@@ -55,6 +63,28 @@
   .text-stroke-black {
     -webkit-text-stroke: 1px var(--sys-black);
     color: transparent;
+  }
+  .text-stroke-2 {
+    -webkit-text-stroke-width: 2px;
+  }
+
+  /* Skip-to-content link — visible only on keyboard focus */
+  .skip-link {
+    position: fixed;
+    top: -100%;
+    left: 1rem;
+    z-index: 1000;
+    background: var(--sys-yellow);
+    color: var(--sys-black);
+    padding: 0.75rem 1.25rem;
+    font-family: 'Share Tech Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    font-size: 0.8rem;
+    font-weight: bold;
+  }
+  .skip-link:focus {
+    top: 1rem;
   }
 
   /* HUD corner brackets */
@@ -380,4 +410,25 @@
 
 @keyframes spin {
   to { transform: rotate(360deg); }
+}
+
+/* ================= REDUCED MOTION ================= */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .scanline,
+  .init-flicker {
+    animation: none !important;
+  }
+  .init-flicker {
+    opacity: 1;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
