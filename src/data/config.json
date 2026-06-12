@@ -64,13 +64,15 @@
   },
   "galleryItems": [
     { "imageUrl": "img/gallery/artwork1.webp", "description": "Ferox's dark canine-shark fursona with a spiky orange mane and glowing neon eyes in a dim room" },
-    { "imageUrl": "img/gallery/artwork2.webp", "description": "Two furry characters embracing at sunset" },
     { "imageUrl": "img/gallery/artwork3.webp", "description": "Bright orange fox character portrait, smiling among sparkles" },
-    { "imageUrl": "img/gallery/artwork4.webp", "description": "Two canine characters nuzzling, surrounded by hearts" },
     { "imageUrl": "img/gallery/artwork5.webp", "description": "Grey wolf with glowing pink markings on a yellow background" },
-    { "imageUrl": "img/gallery/artwork6.webp", "description": "Two foxes cuddling in winter sweaters in the snow" },
     { "imageUrl": "img/gallery/artwork7.webp", "description": "Ferox's fursona facing the camera, orange mane and glowing magenta face markings" },
-    { "imageUrl": "img/gallery/artwork8.webp", "description": "Ferox's fursona in profile with head raised, pink glowing stripes along the body" }
+    { "imageUrl": "img/gallery/artwork8.webp", "description": "Ferox's fursona in profile with head raised, pink glowing stripes along the body" },
+    { "imageUrl": "img/gallery/artwork9.webp", "description": "Ferox's fursona full body, dark fur with magenta glowing stripe markings, orange mane, arm raised, cream background" },
+    { "imageUrl": "img/gallery/artwork10.webp", "description": "Ferox's fursona bust portrait in orange armor, spiky red mane, glowing pink eyes, dark background" },
+    { "imageUrl": "img/gallery/artwork11.webp", "description": "Ferox's fursona in a tactical jacket holding a blue glowing orb, excited expression, cream background" },
+    { "imageUrl": "img/gallery/artwork12.webp", "description": "Ferox's VRChat avatar close-up from below, spiky orange hair, glowing pink chest markings, warm blurred background" },
+    { "imageUrl": "img/gallery/artwork13.webp", "description": "Ferox's VRChat avatar selfie in a dark neon-lit room, orange spiky mane, glowing purple eyes, UI panel visible" }
   ],
   "footerInfo": {
     "text": "Ferox · All rights reserved.",
